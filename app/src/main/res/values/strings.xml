@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">VoiceIn</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="contact_text">聯絡人</string>
+    <string name="favorite_text">我的最愛</string>
+    <string name="history_text">通話紀錄</string>
+    <string name="group_text">群組</string>
+</resources>
