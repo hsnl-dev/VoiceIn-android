@@ -1,4 +1,4 @@
-package tw.kits.voicein;
+package tw.kits.voicein.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import tw.kits.voicein.R;
 import tw.kits.voicein.model.Contact;
 
 /**

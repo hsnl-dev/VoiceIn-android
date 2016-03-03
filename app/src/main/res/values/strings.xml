@@ -14,4 +14,6 @@
     <string name="resend">重新傳送驗證碼</string>
     <string name="wait">請稍後</string>
     <string name="wait_notice">請稍後，這不會讓你等太久</string>
+    <string name="network_err">網路錯誤，請重試</string>
+    <string name="user_auth_err">您的驗證碼有誤，請重試</string>
 </resources>

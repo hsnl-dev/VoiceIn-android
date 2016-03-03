@@ -1,7 +1,6 @@
-package tw.kits.voicein;
+package tw.kits.voicein.adapter;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -9,8 +8,10 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TableLayout;
 import android.widget.TextView;
+
+import tw.kits.voicein.fragment.ContactFragment;
+import tw.kits.voicein.R;
 
 /**
  * Created by Henry on 2016/3/1.

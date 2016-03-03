@@ -1,25 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="@dimen/activity_horizontal_margin"
-    android:weightSum="1">
+    android:layout_height="72dp"
+    android:paddingBottom="8dp"
+    android:weightSum="1"
+    android:background="#be7373">
 
     <ImageView
         android:id="@+id/contacti_img_avatar"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:padding="36dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:padding="0dp"
         android:src="@drawable/ic_history_white_24dp"
         style="@style/TextAppearance.AppCompat.Caption"
         android:layout_weight="0.00"
-        android:background="#bb4242" />
+        android:layout_marginLeft="16dp"
+        android:background="#bb4242"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="6dp"
-        android:orientation="vertical">
+        android:layout_height="48dp"
+        android:orientation="vertical"
+        android:layout_marginLeft="72dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true">
         <TextView
             android:id="@+id/contacti_tv_name"
             android:layout_width="match_parent"
@@ -27,11 +34,11 @@
             android:text="123"
             style="@style/Base.TextAppearance.AppCompat.Subhead" />
         <TextView
-            android:id="@+id/contacti_tv_type"
+            android:id="@+id/contacti_tv_company"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="123"
             style="@style/Base.TextAppearance.AppCompat.Caption" />
-    </LinearLayout>
+   </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

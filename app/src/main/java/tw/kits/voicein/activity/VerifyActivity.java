@@ -1,0 +1,170 @@
+package tw.kits.voicein.activity;
+
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.AsyncTask;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import java.io.IOException;
+import java.util.HashMap;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import tw.kits.voicein.R;
+import tw.kits.voicein.util.VoiceInService;
+import tw.kits.voicein.model.Token;
+import tw.kits.voicein.model.UserLoginRes;
+import tw.kits.voicein.util.ServiceManager;
+
+public class VerifyActivity extends AppCompatActivity {
+    Button mResend;
+    Button mConfirm;
+    Intent mIntent;
+    RelativeLayout mlayout;
+    VoiceInService service;
+    EditText mCode;
+    Context mContext;
+    private final String TAG = VerifyActivity.class.getName();
+    private final int WAIT_NANO_SEC = 10000;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_verify);
+        service = ServiceManager.createService(null);
+        mContext = getBaseContext();
+        mResend = (Button)findViewById(R.id.verify_btn_resend);
+        mConfirm = (Button)findViewById(R.id.verify_btn_confirm);
+        mCode = (EditText)findViewById(R.id.verify_et_code);
+        mlayout = (RelativeLayout)findViewById(R.id.verify_lo_main);
+        mIntent = this.getIntent();
+        mResend.setOnClickListener(new ResendListener());
+        mConfirm.setOnClickListener(new VerfiyListener());
+        TimerAsync timer = new TimerAsync();
+        timer.execute(WAIT_NANO_SEC);
+
+    }
+
+    private class ResendListener implements View.OnClickListener{
+
+        @Override
+        public void onClick(View v) {
+            HashMap<String,String> req = new HashMap<>();
+            req.put("phoneNumber", mIntent.getExtras().getString("phoneNumber"));
+            final ProgressDialog dialog = ProgressDialog.show(
+                    VerifyActivity.this,
+                    getBaseContext().getString(R.string.wait),
+                    getBaseContext().getString(R.string.wait_notice),
+                    true);
+            service.getvalidationCode(req).enqueue(
+                    new Callback<UserLoginRes>() {
+                        @Override
+                        public void onResponse(Call<UserLoginRes> call, Response<UserLoginRes> response) {
+                            if(response.isSuccess()){
+                                dialog.dismiss();
+                                new TimerAsync().execute(WAIT_NANO_SEC);
+                            }else{
+                                try {
+                                    Log.w(TAG, response.errorBody().string());
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                Snackbar snack =  Snackbar.make(mlayout, mContext.getString(R.string.user_auth_err), Snackbar.LENGTH_LONG);
+                                View view = snack.getView();
+                                TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+                                tv.setTextColor(Color.WHITE);
+                                snack.show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<UserLoginRes> call, Throwable t) {
+                            Log.e(TAG,t.toString());
+                            Snackbar snack =  Snackbar.make(mlayout, mContext.getString(R.string.network_err), Snackbar.LENGTH_LONG);
+                            View view = snack.getView();
+                            TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+                            tv.setTextColor(Color.WHITE);
+                            snack.show();
+
+                        }
+                    }
+            );
+        }
+    }
+    private class VerfiyListener implements View.OnClickListener{
+
+        @Override
+        public void onClick(View v) {
+            HashMap<String,String > req = new HashMap<>();
+            req.put("userUuid", mIntent.getExtras().getString("userUuid"));
+            req.put("code", mCode.getText().toString());
+            service.getToken(req).enqueue(
+                    new Callback<Token>() {
+                        @Override
+                        public void onResponse(Call<Token> call, Response<Token> response) {
+                            if(response.isSuccess()){
+                                //successful login
+                                Bundle bundle = new Bundle();
+                                bundle.putString("token",response.body().getToken());
+                                bundle.putString("userUuid",mIntent.getExtras().getString("userUuid"));
+                                Intent intent = new Intent(VerifyActivity.this, MainActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }else{
+                               Snackbar snack =  Snackbar.make(mlayout, mContext.getString(R.string.user_auth_err), Snackbar.LENGTH_LONG);
+                                View view = snack.getView();
+                                TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+                                tv.setTextColor(Color.WHITE);
+                                snack.show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Token> call, Throwable t) {
+                            Snackbar snack = Snackbar.make(mlayout, mContext.getString(R.string.network_err), Snackbar.LENGTH_LONG);
+                            View view = snack.getView();
+                            TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+                            tv.setTextColor(Color.WHITE);
+                            snack.show();
+                            Log.w(TAG,t.toString());
+                        }
+                    }
+            );
+        }
+    }
+    private class TimerAsync extends AsyncTask<Integer, Void, Void>{
+        @Override
+        protected void onPreExecute() {
+            mResend.setEnabled(false);
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            mResend.setEnabled(true);
+            super.onPostExecute(aVoid);
+        }
+
+        @Override
+        protected Void doInBackground(Integer[] params) {
+            try {
+                Thread.sleep(params[0]);
+            } catch (InterruptedException e) {
+                Log.w(TAG,e.toString());
+            }
+            return null;
+        }
+    }
+}

@@ -1,4 +1,4 @@
-package tw.kits.voicein;
+package tw.kits.voicein.fragment;
 
 
 import android.os.Bundle;
@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import tw.kits.voicein.R;
+import tw.kits.voicein.adapter.ContactAdapter;
 import tw.kits.voicein.model.Contact;
 
 
@@ -29,9 +31,9 @@ public class ContactFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_contact, container, false);
         RecyclerView rvContact = (RecyclerView) view.findViewById(R.id.contact_rv_items);
 
-        RecyclerView.ItemDecoration itemDecoration = new
-                DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST);
-        rvContact.addItemDecoration(itemDecoration);
+        //RecyclerView.ItemDecoration itemDecoration = new
+          //      DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST);
+       /// rvContact.addItemDecoration(itemDecoration);
         ContactAdapter ca = new ContactAdapter(Contact.genFakeLists());
         rvContact.setAdapter(ca);
         rvContact.setLayoutManager(new LinearLayoutManager(getContext()));

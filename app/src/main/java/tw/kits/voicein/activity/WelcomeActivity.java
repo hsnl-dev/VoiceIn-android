@@ -1,7 +1,9 @@
-package tw.kits.voicein;
+package tw.kits.voicein.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import tw.kits.voicein.R;
 
 public class WelcomeActivity extends AppCompatActivity {
 
