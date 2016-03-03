@@ -7,4 +7,11 @@
     <string name="favorite_text">我的最愛</string>
     <string name="history_text">通話紀錄</string>
     <string name="group_text">群組</string>
+    <string name="login_notice">您好，歡迎您的使用VoiceIn，請填入您的手機號碼</string>
+    <string name="enter_phonenumber_hint">請輸入您的電話號碼</string>
+    <string name="confirm">確認</string>
+    <string name="verify_notice">驗證碼將在1分鐘內傳送到您的手機，請在下方輸入您的驗證碼</string>
+    <string name="resend">重新傳送驗證碼</string>
+    <string name="wait">請稍後</string>
+    <string name="wait_notice">請稍後，這不會讓你等太久</string>
 </resources>
