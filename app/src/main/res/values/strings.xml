@@ -16,4 +16,9 @@
     <string name="wait_notice">請稍後，這不會讓你等太久</string>
     <string name="network_err">網路錯誤，請重試</string>
     <string name="user_auth_err">您的驗證碼有誤，請重試</string>
+    <string name="profile_setting">設定個人資料</string>
+    <string name="user_name_hint">請輸入您的使用者名稱</string>
+    <string name="location_hint">請輸入您的所在地</string>
+    <string name="company_hint">請輸入您的服務單位</string>
+    <string name="intro_hint">請輸入您的簡介(選填)</string>
 </resources>
