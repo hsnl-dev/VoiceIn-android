@@ -6,9 +6,14 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
+import retrofit2.http.Path;
 import tw.kits.voicein.model.Token;
+import tw.kits.voicein.model.UserInfo;
 import tw.kits.voicein.model.UserLoginRes;
+import tw.kits.voicein.model.UserProfile;
 
 /**
  * Created by Henry on 2016/3/3.
@@ -20,4 +25,9 @@ public interface VoiceInService {
     Call<UserLoginRes> getvalidationCode(@Body HashMap<String,String> user);
     @POST("api/v1/accounts/tokens/")
     Call<Token> getToken (@Body HashMap<String,String> user);
+    @PUT("api/v1/accounts/{userUuid}")
+    Call<ResponseBody> updateProfile(@Body UserProfile profile, @Path("userUuid") String userUuid);
+    @GET("api/v1/accounts/{userUuid}")
+    Call<UserInfo> getUser(@Path("userUuid")String userUuid);
+
 }

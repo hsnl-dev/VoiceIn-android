@@ -1,11 +1,18 @@
 package tw.kits.voicein.util;
 
+import android.content.Context;
+
+import com.jakewharton.picasso.OkHttp3Downloader;
+import com.squareup.picasso.OkHttpDownloader;
+import com.squareup.picasso.Picasso;
+
 import java.io.IOException;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -15,7 +22,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ServiceManager {
     public final static String API_BASE = "https://voicein-web-service.us-west-2.elasticbeanstalk.com/";
     public final static String API_KEY = "784a48e7-a15f-4623-916a-1bd304dc9f56";
-
+    static HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+    static HttpLoggingInterceptor basicLogging = new HttpLoggingInterceptor();
 
     /***
      * Create service with token or without token
@@ -23,16 +31,32 @@ public class ServiceManager {
      * @return
      */
     public static VoiceInService createService(String token){
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(new VoiceInterceptor(token))
-                .build();
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(API_BASE)
                 .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
+                .client(getClient(token))
                 .build();
         return retrofit.create(VoiceInService.class);
+    }
+    private static OkHttpClient getClient(String token){
+        return   new OkHttpClient.Builder()
+                .addInterceptor(new VoiceInterceptor(token))
+                .addInterceptor(logging)
+                .build();
+    }
+
+    public static Picasso getPicassoDowloader(Context context, String token){
+        basicLogging.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient client =  new OkHttpClient.Builder()
+                .addInterceptor(new VoiceInterceptor(token))
+                .addInterceptor(basicLogging)
+                .build();
+
+        OkHttp3Downloader okDownloader = new OkHttp3Downloader(client);
+       return new Picasso.Builder(context).downloader(okDownloader).build();
     }
 }
 class VoiceInterceptor implements Interceptor{

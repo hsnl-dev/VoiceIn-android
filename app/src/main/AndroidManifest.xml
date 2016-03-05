@@ -12,6 +12,11 @@
         <activity
             android:name=".activity.WelcomeActivity"
             android:theme="@style/AppTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
         </activity>
         <activity
@@ -28,12 +33,9 @@
         <activity
             android:name=".activity.ProfileActivity"
             android:theme="@style/AppTheme.DarkActionBar"
+            android:windowSoftInputMode="adjustPan"
             android:label="@string/profile_setting">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

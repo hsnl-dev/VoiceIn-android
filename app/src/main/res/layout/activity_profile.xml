@@ -34,6 +34,8 @@
 
         <EditText
             android:id="@+id/profile_et_name"
+            android:maxLines="1"
+            android:inputType="text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/user_name_hint"
@@ -46,6 +48,8 @@
             android:id="@+id/profile_et_loc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:inputType="text"
             android:hint="@string/location_hint"
             android:drawableLeft="@drawable/ic_location_on_grey_600_24dp"
             android:drawableStart="@drawable/ic_location_on_grey_600_24dp"
@@ -56,6 +60,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/profile_et_com"
+            android:maxLines="1"
+            android:inputType="text"
             android:hint = "@string/company_hint"
             android:drawableLeft="@drawable/ic_business_center_grey_600_24dp"
             android:drawableStart="@drawable/ic_business_center_grey_600_24dp"
@@ -69,11 +75,20 @@
             android:ems="10"
             android:id="@+id/profile_et_intro"
             android:hint="@string/intro_hint"
+
             android:layout_gravity="center_horizontal"
             android:scrollbars="vertical"
-            android:lines="5"
+            android:lines="3"
             android:gravity="top"
-            android:minLines="3"/>
+            android:minLines="3"
+            />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/confirm"
+            android:id="@+id/profile_btn_confirm"
+            android:layout_gravity="center_horizontal" />
     </LinearLayout>
 
     <Button

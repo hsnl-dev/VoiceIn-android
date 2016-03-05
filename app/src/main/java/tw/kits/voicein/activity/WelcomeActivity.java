@@ -12,7 +12,7 @@ import tw.kits.voicein.R;
 import tw.kits.voicein.util.UserAccessStore;
 
 public class WelcomeActivity extends AppCompatActivity {
-    private final String TAG = getLocalClassName();
+    private final String TAG = WelcomeActivity.class.getName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
