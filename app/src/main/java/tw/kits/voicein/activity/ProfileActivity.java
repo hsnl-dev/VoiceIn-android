@@ -12,6 +12,11 @@ import android.widget.EditText;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -120,7 +125,23 @@ public class ProfileActivity extends AppCompatActivity {
             }
 
         };
-        vs.updateProfile(usrProfile, UserAccessStore.getUserUuid()).enqueue(cb);
+        if(mBitmap!=null){
+            File imageFileFolder = new File(getCacheDir(),"Avatar");
+            if( !imageFileFolder.exists() ){
+                imageFileFolder.mkdir();
+            }
+            File image = new File(imageFileFolder, "avatar-" + System.currentTimeMillis() + ".jpg");
+            FileOutputStream out = null;
+            try {
+                out = new FileOutputStream(image);
+                mBitmap.compress(Bitmap.CompressFormat.JPEG,100,out);
+                out.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            vs.updateProfile(usrProfile, UserAccessStore.getUserUuid()).enqueue(cb);
+        }
+
 
 
     }

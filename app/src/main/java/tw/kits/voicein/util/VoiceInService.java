@@ -8,8 +8,10 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 import tw.kits.voicein.model.Contact;
 import tw.kits.voicein.model.ContactList;
@@ -34,4 +36,7 @@ public interface VoiceInService {
     Call<UserInfo> getUser(@Path("userUuid")String userUuid);
     @GET("api/v1/accounts/{userUuid}/contacts")
     Call<List<Contact>> getContacts(@Path("userUuid") String userUuid);
+    @Multipart
+    @POST
+    Call<ResponseBody> uploadAvatar(@Part("file") ResponseBody body);
 }

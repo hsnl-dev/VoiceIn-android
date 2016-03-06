@@ -22,14 +22,14 @@
         <activity
             android:name=".activity.LoginActivity"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
             android:name=".activity.MainActivity"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".activity.VerifyActivity"
             android:theme="@style/AppTheme.DarkActionBar"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
             android:name=".activity.ProfileActivity"
             android:theme="@style/AppTheme.DarkActionBar"
