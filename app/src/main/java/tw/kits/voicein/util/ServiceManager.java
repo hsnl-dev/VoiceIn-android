@@ -23,7 +23,6 @@ public class ServiceManager {
     public final static String API_BASE = "https://voicein-web-service.us-west-2.elasticbeanstalk.com/";
     public final static String API_KEY = "784a48e7-a15f-4623-916a-1bd304dc9f56";
     static HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-    static HttpLoggingInterceptor basicLogging = new HttpLoggingInterceptor();
 
     /***
      * Create service with token or without token
@@ -49,10 +48,10 @@ public class ServiceManager {
     }
 
     public static Picasso getPicassoDowloader(Context context, String token){
-        basicLogging.setLevel(HttpLoggingInterceptor.Level.BODY);
+
         OkHttpClient client =  new OkHttpClient.Builder()
                 .addInterceptor(new VoiceInterceptor(token))
-                .addInterceptor(basicLogging)
+                .addInterceptor(logging)
                 .build();
 
         OkHttp3Downloader okDownloader = new OkHttp3Downloader(client);

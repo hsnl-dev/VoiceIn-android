@@ -1,46 +1,157 @@
 package tw.kits.voicein.model;
 
-
-
-import java.util.ArrayList;
-import java.util.List;
-
-/**
- * Created by Henry on 2016/3/2.
- */
 public class Contact {
-    private String name;
+
+
+    private String uuid;
+    private String userName;
+    private String phoneNumber;
+    private String location;
+    private String profile;
     private String company;
-    private static final int LIST_NUM = 10;
-    public static List<Contact> genFakeLists(){
-        List<Contact> contactList = new ArrayList<Contact>();
-        for(int i = 0; i<LIST_NUM; i++){
+    private String profilePhotoId;
+    private String qrCodeUuid;
+    private String availableStartTime;
+    private String availableEndTime;
 
-
-            Contact c = new Contact();
-            c.setCompany("Waa");
-            c.setName(i + "");
-            contactList.add(c);
-
-        }
-
-        return contactList;
-
+    /**
+     * @return The uuid
+     */
+    public String getUuid() {
+        return uuid;
     }
 
-    public String getName() {
-        return name;
+    /**
+     * @param uuid The uuid
+     */
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    /**
+     * @return The userName
+     */
+    public String getUserName() {
+        return userName;
     }
 
+    /**
+     * @param userName The userName
+     */
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    /**
+     * @return The phoneNumber
+     */
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    /**
+     * @param phoneNumber The phoneNumber
+     */
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    /**
+     * @return The location
+     */
+    public String getLocation() {
+        return location;
+    }
+
+    /**
+     * @param location The location
+     */
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    /**
+     * @return The profile
+     */
+    public String getProfile() {
+        return profile;
+    }
+
+    /**
+     * @param profile The profile
+     */
+    public void setProfile(String profile) {
+        this.profile = profile;
+    }
+
+    /**
+     * @return The company
+     */
     public String getCompany() {
         return company;
     }
 
+    /**
+     * @param company The company
+     */
     public void setCompany(String company) {
         this.company = company;
     }
+
+    /**
+     * @return The profilePhotoId
+     */
+    public String getProfilePhotoId() {
+        return profilePhotoId;
+    }
+
+    /**
+     * @param profilePhotoId The profilePhotoId
+     */
+    public void setProfilePhotoId(String profilePhotoId) {
+        this.profilePhotoId = profilePhotoId;
+    }
+
+    /**
+     * @return The qrCodeUuid
+     */
+    public String getQrCodeUuid() {
+        return qrCodeUuid;
+    }
+
+    /**
+     * @param qrCodeUuid The qrCodeUuid
+     */
+    public void setQrCodeUuid(String qrCodeUuid) {
+        this.qrCodeUuid = qrCodeUuid;
+    }
+
+    /**
+     * @return The availableStartTime
+     */
+    public String getAvailableStartTime() {
+        return availableStartTime;
+    }
+
+    /**
+     * @param availableStartTime The availableStartTime
+     */
+    public void setAvailableStartTime(String availableStartTime) {
+        this.availableStartTime = availableStartTime;
+    }
+
+    /**
+     * @return The availableEndTime
+     */
+    public String getAvailableEndTime() {
+        return availableEndTime;
+    }
+
+    /**
+     * @param availableEndTime The availableEndTime
+     */
+    public void setAvailableEndTime(String availableEndTime) {
+        this.availableEndTime = availableEndTime;
+    }
+
 }

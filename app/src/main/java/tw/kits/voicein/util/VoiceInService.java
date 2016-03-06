@@ -1,6 +1,7 @@
 package tw.kits.voicein.util;
 
 import java.util.HashMap;
+import java.util.List;
 
 import okhttp3.Response;
 import okhttp3.ResponseBody;
@@ -10,6 +11,8 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import tw.kits.voicein.model.Contact;
+import tw.kits.voicein.model.ContactList;
 import tw.kits.voicein.model.Token;
 import tw.kits.voicein.model.UserInfo;
 import tw.kits.voicein.model.UserLoginRes;
@@ -29,5 +32,6 @@ public interface VoiceInService {
     Call<ResponseBody> updateProfile(@Body UserProfile profile, @Path("userUuid") String userUuid);
     @GET("api/v1/accounts/{userUuid}")
     Call<UserInfo> getUser(@Path("userUuid")String userUuid);
-
+    @GET("api/v1/accounts/{userUuid}/contacts")
+    Call<List<Contact>> getContacts(@Path("userUuid") String userUuid);
 }

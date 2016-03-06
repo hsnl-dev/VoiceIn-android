@@ -22,4 +22,7 @@
     <string name="company_hint">請輸入您的服務單位</string>
     <string name="intro_hint">請輸入您的簡介(選填)</string>
     <string name="avatar_upload_hint">更新大頭貼</string>
+    <string name="inbox_title">通知</string>
+    <string name="card_title">我的名片</string>
+    <string name="setting_title">設定</string>
 </resources>

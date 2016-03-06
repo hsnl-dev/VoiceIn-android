@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/main_menu_inbox"
+        android:title="@string/inbox_title"
+        android:icon="@drawable/ic_inbox_white_24dp"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/main_menu_card"
+        android:title="@string/card_title"
+        android:icon="@drawable/ic_credit_card_white_24dp"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/main_menu_setting"
+        android:title="@string/setting_title"
+        android:icon="@drawable/ic_settings_white_24dp"
+        app:showAsAction="ifRoom"/>
+
+</menu>
