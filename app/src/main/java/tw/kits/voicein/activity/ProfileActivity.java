@@ -110,7 +110,7 @@ public class ProfileActivity extends AppCompatActivity {
                         startUploadAvatar(mBitmap);
 
                     } else {
-                        genQRcode();
+                        genQRcodeWhenNotExisted();
                     }
 
 
@@ -156,7 +156,7 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccess()) {
-                    genQRcode();
+                    genQRcodeWhenNotExisted();
                 } else {
                     progressFragment.dismiss();
                     //TODO handle error
@@ -172,32 +172,37 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
-    private void genQRcode() {
-        Log.e("123","HiHI");
-        service.setQRcode(UserAccessStore.getUserUuid()).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                progressFragment.dismiss();
-                if (response.isSuccess()) {
-                    Log.e(TAG, "success");
-                    Intent i = new Intent(ProfileActivity.this, MainActivity.class);
-                    startActivity(i);
-                    finish();
-                } else {
-                    Log.e(TAG, Integer.toString(response.code()));
-                    //// TODO: 2016/3/7 error
+    private void genQRcodeWhenNotExisted() {
+        Log.e("123", "HiHI");
+        if(user.getQrCodeUuid()==null) {
+            service.setQRcode(UserAccessStore.getUserUuid()).enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    progressFragment.dismiss();
+                    if (response.isSuccess()) {
+                        Log.e(TAG, "success");
+                        Intent i = new Intent(ProfileActivity.this, MainActivity.class);
+                        startActivity(i);
+                        finish();
+                    } else {
+                        Log.e(TAG, Integer.toString(response.code()));
+                        //// TODO: 2016/3/7 error
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                progressFragment.dismiss();
-                t.printStackTrace();
-                Log.e(TAG, t.toString());
-                //TODO handle error
-            }
-        });
-
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    progressFragment.dismiss();
+                    t.printStackTrace();
+                    Log.e(TAG, t.toString());
+                    //TODO handle error
+                }
+            });
+        }else{
+            Intent i = new Intent(ProfileActivity.this, MainActivity.class);
+            startActivity(i);
+            finish();
+        }
     }
 
     @Override

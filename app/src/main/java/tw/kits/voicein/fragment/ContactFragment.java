@@ -1,6 +1,7 @@
 package tw.kits.voicein.fragment;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -103,11 +104,12 @@ public class ContactFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if (scanningResult != null) {
-            String scanContent=scanningResult.getContents();
-            Log.e(TAG,scanContent.toString());
+        if (resultCode == Activity.RESULT_OK) {
+            IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+            if (scanningResult != null) {
+                String scanContent = scanningResult.getContents();
+                Log.e(TAG, scanContent.toString());
+            }
         }
     }
 }

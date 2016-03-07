@@ -47,14 +47,16 @@
         android:id="@+id/login_et_phonenum"
         android:hint="@string/enter_phonenumber_hint"
         android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_toRightOf="@+id/textView3"
+        android:layout_toEndOf="@+id/textView3" />
 
-    <Spinner
-        android:layout_width="fill_parent"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/login_sn_country"
-        android:layout_above="@+id/login_et_phonenum"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="+886"
+        android:id="@+id/textView3"
+        android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 

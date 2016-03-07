@@ -43,7 +43,8 @@ public class LoginActivity extends AppCompatActivity {
     TextView phoneNum;
     private RelativeLayout mlayout;
     private Context mContext;
-    private Spinner mSpinner;
+    private static final String TAIWAN_NATION_CODE = "+886";
+    //private Spinner mSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,26 +53,26 @@ public class LoginActivity extends AppCompatActivity {
         Button confirmBtn = (Button) findViewById(R.id.login_btn_confirm);
         phoneNum = (TextView) findViewById(R.id.login_et_phonenum);
         mlayout = (RelativeLayout) findViewById(R.id.login_lo_main);
-        mSpinner = (Spinner) findViewById(R.id.login_sn_country);
+        //mSpinner = (Spinner) findViewById(R.id.login_sn_country);
         mContext = getBaseContext();
-        byte[] countryRaw = Base64.decode(getResources().getString(R.string.countries_code), Base64.DEFAULT);
-        String countryString = null;
-        try {
-            countryString = new String(countryRaw, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        Gson gson = new Gson();
-        Type listType = new TypeToken<ArrayList<CountryCode>>() {}.getType();
-        List<CountryCode> countryCodes = gson.fromJson(countryString, listType);
-        CountryAdapter countryAdapter = new CountryAdapter(countryCodes,this);
-        String devCountry = Locale.getDefault().getCountry();
-        mSpinner.setAdapter(countryAdapter);
-        int pos = countryAdapter.findByCode(devCountry);
-        Log.e(TAG,devCountry);
-        if(pos>=0)
-            mSpinner.setSelection(pos);
-        Log.e(TAG,""+pos);
+//        byte[] countryRaw = Base64.decode(getResources().getString(R.string.countries_code), Base64.DEFAULT);
+//        String countryString = null;
+//        try {
+//            countryString = new String(countryRaw, "UTF-8");
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
+//        Gson gson = new Gson();
+//        Type listType = new TypeToken<ArrayList<CountryCode>>() {}.getType();
+//        List<CountryCode> countryCodes = gson.fromJson(countryString, listType);
+//        CountryAdapter countryAdapter = new CountryAdapter(countryCodes,this);
+//        String devCountry = Locale.getDefault().getCountry();
+//        mSpinner.setAdapter(countryAdapter);
+//        int pos = countryAdapter.findByCode(devCountry);
+//        Log.e(TAG,devCountry);
+//        if(pos>=0)
+//            mSpinner.setSelection(pos);
+//        Log.e(TAG,""+pos);
         confirmBtn.setOnClickListener(new ConfirmClickListener());
     }
 
@@ -85,9 +86,9 @@ public class LoginActivity extends AppCompatActivity {
                     true);
 
             HashMap<String, String> res = new HashMap<>();
-            CountryCode code = (CountryCode)mSpinner.getSelectedItem();
-            String dailPrefix = code.getDialCode().replace(" ", "");
-            final String standardNum = dailPrefix+phoneNum.getText().toString().replaceFirst("0","");
+            //CountryCode code = (CountryCode)mSpinner.getSelectedItem();
+            //String dailPrefix = code.getDialCode().replace(" ", "");
+            final String standardNum = TAIWAN_NATION_CODE+phoneNum.getText().toString().replaceFirst("0","");
             res.put("phoneNumber", standardNum);
             Call<UserLoginRes> call = service.getvalidationCode(res);
             call.enqueue(new Callback<UserLoginRes>() {

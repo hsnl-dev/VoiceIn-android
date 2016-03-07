@@ -33,6 +33,12 @@ public class ContactEditActivity extends AppCompatActivity {
         iLocation.setText(contact.getLocation());
         iName.setText(contact.getUserName());
         iProfile.setText(contact.getProfile());
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
+    }
 }
