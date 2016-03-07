@@ -3,9 +3,11 @@ package tw.kits.voicein.util;
 import java.util.HashMap;
 import java.util.List;
 
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
@@ -26,17 +28,26 @@ import tw.kits.voicein.model.UserProfile;
 public interface VoiceInService {
     @POST("api/v1/accounts/validations/")
     Call<UserLoginRes> getRealCode(@Body HashMap<String,String> user);
+
     @POST("api/v1/sandboxs/accounts/validations/")
     Call<UserLoginRes> getvalidationCode(@Body HashMap<String,String> user);
+
     @POST("api/v1/accounts/tokens/")
     Call<Token> getToken (@Body HashMap<String,String> user);
+
     @PUT("api/v1/accounts/{userUuid}")
     Call<ResponseBody> updateProfile(@Body UserProfile profile, @Path("userUuid") String userUuid);
+
     @GET("api/v1/accounts/{userUuid}")
     Call<UserInfo> getUser(@Path("userUuid")String userUuid);
+
     @GET("api/v1/accounts/{userUuid}/contacts")
     Call<List<Contact>> getContacts(@Path("userUuid") String userUuid);
+
     @Multipart
-    @POST
-    Call<ResponseBody> uploadAvatar(@Part("file") ResponseBody body);
+    @POST("/api/v1/accounts/{userUuid}/avatar")
+    Call<ResponseBody> uploadAvatar(@Path("userUuid") String userUuid, @Part("photo") RequestBody file);
+
+    @POST("/api/v1/accounts/{userUuid}/qrcode")
+    Call<ResponseBody>setQRcode(@Path("userUuid") String userUuid);
 }

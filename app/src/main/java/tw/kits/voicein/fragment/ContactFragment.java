@@ -2,8 +2,10 @@ package tw.kits.voicein.fragment;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,19 +14,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.util.List;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import tw.kits.voicein.R;
 import tw.kits.voicein.adapter.ContactAdapter;
 import tw.kits.voicein.model.Contact;
-import tw.kits.voicein.model.ContactList;
 import tw.kits.voicein.util.DividerItemDecoration;
 import tw.kits.voicein.util.ServiceManager;
 import tw.kits.voicein.util.UserAccessStore;
@@ -39,8 +42,11 @@ public class ContactFragment extends Fragment {
     String token;
     Context context;
     RecyclerView rvContact;
+    FloatingActionButton action;
+
     public ContactFragment() {
         // Required empty public constructor
+
     }
 
 
@@ -57,19 +63,31 @@ public class ContactFragment extends Fragment {
         rvContact.setLayoutManager(new LinearLayoutManager(context));
         userUuid = UserAccessStore.getUserUuid();
         token = UserAccessStore.getToken();
+        action = (FloatingActionButton) view.findViewById(R.id.contact_fab_plus);
+        action.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        IntentIntegrator scanIntegrator = IntentIntegrator.forSupportFragment(ContactFragment.this);
+                        scanIntegrator.initiateScan();
+                    }
+                }
+
+
+        );
         ServiceManager.createService(token)
                 .getContacts(userUuid)
                 .enqueue(new Callback<List<Contact>>() {
                     @Override
                     public void onResponse(Call<List<Contact>> call, Response<List<Contact>> response) {
-                        ContactAdapter contactAdapter = new ContactAdapter(response.body());
+                        ContactAdapter contactAdapter = new ContactAdapter(response.body(), ContactFragment.this);
                         rvContact.setAdapter(contactAdapter);
 
                     }
 
                     @Override
                     public void onFailure(Call<List<Contact>> call, Throwable t) {
-                        Log.e(TAG,t.toString());
+                        Log.e(TAG, t.toString());
                     }
                 });
         return view;
@@ -81,5 +99,15 @@ public class ContactFragment extends Fragment {
         TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
         tv.setTextColor(Color.WHITE);
         snack.show();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (scanningResult != null) {
+            String scanContent=scanningResult.getContents();
+            Log.e(TAG,scanContent.toString());
+        }
     }
 }

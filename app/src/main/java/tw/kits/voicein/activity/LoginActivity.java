@@ -87,7 +87,8 @@ public class LoginActivity extends AppCompatActivity {
             HashMap<String, String> res = new HashMap<>();
             CountryCode code = (CountryCode)mSpinner.getSelectedItem();
             String dailPrefix = code.getDialCode().replace(" ", "");
-            res.put("phoneNumber", dailPrefix+phoneNum.getText().toString().replaceFirst("0",""));
+            final String standardNum = dailPrefix+phoneNum.getText().toString().replaceFirst("0","");
+            res.put("phoneNumber", standardNum);
             Call<UserLoginRes> call = service.getvalidationCode(res);
             call.enqueue(new Callback<UserLoginRes>() {
                 @Override
@@ -96,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
                     if (response.isSuccess()) {
                         Bundle bundle = new Bundle();
                         bundle.putString("userUuid", response.body().getUserUuid());
-                        bundle.putString("phoneNumber", phoneNum.getText().toString());
+                        bundle.putString("phoneNumber", standardNum);
                         Intent intent = new Intent(LoginActivity.this, VerifyActivity.class);
                         intent.putExtras(bundle);
                         startActivity(intent);
