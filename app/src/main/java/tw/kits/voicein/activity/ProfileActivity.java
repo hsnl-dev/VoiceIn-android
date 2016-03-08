@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.squareup.picasso.Picasso;
@@ -45,7 +46,7 @@ public class ProfileActivity extends AppCompatActivity {
     private EditText mIntro;
     private EditText mLoc;
     private EditText mName;
-    private RelativeLayout mlayout;
+    private LinearLayout mlayout;
     private Button mConfirm;
     private Bitmap mBitmap; // May be null
     private UserInfo user;
@@ -59,7 +60,7 @@ public class ProfileActivity extends AppCompatActivity {
         //get sufficient info
         user = (UserInfo) getIntent().getSerializableExtra("userInfo");
         mSelectAvatar = (Button) findViewById(R.id.profile_btn_upload);
-        mlayout = (RelativeLayout)findViewById(R.id.profile_layout_main);
+        mlayout = (LinearLayout)findViewById(R.id.profile_layout_main);
         mImg = (CircleImageView) findViewById(R.id.profile_img_avatar);
         mCom = (EditText) findViewById(R.id.profile_et_com);
         mIntro = (EditText) findViewById(R.id.profile_et_intro);

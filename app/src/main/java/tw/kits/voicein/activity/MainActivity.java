@@ -1,5 +1,6 @@
 package tw.kits.voicein.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -47,7 +48,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            //TODO implement intent switch
+            case R.id.main_menu_card:
+                Intent i = new Intent(this,MyCardActivity.class);
+                startActivity(i);
+             break;
 
 
         }
