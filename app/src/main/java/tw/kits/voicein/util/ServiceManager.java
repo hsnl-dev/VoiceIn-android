@@ -1,0 +1,82 @@
+package tw.kits.voicein.util;
+
+import android.content.Context;
+
+import com.jakewharton.picasso.OkHttp3Downloader;
+import com.squareup.picasso.OkHttpDownloader;
+import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
+
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+/**
+ * Created by Henry on 2016/3/3.
+ */
+public class ServiceManager {
+    public final static String API_BASE = "https://voicein-web-service.us-west-2.elasticbeanstalk.com/";
+    public final static String API_KEY = "784a48e7-a15f-4623-916a-1bd304dc9f56";
+    static HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+
+    /***
+     * Create service with token or without token
+     * @param token user accesstoken
+     * @return
+     */
+    public static VoiceInService createService(String token){
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(API_BASE)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(getClient(token))
+                .build();
+        return retrofit.create(VoiceInService.class);
+    }
+    private static OkHttpClient getClient(String token){
+        return   new OkHttpClient.Builder()
+                .addInterceptor(new VoiceInterceptor(token))
+                .addInterceptor(logging)
+                .build();
+    }
+
+    public static Picasso getPicassoDowloader(Context context, String token){
+
+        OkHttpClient client =  new OkHttpClient.Builder()
+                .addInterceptor(new VoiceInterceptor(token))
+                .addInterceptor(logging)
+                .build();
+
+        OkHttp3Downloader okDownloader = new OkHttp3Downloader(client);
+       return new Picasso.Builder(context).downloader(okDownloader).build();
+    }
+}
+class VoiceInterceptor implements Interceptor{
+    String vToken;
+    VoiceInterceptor(String token){
+        super();
+        vToken = token;
+    }
+    @Override
+    public Response intercept(Chain chain) throws IOException {
+        Request req;
+        if(vToken!=null) {
+            req = chain.request().newBuilder()
+                    .addHeader("apiKey", ServiceManager.API_KEY)
+                    .addHeader("token", this.vToken)
+                    .build();
+        }else{
+            req = chain.request().newBuilder()
+                    .addHeader("apiKey", ServiceManager.API_KEY)
+                    .build();
+        }
+        return chain.proceed(req);
+    }
+}
