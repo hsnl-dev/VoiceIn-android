@@ -32,4 +32,12 @@
     <string name="profile">簡介</string>
     <string name="nickname">暱稱</string>
     <string name="contact_profile_title">聯絡人資料</string>
+    <string name="under_develop">近期開放，敬請期待</string>
+    <string name="success">操作成功</string>
+    <string name="user_have_added">您已經有此聯絡人</string>
+    <string name="user_not_auth">您的動作不被允許，請嘗試重新登入</string>
+    <string name="user_not_found">查無此使用者</string>
+    <string name="server_err">伺服器似乎有點問題，請稍後重</string>
+    <string name="nickname_edit_hint">請填入您對她/他的暱稱</string>
+    <string name="del_contact">刪除此聯絡人</string>
 </resources>

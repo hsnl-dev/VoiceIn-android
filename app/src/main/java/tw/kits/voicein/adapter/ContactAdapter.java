@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import tw.kits.voicein.R;
 import tw.kits.voicein.activity.ContactEditActivity;
+import tw.kits.voicein.fragment.ContactFragment;
 import tw.kits.voicein.model.Contact;
 import tw.kits.voicein.util.ServiceManager;
 import tw.kits.voicein.util.UserAccessStore;
@@ -27,6 +29,7 @@ import tw.kits.voicein.util.UserAccessStore;
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHolder> {
     List<Contact> mContacts;
     Fragment mFragment;
+    private static final String TAG = ContactAdapter.class.getName();
 
     public ContactAdapter(List<Contact> contacts, Fragment fragment) {
         mContacts = contacts;
@@ -44,8 +47,18 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         final Contact contact = mContacts.get(position);
-        TextView nameTextView = holder.textName;
-        nameTextView.setText(contact.getUserName());
+        Log.e(TAG, contact.getNickName());
+        if(contact.getNickName()!=null){
+            if(contact.getNickName().equals("")==false){
+                holder.textName.setText(contact.getNickName());
+            }else{
+                holder.textName.setText(contact.getUserName());
+            }
+
+        }else{
+            holder.textName.setText(contact.getUserName());
+        }
+
         holder.company.setText(contact.getCompany());
         Context context = holder.circleImageView.getContext();
         Picasso picasso = ServiceManager.getPicassoDowloader(context, UserAccessStore.getToken());
@@ -56,7 +69,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
             public void onClick(View v) {
                 Intent intent = new Intent(mFragment.getActivity(),ContactEditActivity.class);
                 intent.putExtra(ContactEditActivity.ARG_CONTACT,contact);
-                mFragment.startActivity(intent);
+                mFragment.startActivityForResult(intent,ContactFragment.INTENT_EDIT_CONTACT);
 
 
             }
@@ -67,6 +80,15 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
     @Override
     public int getItemCount() {
         return mContacts.size();
+    }
+    public void clear(){
+        mContacts.clear();
+
+    }
+    public boolean addAll(List<Contact> list){
+        boolean result = mContacts.addAll(list);
+
+        return result;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -82,4 +104,5 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
         }
 
     }
+
 }

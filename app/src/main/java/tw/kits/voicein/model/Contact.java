@@ -6,6 +6,7 @@ public class Contact implements Serializable{
 
 
     private String uuid;
+    private String nickName;
     private String userName;
     private String phoneNumber;
     private String location;
@@ -156,4 +157,11 @@ public class Contact implements Serializable{
         this.availableEndTime = availableEndTime;
     }
 
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
 }

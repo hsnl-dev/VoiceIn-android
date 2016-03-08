@@ -6,11 +6,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 
 import com.squareup.picasso.Picasso;
 
@@ -29,6 +31,7 @@ import tw.kits.voicein.R;
 import tw.kits.voicein.fragment.ProgressFragment;
 import tw.kits.voicein.model.UserInfo;
 import tw.kits.voicein.model.UserProfile;
+import tw.kits.voicein.util.ColoredSnackBar;
 import tw.kits.voicein.util.ServiceManager;
 import tw.kits.voicein.util.UserAccessStore;
 import tw.kits.voicein.util.VoiceInService;
@@ -42,6 +45,7 @@ public class ProfileActivity extends AppCompatActivity {
     private EditText mIntro;
     private EditText mLoc;
     private EditText mName;
+    private RelativeLayout mlayout;
     private Button mConfirm;
     private Bitmap mBitmap; // May be null
     private UserInfo user;
@@ -55,8 +59,8 @@ public class ProfileActivity extends AppCompatActivity {
         //get sufficient info
         user = (UserInfo) getIntent().getSerializableExtra("userInfo");
         mSelectAvatar = (Button) findViewById(R.id.profile_btn_upload);
-
-        mImg = (CircleImageView) findViewById(R.id.profile_image);
+        mlayout = (RelativeLayout)findViewById(R.id.profile_layout_main);
+        mImg = (CircleImageView) findViewById(R.id.profile_img_avatar);
         mCom = (EditText) findViewById(R.id.profile_et_com);
         mIntro = (EditText) findViewById(R.id.profile_et_intro);
         mLoc = (EditText) findViewById(R.id.profile_et_loc);
@@ -66,8 +70,10 @@ public class ProfileActivity extends AppCompatActivity {
         //set default
         Picasso pDowloader = ServiceManager.getPicassoDowloader(getBaseContext(), UserAccessStore.getToken());
         pDowloader.load(ServiceManager.API_BASE + "api/v1/accounts/" +
-                UserAccessStore.getUserUuid() + "/avatar?size=large").
-                into(mImg);
+                UserAccessStore.getUserUuid() + "/avatar?size=large")
+                .placeholder(R.drawable.ic_user_placeholder)
+                .error(R.drawable.ic_user_placeholder)
+                .into(mImg);
         mLoc.setText(user.getLocation());
         mIntro.setText(user.getProfile());
         mName.setText(user.getUserName());
@@ -116,10 +122,11 @@ public class ProfileActivity extends AppCompatActivity {
 
                 } else if (response.code() == 404) {
                     progressFragment.dismiss();
-                    //TODO show snackbar
+
+                    ColoredSnackBar.primary(Snackbar.make(mlayout, getResources().getString(R.string.user_not_found), Snackbar.LENGTH_SHORT)).show();
                 } else {
                     progressFragment.dismiss();
-                    //TODO show snackbar
+                    ColoredSnackBar.primary(Snackbar.make(mlayout, getResources().getString(R.string.server_err), Snackbar.LENGTH_SHORT)).show();
                 }
 
             }
@@ -127,7 +134,7 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 progressFragment.dismiss();
-                //TODO show snackbar
+                ColoredSnackBar.primary(Snackbar.make(mlayout, getResources().getString(R.string.server_err), Snackbar.LENGTH_SHORT)).show();
             }
 
         };
@@ -159,7 +166,8 @@ public class ProfileActivity extends AppCompatActivity {
                     genQRcodeWhenNotExisted();
                 } else {
                     progressFragment.dismiss();
-                    //TODO handle error
+                    //// TODO: 2016/3/9  handle more suituation
+                    ColoredSnackBar.primary(Snackbar.make(mlayout, getResources().getString(R.string.server_err), Snackbar.LENGTH_SHORT)).show();
                 }
             }
 
@@ -186,7 +194,8 @@ public class ProfileActivity extends AppCompatActivity {
                         finish();
                     } else {
                         Log.e(TAG, Integer.toString(response.code()));
-                        //// TODO: 2016/3/7 error
+                        //// TODO: 2016/3/7 error more
+                        ColoredSnackBar.primary(Snackbar.make(mlayout, getResources().getString(R.string.server_err), Snackbar.LENGTH_SHORT)).show();
                     }
                 }
 
@@ -196,6 +205,7 @@ public class ProfileActivity extends AppCompatActivity {
                     t.printStackTrace();
                     Log.e(TAG, t.toString());
                     //TODO handle error
+                    ColoredSnackBar.primary(Snackbar.make(mlayout, getResources().getString(R.string.server_err), Snackbar.LENGTH_SHORT)).show();
                 }
             });
         }else{

@@ -2,9 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:id="@+id/contact_add_view"
+    android:id="@+id/contact_add_lo_main"
     tools:context="layout.ContactEditFragment"
-    android:paddingBottom="16dp"
     android:orientation="vertical"
     android:weightSum="1">
 
@@ -18,7 +17,7 @@
             android:background="@drawable/contact_profile_background">
 
             <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/contact_edit_img_avatar"
+                android:id="@+id/contact_add_img_avatar"
                 android:layout_width="128dp"
                 android:layout_height="128dp"
                 android:src="@drawable/ic_face_white_24dp"
@@ -58,7 +57,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:hint="@string/nickname_edit_hint"
-                    android:id="@+id/contact_edit_et_nickname" />
+                    android:id="@+id/contact_add_et_nickname" />
             </LinearLayout>
 
             <LinearLayout
@@ -75,14 +74,14 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="@string/user_name"
-                    android:id="@+id/contact_edit_tv_namecap"
+                    android:id="@+id/contact_add_tv_namecap"
                     android:allowUndo="true" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:id="@+id/contact_edit_tv_name" />
+                    android:id="@+id/contact_add_tv_name" />
             </LinearLayout>
             <View
                 android:layout_width="fill_parent"
@@ -103,14 +102,14 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="@string/company"
-                    android:id="@+id/contact_edit_tv_comcap"
+                    android:id="@+id/contact_add_tv_comcap"
                     android:allowUndo="true" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:id="@+id/contact_edit_tv_com" />
+                    android:id="@+id/contact_add_tv_com" />
             </LinearLayout>
             <View
                 android:layout_width="fill_parent"
@@ -130,14 +129,14 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="@string/location"
-                    android:id="@+id/contact_edit_tv_loccap"
+                    android:id="@+id/contact_add_tv_loccap"
                     android:allowUndo="true" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:id="@+id/contact_edit_tv_loc" />
+                    android:id="@+id/contact_add_tv_loc" />
             </LinearLayout>
             <View
                 android:layout_width="fill_parent"
@@ -156,27 +155,21 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="@string/profile"
-                    android:id="@+id/contact_edit_tv_profilecap"
+                    android:id="@+id/contact_add_tv_profilecap"
                     android:allowUndo="true" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:id="@+id/contact_edit_tv_profile" />
+                    android:id="@+id/contact_add_tv_profile" />
             </LinearLayout>
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/del_contact"
-                android:id="@+id/contact_edit_btn_del"
-                android:layout_gravity="center_horizontal"
-                />
 
 
         </LinearLayout>
     </ScrollView>
+
 
 
 </LinearLayout>

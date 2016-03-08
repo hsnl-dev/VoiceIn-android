@@ -1,0 +1,16 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="tw.kits.voicein.fragment.UnderDevelopFragment"
+    style="@style/Base.TextAppearance.AppCompat.Caption">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/under_develop"
+        android:layout_gravity="center"
+        style="@style/Base.TextAppearance.AppCompat.Caption" />
+
+</FrameLayout>

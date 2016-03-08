@@ -34,19 +34,24 @@
             android:label="@string/profile_setting"
             android:theme="@style/AppTheme.DarkActionBar"
             android:windowSoftInputMode="adjustPan" />
-
-        <activity android:name=".activity.ContactEditActivity"
+        <activity
+            android:name=".activity.ContactAddActivity"
             android:label="@string/profile_setting"
             android:theme="@style/AppTheme.DarkActionBar"
-            android:windowSoftInputMode="adjustPan"
-            android:parentActivityName=".activity.MainActivity">
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.ContactEditActivity"
+            android:label="@string/profile_setting"
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppTheme.DarkActionBar"
+            android:windowSoftInputMode="adjustPan">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MainActivity" />
-
         </activity>
+        <activity android:name=".activity.MyCardActivity"></activity>
     </application>
 
 </manifest>
