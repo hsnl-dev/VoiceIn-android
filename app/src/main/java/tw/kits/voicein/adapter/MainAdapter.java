@@ -29,7 +29,7 @@ public class MainAdapter extends FragmentPagerAdapter {
             R.string.history_text,
             R.string.group_text};
     final static Integer imageR[] = {
-            R.drawable.ic_face_white_24dp,
+            R.drawable.ic_contacts_white_24dp,
             R.drawable.ic_favorite_white_24dp,
             R.drawable.ic_history_white_24dp,
             R.drawable.ic_people_white_24dp
