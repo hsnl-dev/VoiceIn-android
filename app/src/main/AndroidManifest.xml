@@ -31,7 +31,7 @@
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
             android:name=".activity.ProfileActivity"
-            android:label="@string/card_title"
+            android:label="@string/profile_setting"
             android:theme="@style/AppTheme.DarkActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
@@ -41,7 +41,7 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activity.ContactEditActivity"
-            android:label="@string/profile_setting"
+            android:label="@string/contact_setting"
             android:parentActivityName=".activity.MainActivity"
             android:theme="@style/AppTheme.DarkActionBar"
             android:windowSoftInputMode="adjustPan">
@@ -53,7 +53,7 @@
         </activity>
         <activity
             android:name=".activity.MyCardActivity"
-            android:label="@string/contact_setting"
+            android:label="@string/card_title"
             android:theme="@style/AppTheme.DarkActionBar"
             android:windowSoftInputMode="adjustPan" />
         <meta-data
