@@ -148,7 +148,7 @@ public class ProfileEditActivity extends AppCompatActivity {
             Bundle bundle = msg.getData();
             int timeHour = bundle.getInt(TimePickerDialogFragment.RETURN_HOUR);
             int timeMinute = bundle.getInt(TimePickerDialogFragment.RETURN_MIN);
-            textView.setText(String.format("%2d:%2d",timeHour,timeMinute));
+            textView.setText(String.format("%02d:%02d",timeHour,timeMinute));
         }
     }
     @Override
