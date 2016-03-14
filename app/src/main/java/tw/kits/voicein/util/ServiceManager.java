@@ -22,6 +22,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ServiceManager {
     public final static String API_BASE = "https://voicein-web-service.us-west-2.elasticbeanstalk.com/";
     public final static String API_KEY = "784a48e7-a15f-4623-916a-1bd304dc9f56";
+    public final static String PIC_SIZE_MID = "mid";
+    public final static String PIC_SIZE_LARGE = "large";
     static HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
 
     /***
@@ -46,7 +48,12 @@ public class ServiceManager {
                 .addInterceptor(logging)
                 .build();
     }
-
+    public static String getAvatarUri(String uuid,String size){
+        return String.format("%sapi/v1/accounts/%s/avatar?size=%s", ServiceManager.API_BASE, uuid, size);
+    }
+    public static String getQRcodeUri(String uuid){
+        return String.format("%sapi/v1/accounts/%s/qrcode", ServiceManager.API_BASE, uuid);
+    }
     public static Picasso getPicassoDowloader(Context context, String token){
 
         OkHttpClient client =  new OkHttpClient.Builder()

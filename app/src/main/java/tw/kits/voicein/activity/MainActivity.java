@@ -51,7 +51,11 @@ public class MainActivity extends AppCompatActivity {
             case R.id.main_menu_card:
                 Intent i = new Intent(this,MyCardActivity.class);
                 startActivity(i);
-             break;
+                break;
+            case R.id.main_menu_setting:
+                Intent setting = new Intent(this, ProfileEditActivity.class);
+                startActivity(setting);
+                break;
 
 
         }

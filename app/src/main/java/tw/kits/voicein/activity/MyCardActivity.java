@@ -44,13 +44,11 @@ public class MyCardActivity extends AppCompatActivity {
                     mName.setText(usr.getUserName());
                     mProfile.setText(usr.getProfile());
                     Picasso downloader = ServiceManager.getPicassoDowloader(MyCardActivity.this.getBaseContext(), UserAccessStore.getToken());
-                    downloader.load(ServiceManager.API_BASE + "api/v1/accounts/" +
-                            UserAccessStore.getUserUuid() + "/avatar?size=large")
+                    downloader.load(ServiceManager.getAvatarUri(UserAccessStore.getUserUuid(), ServiceManager.PIC_SIZE_LARGE))
                             .placeholder(R.drawable.ic_user_placeholder)
                             .error(R.drawable.ic_user_placeholder)
                             .into(mAvatar);
-                    downloader.load(ServiceManager.API_BASE + "api/v1/accounts/" +
-                            UserAccessStore.getUserUuid() + "/qrcode")
+                    downloader.load(ServiceManager.getQRcodeUri(UserAccessStore.getUserUuid()))
                             .placeholder(R.drawable.ic_user_placeholder)
                             .error(R.drawable.ic_user_placeholder)
                             .into(mqrCode);

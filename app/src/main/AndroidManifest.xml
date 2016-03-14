@@ -3,6 +3,8 @@
     package="tw.kits.voicein">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.MANAGE_DOCUMENTS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -24,7 +26,8 @@
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
             android:name=".activity.MainActivity"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"
+            android:launchMode="singleTop"/>
         <activity
             android:name=".activity.VerifyActivity"
             android:theme="@style/AppTheme.DarkActionBar"
@@ -56,9 +59,20 @@
             android:label="@string/card_title"
             android:theme="@style/AppTheme.DarkActionBar"
             android:windowSoftInputMode="adjustPan" />
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="8d6fcf959b72032bfee78651f4fc262795793af7" />
+
+        <activity
+            android:name=".activity.ProfileEditActivity"
+            android:theme="@style/AppTheme.DarkActionBar"
+            android:windowSoftInputMode="adjustPan"
+            android:parentActivityName=".activity.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -4,10 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import okhttp3.RequestBody;
-import okhttp3.Response;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
@@ -19,12 +17,11 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 import tw.kits.voicein.model.Contact;
 import tw.kits.voicein.model.ContactAddEntity;
-import tw.kits.voicein.model.ContactList;
 import tw.kits.voicein.model.Provider;
 import tw.kits.voicein.model.Token;
 import tw.kits.voicein.model.UserInfo;
 import tw.kits.voicein.model.UserLoginRes;
-import tw.kits.voicein.model.UserProfile;
+import tw.kits.voicein.model.UserUpdateForm;
 
 /**
  * Created by Henry on 2016/3/3.
@@ -40,7 +37,7 @@ public interface VoiceInService {
     Call<Token> getToken (@Body HashMap<String,String> user);
 
     @PUT("api/v1/accounts/{userUuid}")
-    Call<ResponseBody> updateProfile(@Body UserProfile profile, @Path("userUuid") String userUuid);
+    Call<ResponseBody> updateProfile(@Body UserUpdateForm profile, @Path("userUuid") String userUuid);
 
     @GET("api/v1/accounts/{userUuid}")
     Call<UserInfo> getUser(@Path("userUuid")String userUuid);
