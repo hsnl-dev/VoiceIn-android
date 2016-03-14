@@ -67,6 +67,7 @@
         <activity
             android:name=".activity.ProfileEditActivity"
             android:theme="@style/AppTheme.DarkActionBar"
+            android:label="@string/profile_setting"
             android:windowSoftInputMode="adjustPan"
             android:parentActivityName=".activity.MainActivity">
             <meta-data

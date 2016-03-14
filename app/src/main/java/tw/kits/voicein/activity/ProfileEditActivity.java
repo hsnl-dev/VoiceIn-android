@@ -1,10 +1,14 @@
 package tw.kits.voicein.activity;
 
+
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -17,6 +21,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.sql.Time;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.MediaType;
@@ -26,11 +31,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import tw.kits.voicein.R;
+import tw.kits.voicein.fragment.TimePickerDialogFragment;
 import tw.kits.voicein.model.UserInfo;
 import tw.kits.voicein.model.UserUpdateForm;
 import tw.kits.voicein.util.AvatarEditHelper;
 import tw.kits.voicein.util.ColoredSnackBar;
 import tw.kits.voicein.util.ServiceManager;
+import tw.kits.voicein.util.TimeParser;
 import tw.kits.voicein.util.UserAccessStore;
 import tw.kits.voicein.util.VoiceInService;
 
@@ -103,8 +110,47 @@ public class ProfileEditActivity extends AppCompatActivity {
                 helper.startEdit();
             }
         });
-    }
+        availableStime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TimeHandler handler = new TimeHandler(availableStime);
+                TimePickerDialogFragment fragment = TimePickerDialogFragment
+                        .createInstance(handler,handler.getTextView());
+                FragmentManager fm = getSupportFragmentManager();
+                fm.beginTransaction().add(fragment,"timepicker").commit();
 
+            }
+        });
+        availableEtime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TimeHandler handler = new TimeHandler(availableEtime);
+                TimePickerDialogFragment fragment = TimePickerDialogFragment
+                        .createInstance(handler, handler.getTextView());
+                FragmentManager fm = getSupportFragmentManager();
+                fm.beginTransaction().add(fragment,"timepicker_end").commit();
+
+            }
+        });
+    }
+    class TimeHandler extends Handler {
+        TextView textView;
+        public TimeHandler(TextView textView){
+            super();
+            this.textView = textView;
+
+        }
+        public TextView getTextView(){
+            return textView;
+        }
+        @Override
+        public void handleMessage (Message msg){
+            Bundle bundle = msg.getData();
+            int timeHour = bundle.getInt(TimePickerDialogFragment.RETURN_HOUR);
+            int timeMinute = bundle.getInt(TimePickerDialogFragment.RETURN_MIN);
+            textView.setText(String.format("%2d:%2d",timeHour,timeMinute));
+        }
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Bitmap bitmap = helper.parseResult(requestCode, resultCode, data);
@@ -131,6 +177,11 @@ public class ProfileEditActivity extends AppCompatActivity {
                 getString(R.string.wait),
                 getString(R.string.wait_notice),
                 true);
+        UserUpdateForm form = getForm();
+        if(form==null){
+            progressDialog.dismiss();
+            return;
+        }
         service.updateProfile(getForm(), userUuid).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -199,6 +250,20 @@ public class ProfileEditActivity extends AppCompatActivity {
     }
     private UserUpdateForm getForm() {
         UserUpdateForm form = new UserUpdateForm();
+        try {
+            TimeParser end = new TimeParser(availableEtime.getText().toString());
+            TimeParser start = new TimeParser(availableStime.getText().toString());
+            if(start.compareTo(end)>=0){
+                availableEtime.setError(getString(R.string.illgal_input));
+                ColoredSnackBar.primary(
+                        Snackbar.make(layout, R.string.illgal_input, Snackbar.LENGTH_LONG)
+                ).show();
+                return null;
+            }
+
+        } catch (IOException e) {
+            return null;
+        }
         form.setAvailableStartTime(availableStime.getText().toString());
         form.setAvailableEndTime(availableEtime.getText().toString());
         form.setCompany(company.getText().toString());

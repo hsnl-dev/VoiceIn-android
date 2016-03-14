@@ -45,4 +45,5 @@
     <string name="available_start">開放通話開始時間</string>
     <string name="available_stop">開放通話截止時間</string>
     <string name="phone_num">電話號碼</string>
+    <string name="illgal_input">違法</string>
 </resources>
