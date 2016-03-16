@@ -18,6 +18,7 @@ import retrofit2.http.Query;
 import tw.kits.voicein.model.CallForm;
 import tw.kits.voicein.model.Contact;
 import tw.kits.voicein.model.ContactAddEntity;
+import tw.kits.voicein.model.CustomerQRcodeForm;
 import tw.kits.voicein.model.Provider;
 import tw.kits.voicein.model.Token;
 import tw.kits.voicein.model.UserInfo;
@@ -73,5 +74,8 @@ public interface VoiceInService {
 
     @POST("api/v1/accounts/{userUuid}/calls/{qrCodeUuid}")
     Call<ResponseBody> createCall(@Path("userUuid") String userUuid, @Path("qrCodeUuid") String qrCodeUuid, @Body CallForm form);
+
+    @POST("api/v1/accounts/{accountUuid}/customQrcodes/")
+    Call<ResponseBody> createcustomQrcodes(@Path("accountUuid") String uuid, @Body CustomerQRcodeForm form);
 }
 
