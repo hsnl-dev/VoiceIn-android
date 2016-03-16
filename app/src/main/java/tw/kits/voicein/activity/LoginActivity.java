@@ -97,8 +97,8 @@ public class LoginActivity extends AppCompatActivity {
                     dialog.dismiss();
                     if (response.isSuccess()) {
                         Bundle bundle = new Bundle();
-                        bundle.putString("userUuid", response.body().getUserUuid());
-                        bundle.putString("phoneNumber", standardNum);
+                        bundle.putString(VerifyActivity.ARG_UUID, response.body().getUserUuid());
+                        bundle.putString(VerifyActivity.ARG_PHONE_NUM, standardNum);
                         Intent intent = new Intent(LoginActivity.this, VerifyActivity.class);
                         intent.putExtras(bundle);
                         startActivity(intent);

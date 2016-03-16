@@ -25,6 +25,7 @@ public class WelcomeActivity extends AppCompatActivity {
     private class TimerAsync extends AsyncTask<Integer, Void, Void>{
         String userUuid;
         String token;
+        String phoneNum;
         @Override
         protected void onPreExecute() {
 
@@ -43,6 +44,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 Intent i = new Intent(WelcomeActivity.this, MainActivity.class);
                 UserAccessStore.setUserUuid(userUuid);
                 UserAccessStore.setToken(token);
+                UserAccessStore.setPhoneNum(phoneNum);
                 startActivity(i);
             }
             finish();
@@ -58,6 +60,7 @@ public class WelcomeActivity extends AppCompatActivity {
             SharedPreferences sp = getSharedPreferences(UserAccessStore.PREF_LOC, Context.MODE_PRIVATE);
             userUuid = sp.getString("userUuid", null);
             token = sp.getString("token",null);
+            phoneNum = sp.getString("phoneNum",null);
             Log.i(TAG, "L"+userUuid+token+"L");
 
             return null;

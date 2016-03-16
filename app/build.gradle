@@ -24,7 +24,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 0
-        versionName "0.1.5"
+        versionName "0.1.2"
     }
     buildTypes {
         release {
@@ -52,10 +52,10 @@ dependencies {
     // This mostly affects encoding, but you should test if you plan to support these versions.
     // Older versions e.g. 2.2 may also work if you need support for older Android versions.
 
-    compile 'com.android.support:appcompat-v7:23.2.+'
-    compile 'com.android.support:support-v4:23.2.+'
-    compile 'com.android.support:design:23.2.+'
-    compile 'com.android.support:recyclerview-v7:23.2.+'
+    compile 'com.android.support:appcompat-v7:23.2.0'
+    compile 'com.android.support:support-v4:23.2.0'
+    compile 'com.android.support:design:23.2.0'
+    compile 'com.android.support:recyclerview-v7:23.2.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.squareup.retrofit2:retrofit:2.0.0-beta4'
     compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta4'
@@ -79,4 +79,5 @@ idea {
         downloadJavadoc = true
         downloadSources = true
     }
+
 }

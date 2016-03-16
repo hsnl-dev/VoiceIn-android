@@ -5,8 +5,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NavUtils;
@@ -21,7 +19,6 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
-import java.sql.Time;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.MediaType;
@@ -37,6 +34,7 @@ import tw.kits.voicein.model.UserUpdateForm;
 import tw.kits.voicein.util.AvatarEditHelper;
 import tw.kits.voicein.util.ColoredSnackBar;
 import tw.kits.voicein.util.ServiceManager;
+import tw.kits.voicein.util.TimeHandler;
 import tw.kits.voicein.util.TimeParser;
 import tw.kits.voicein.util.UserAccessStore;
 import tw.kits.voicein.util.VoiceInService;
@@ -132,25 +130,9 @@ public class ProfileEditActivity extends AppCompatActivity {
 
             }
         });
-    }
-    class TimeHandler extends Handler {
-        TextView textView;
-        public TimeHandler(TextView textView){
-            super();
-            this.textView = textView;
 
-        }
-        public TextView getTextView(){
-            return textView;
-        }
-        @Override
-        public void handleMessage (Message msg){
-            Bundle bundle = msg.getData();
-            int timeHour = bundle.getInt(TimePickerDialogFragment.RETURN_HOUR);
-            int timeMinute = bundle.getInt(TimePickerDialogFragment.RETURN_MIN);
-            textView.setText(String.format("%02d:%02d",timeHour,timeMinute));
-        }
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Bitmap bitmap = helper.parseResult(requestCode, resultCode, data);

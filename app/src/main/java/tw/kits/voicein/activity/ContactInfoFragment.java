@@ -15,7 +15,7 @@ import tw.kits.voicein.model.Contact;
 public class ContactInfoFragment extends DialogFragment {
 
 
-    private static final String ARG_CONTACT = "contact";
+    private static final String ARG_CONTACT = "mContact";
 
 
     public ContactInfoFragment() {
@@ -42,7 +42,7 @@ public class ContactInfoFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        // Inflate the mLayout for this fragment
         View v = inflater.inflate(R.layout.activity_contact_edit, container, false);
         TextView iCompany = (TextView)v.findViewById(R.id.contact_edit_tv_com);
         TextView iLocation = (TextView)v.findViewById(R.id.contact_edit_tv_loc);

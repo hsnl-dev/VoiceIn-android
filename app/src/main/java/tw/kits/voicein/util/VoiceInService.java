@@ -15,6 +15,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import tw.kits.voicein.model.CallForm;
 import tw.kits.voicein.model.Contact;
 import tw.kits.voicein.model.ContactAddEntity;
 import tw.kits.voicein.model.Provider;
@@ -28,19 +29,19 @@ import tw.kits.voicein.model.UserUpdateForm;
  */
 public interface VoiceInService {
     @POST("api/v1/accounts/validations/")
-    Call<UserLoginRes> getvalidationCode(@Body HashMap<String,String> user);
+    Call<UserLoginRes> getvalidationCode(@Body HashMap<String, String> user);
 
     @POST("api/v1/sandboxs/accounts/validations/")
-    Call<UserLoginRes> getRealCode(@Body HashMap<String,String> user);
+    Call<UserLoginRes> getRealCode(@Body HashMap<String, String> user);
 
     @POST("api/v1/accounts/tokens/")
-    Call<Token> getToken (@Body HashMap<String,String> user);
+    Call<Token> getToken(@Body HashMap<String, String> user);
 
     @PUT("api/v1/accounts/{userUuid}")
     Call<ResponseBody> updateProfile(@Body UserUpdateForm profile, @Path("userUuid") String userUuid);
 
     @GET("api/v1/accounts/{userUuid}")
-    Call<UserInfo> getUser(@Path("userUuid")String userUuid);
+    Call<UserInfo> getUser(@Path("userUuid") String userUuid);
 
     @GET("api/v1/accounts/{userUuid}/contacts")
     Call<List<Contact>> getContacts(@Path("userUuid") String userUuid);
@@ -50,10 +51,10 @@ public interface VoiceInService {
     Call<ResponseBody> uploadAvatar(@Path("userUuid") String userUuid, @Part("photo") RequestBody file);
 
     @POST("api/v1/accounts/{userUuid}/qrcode")
-    Call<ResponseBody>setQRcode(@Path("userUuid") String userUuid);
+    Call<ResponseBody> setQRcode(@Path("userUuid") String userUuid);
 
     @GET("api/v1/providers/{qrcodeId}")
-    Call<Provider>getProvider(@Path("qrcodeId") String qrcodeId);
+    Call<Provider> getProvider(@Path("qrcodeId") String qrcodeId);
 
     @POST("api/v1/accounts/{userUuid}/contacts/{qrCodeUuid}")
     Call<ResponseBody> addContactByQrcode(@Path("userUuid") String userUuid, @Path("qrCodeUuid") String qrCodeuid, @Body ContactAddEntity entity);
@@ -62,6 +63,15 @@ public interface VoiceInService {
     Call<ResponseBody> delContactByQrcode(@Path("userUuid") String userUuid, @Path("qrCodeUuid") String qrCodeuid);
 
     @PUT("api/v1/accounts/{userUuid}/contacts/{qrCodeUuid}")
-    Call<ResponseBody> updateQRcodeNickName(@Path("userUuid") String userUuid,@Path("qrCodeUuid") String qrCodeuid ,@Query("nickName") String nickname);
+    Call<ResponseBody> updateQRcodeInfo(@Path("userUuid") String userUuid,
+                                        @Path("qrCodeUuid") String qrCodeuid,
+                                        @Query("nickName") String nickName,
+                                        @Query("isEnable") boolean isEnable,
+                                        @Query("availableStartTime") String availableStartTime,
+                                        @Query("availableEndTime") String availableEndTime,
+                                        @Query("isHigherPriorityThanGlobal") boolean isHigherPriorityThanGlobal);
 
+    @POST("api/v1/accounts/{userUuid}/calls/{qrCodeUuid}")
+    Call<ResponseBody> createCall(@Path("userUuid") String userUuid, @Path("qrCodeUuid") String qrCodeUuid, @Body CallForm form);
 }
+

@@ -27,7 +27,8 @@ public class TimePickerDialogFragment extends DialogFragment implements TimePick
         String[] hourMin = textView.getText().toString().split(":");
         if (hourMin.length == 2) {
             data.putInt(ARG_HOUR, Integer.parseInt(hourMin[0]));
-            data.putInt(ARG_MIN, Integer.parseInt(hourMin[0]));
+            data.putInt(ARG_MIN, Integer.parseInt(hourMin[1]));
+
             fragment.setArguments(data);
         }
         fragment.handler = handler;
