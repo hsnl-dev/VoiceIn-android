@@ -68,9 +68,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MainActivity" />
         </activity>
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="8d6fcf959b72032bfee78651f4fc262795793af7" />
+
+        <activity android:name=".activity.QrcodeCreateActivity"></activity>
     </application>
 
 </manifest>
