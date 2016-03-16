@@ -39,7 +39,7 @@ import tw.kits.voicein.util.UserAccessStore;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ContactFragment extends Fragment {
+public class ContactFragment extends Fragment implements View.OnClickListener{
     public static final int INTENT_ADD_CONTACT = 900;
     public static final int INTENT_EDIT_CONTACT = 800;
     public static final String TAG = ContactFragment.class.getName();
@@ -83,15 +83,7 @@ public class ContactFragment extends Fragment {
         mRvContact.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
         //setting action button
-        mActionBtn.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        IntentIntegrator scanIntegrator = IntentIntegrator.forSupportFragment(ContactFragment.this);
-                        scanIntegrator.initiateScan();
-                    }
-                }
-        );
+        mActionBtn.setOnClickListener(this);
 
         mRefreshContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -109,7 +101,16 @@ public class ContactFragment extends Fragment {
         refreshContact();
         return view;
     }
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()){
+            case R.id.contact_fab_plus:
+                IntentIntegrator scanIntegrator = IntentIntegrator.forSupportFragment(ContactFragment.this);
+                scanIntegrator.initiateScan();
+                break;
+        }
 
+    }
     private void refreshContact() {
         ServiceManager.createService(mToken)
                 .getContacts(mUserUuid)
@@ -172,4 +173,6 @@ public class ContactFragment extends Fragment {
 
         }
     }
+
+
 }

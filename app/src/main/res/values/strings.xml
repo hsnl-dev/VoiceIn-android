@@ -56,4 +56,10 @@
     <string name="forbidden_call">暫停通話</string>
     <string name="forbidden_call_hint">該聯絡人暫停與您的通話</string>
     <string name="action_share">分享</string>
+    <string name="customer_name_hint">請輸入您的服務對象姓名</string>
+    <string name="customer_location_hint">請輸入您的服務對象所在地</string>
+    <string name="customer_company_hint">請輸入您的服務對象的單位名稱</string>
+    <string name="customer_phone_hint">請輸入您的服務對象的電話號碼</string>
+    <string name="customer_qrcode_notice">請輸入以下資料，已完成QRcode 建立</string>
+    <string name="i_finish_notice">我完成了</string>
 </resources>
