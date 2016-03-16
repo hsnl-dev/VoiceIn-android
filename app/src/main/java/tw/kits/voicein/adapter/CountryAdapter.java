@@ -53,7 +53,7 @@ public class CountryAdapter extends BaseAdapter {
         int i;
         for(i = 0 ;i < codeList.size() ; i++){
             if(codeList.get(i).getCode().equalsIgnoreCase(query)) {
-                Log.e("FUCK","s"+i);
+
                 return i;
             }
 

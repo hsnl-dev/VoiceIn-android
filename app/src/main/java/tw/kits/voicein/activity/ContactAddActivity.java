@@ -31,7 +31,7 @@ import tw.kits.voicein.util.VoiceInService;
 public class ContactAddActivity extends AppCompatActivity {
     private static final String TAG = ContactAddActivity.class.getName();
     public static final String ARG_QRCODE = "code";
-    public static final String RETURN_CONTACT = "contact";
+    public static final String RETURN_CONTACT = "mContact";
     TextView iCompany;
     TextView iLocation;
     TextView iName;

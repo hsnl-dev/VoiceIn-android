@@ -17,6 +17,7 @@ import tw.kits.voicein.util.UserAccessStore;
 public class MainActivity extends AppCompatActivity {
     private String userUuid;
     private String token;
+    private static int INTENT_PROFILE_EDIT = 0x01;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +52,15 @@ public class MainActivity extends AppCompatActivity {
             case R.id.main_menu_card:
                 Intent i = new Intent(this,MyCardActivity.class);
                 startActivity(i);
-             break;
+                break;
+            case R.id.main_menu_setting:
+                Intent edit =  new Intent(this, ProfileEditActivity.class);
+                startActivityForResult(edit,INTENT_PROFILE_EDIT);
+                break;
 
 
         }
         return true;
     }
 }
+

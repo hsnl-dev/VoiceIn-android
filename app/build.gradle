@@ -79,4 +79,5 @@ idea {
         downloadJavadoc = true
         downloadSources = true
     }
+
 }

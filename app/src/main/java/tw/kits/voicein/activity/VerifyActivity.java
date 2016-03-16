@@ -43,8 +43,10 @@ public class VerifyActivity extends AppCompatActivity {
     Context mContext;
     String userUuid;
     String token;
+    String mPhoneNumber;
     final ProgressFragment pf = new ProgressFragment();
-
+    public static final String ARG_UUID = "userUuid";
+    public static final String ARG_PHONE_NUM = "phone_num";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +59,8 @@ public class VerifyActivity extends AppCompatActivity {
         mCode = (EditText) findViewById(R.id.verify_et_code);
         mlayout = (RelativeLayout) findViewById(R.id.verify_lo_main);
         mIntent = this.getIntent();
-        userUuid = mIntent.getExtras().getString("userUuid");
+        userUuid = mIntent.getExtras().getString(ARG_UUID);
+        mPhoneNumber = mIntent.getExtras().getString(ARG_PHONE_NUM);
         mResend.setOnClickListener(new ResendListener());
         mConfirm.setOnClickListener(new VerfiyListener());
         TimerAsync timer = new TimerAsync();
@@ -70,7 +73,7 @@ public class VerifyActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             HashMap<String, String> req = new HashMap<>();
-            req.put("phoneNumber", mIntent.getExtras().getString("phoneNumber"));
+            req.put("phoneNumber", mPhoneNumber);
             final ProgressDialog dialog = ProgressDialog.show(
                     VerifyActivity.this,
                     getBaseContext().getString(R.string.wait),
@@ -191,14 +194,16 @@ public class VerifyActivity extends AppCompatActivity {
                         , Context.MODE_PRIVATE).edit();
                 editor.putString("token", VerifyActivity.this.token);
                 editor.putString("userUuid", VerifyActivity.this.userUuid);
+                editor.putString("phoneNum", VerifyActivity.this.mPhoneNumber);
                 editor.commit();
                 //set basic info
                 UserAccessStore.setToken(VerifyActivity.this.token);
                 UserAccessStore.setUserUuid(VerifyActivity.this.userUuid);
+                UserAccessStore.setPhoneNum(VerifyActivity.this.mPhoneNumber);
                 //start intent
                 Intent intent = new Intent(VerifyActivity.this, ProfileActivity.class);
                 intent.putExtra("userInfo", response.body());
-                intent.putExtra("phoneNumber",getIntent().getStringExtra("phoneNumber"));
+                intent.putExtra("phoneNumber",VerifyActivity.this.mPhoneNumber);
                 startActivity(intent);
                 finish();
             } else {

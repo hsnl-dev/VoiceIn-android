@@ -7,6 +7,7 @@ public class UserInfo implements Serializable {
 
 
     private String userName;
+    private String phoneNumber;
     private String profilePhotoId;
     private String profile;
     private String location;
@@ -127,4 +128,11 @@ public class UserInfo implements Serializable {
         this.availableEndTime = availableEndTime;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 }

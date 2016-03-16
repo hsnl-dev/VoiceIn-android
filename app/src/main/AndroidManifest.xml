@@ -56,6 +56,18 @@
             android:label="@string/card_title"
             android:theme="@style/AppTheme.DarkActionBar"
             android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.ProfileEditActivity"
+            android:label="@string/profile_setting"
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppTheme.DarkActionBar"
+            android:windowSoftInputMode="adjustPan">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.MainActivity" />
+        </activity>
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="8d6fcf959b72032bfee78651f4fc262795793af7" />

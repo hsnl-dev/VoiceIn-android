@@ -39,7 +39,20 @@
     <string name="user_have_added">您已經有此聯絡人</string>
     <string name="user_not_auth">您的動作不被允許，請嘗試重新登入</string>
     <string name="user_not_found">查無此使用者</string>
-    <string name="server_err">伺服器似乎有點問題，請稍後重</string>
+    <string name="server_err">Oops，伺服器似乎有點問題</string>
     <string name="nickname_edit_hint">請填入您對她/他的暱稱</string>
     <string name="del_contact">刪除此聯絡人</string>
+    <string name="available_start">開放通話開始時間</string>
+    <string name="available_stop">開放通話截止時間</string>
+    <string name="phone_num">電話號碼</string>
+    <string name="illgal_input">請檢查您的資料是否正確</string>
+    <string name="free_charge">免費</string>
+    <string name="icon_charge">付費</string>
+    <string name="must_charge">付費</string>
+    <string name="disturb_switch">開啟勿擾模式</string>
+    <string name="contact_available_switch">開啟管理此聯絡人可通話時段</string>
+    <string name="enabled">開啟</string>
+    <string name="disabled">關閉</string>
+    <string name="forbidden_call">暫停通話</string>
+    <string name="forbidden_call_hint">該聯絡人暫停與您的通話</string>
 </resources>

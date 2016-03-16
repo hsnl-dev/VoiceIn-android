@@ -41,16 +41,16 @@ import tw.kits.voicein.util.UserAccessStore;
  */
 public class ContactFragment extends Fragment {
     public static final int INTENT_ADD_CONTACT = 900;
-    public static final int INTENT_EDIT_CONTACT= 800;
-    String TAG = getClass().getName();
-    String userUuid;
-    String token;
-    Context context;
-    RecyclerView rvContact;
-    CoordinatorLayout mainLayout;
-    FloatingActionButton action;
-    SwipeRefreshLayout pullContainer;
-    ContactAdapter contactAdapter;
+    public static final int INTENT_EDIT_CONTACT = 800;
+    public static final String TAG = ContactFragment.class.getName();
+    String mUserUuid;
+    String mToken;
+    Context mContext;
+    RecyclerView mRvContact;
+    CoordinatorLayout mMainLayout;
+    FloatingActionButton mActionBtn;
+    SwipeRefreshLayout mRefreshContainer;
+    ContactAdapter mContactAdapter;
 
     public ContactFragment() {
         // Required empty public constructor
@@ -61,20 +61,29 @@ public class ContactFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.e(TAG, "FUCKIN");
+
+        mContext = getContext();
+        mToken = UserAccessStore.getToken();
+        mUserUuid = UserAccessStore.getUserUuid();
+
         View view = inflater.inflate(R.layout.fragment_contact, container, false);
-        context = getContext();
-        rvContact = (RecyclerView) view.findViewById(R.id.contact_rv_items);
-        mainLayout = (CoordinatorLayout) view.findViewById(R.id.contact_frag_cl_main);
+
+        mRvContact = (RecyclerView) view.findViewById(R.id.contact_rv_items);
+        mMainLayout = (CoordinatorLayout) view.findViewById(R.id.contact_frag_cl_main);
+        mActionBtn = (FloatingActionButton) view.findViewById(R.id.contact_fab_plus);
+        mRefreshContainer = (SwipeRefreshLayout) view.findViewById(R.id.contact_frag_sp_container);
+
+        //setting list view
         RecyclerView.ItemDecoration itemDecoration = new
                 DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST);
-        rvContact.addItemDecoration(itemDecoration);
-        rvContact.setLayoutManager(new LinearLayoutManager(context));
-        userUuid = UserAccessStore.getUserUuid();
-        token = UserAccessStore.getToken();
-        action = (FloatingActionButton) view.findViewById(R.id.contact_fab_plus);
+        mRvContact.addItemDecoration(itemDecoration);
+        mRvContact.setLayoutManager(new LinearLayoutManager(mContext));
+        mContactAdapter = new ContactAdapter(new ArrayList<Contact>(), ContactFragment.this, mMainLayout);
+        mRvContact.setAdapter(mContactAdapter);
+        mRvContact.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
-        action.setOnClickListener(
+        //setting action button
+        mActionBtn.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -82,54 +91,51 @@ public class ContactFragment extends Fragment {
                         scanIntegrator.initiateScan();
                     }
                 }
-
-
         );
-        pullContainer = (SwipeRefreshLayout) view.findViewById(R.id.contact_frag_sp_container);
-        pullContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+
+        mRefreshContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 refreshContact();
 
             }
         });
-        pullContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+        mRefreshContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
-        contactAdapter = new ContactAdapter(new ArrayList<Contact>(), ContactFragment.this);
-        rvContact.setAdapter(contactAdapter);
-        rvContact.setLayoutManager(new LinearLayoutManager(this.getContext()));
+
+
         refreshContact();
         return view;
     }
 
     private void refreshContact() {
-        ServiceManager.createService(token)
-                .getContacts(userUuid)
+        ServiceManager.createService(mToken)
+                .getContacts(mUserUuid)
                 .enqueue(new Callback<List<Contact>>() {
                     @Override
                     public void onResponse(Call<List<Contact>> call, Response<List<Contact>> response) {
-                        pullContainer.setRefreshing(false);
-                        if(response.isSuccess()){
+                        mRefreshContainer.setRefreshing(false);
+                        if (response.isSuccess()) {
 
-                            contactAdapter.clear();
-                            contactAdapter.addAll(response.body());
-                            contactAdapter.notifyDataSetChanged();
+                            mContactAdapter.clear();
+                            mContactAdapter.addAll(response.body());
+                            mContactAdapter.notifyDataSetChanged();
 
 
                         } else {
                             Log.e(TAG, "Fial");
-                            Snackbar snack = Snackbar.make(pullContainer, getResources().getString(R.string.user_auth_err), Snackbar.LENGTH_LONG);
+                            Snackbar snack = Snackbar.make(mRefreshContainer, getResources().getString(R.string.user_auth_err), Snackbar.LENGTH_LONG);
                             snack.show();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<List<Contact>> call, Throwable t) {
-                        pullContainer.setRefreshing(false);
+                        mRefreshContainer.setRefreshing(false);
                         Log.e(TAG, t.toString());
-                        Snackbar snack = Snackbar.make(pullContainer, getResources().getString(R.string.network_err), Snackbar.LENGTH_LONG);
+                        Snackbar snack = Snackbar.make(mRefreshContainer, getResources().getString(R.string.network_err), Snackbar.LENGTH_LONG);
                         ColoredSnackBar.primary(snack).show();
                     }
                 });
@@ -146,17 +152,17 @@ public class ContactFragment extends Fragment {
                 i.putExtra(ContactAddActivity.ARG_QRCODE, scanningResult.getContents());
                 startActivityForResult(i, INTENT_ADD_CONTACT);
             } else {
-                switch (requestCode){
+                switch (requestCode) {
                     case INTENT_ADD_CONTACT:
                         Log.i(TAG, "Success");
-                        ColoredSnackBar.primary(Snackbar.make(mainLayout, getString(R.string.success), Snackbar.LENGTH_LONG)).show();
-                        pullContainer.setRefreshing(true);
+                        ColoredSnackBar.primary(Snackbar.make(mMainLayout, getString(R.string.success), Snackbar.LENGTH_LONG)).show();
+                        mRefreshContainer.setRefreshing(true);
                         refreshContact();
                         break;
                     case INTENT_EDIT_CONTACT:
                         Log.i(TAG, "Success");
-                        ColoredSnackBar.primary(Snackbar.make(mainLayout, getString(R.string.success), Snackbar.LENGTH_LONG)).show();
-                        pullContainer.setRefreshing(true);
+                        ColoredSnackBar.primary(Snackbar.make(mMainLayout, getString(R.string.success), Snackbar.LENGTH_LONG)).show();
+                        mRefreshContainer.setRefreshing(true);
                         refreshContact();
                         break;
                 }
