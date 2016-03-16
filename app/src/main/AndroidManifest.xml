@@ -74,6 +74,16 @@
             android:value="8d6fcf959b72032bfee78651f4fc262795793af7" />
 
         <activity android:name=".activity.QrcodeCreateActivity"></activity>
+        <activity android:name=".activity.SearchActivity"
+            android:theme="@style/AppTheme.DarkActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/search_config" />
+        </activity>
     </application>
 
 </manifest>
