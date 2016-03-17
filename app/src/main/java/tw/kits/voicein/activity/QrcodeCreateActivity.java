@@ -8,9 +8,11 @@ import android.provider.ContactsContract;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -59,7 +61,7 @@ public class QrcodeCreateActivity extends AppCompatActivity implements View.OnCl
                 VoiceInService service = ServiceManager.createService(UserAccessStore.getToken());
                 CustomerQRcodeForm form = new CustomerQRcodeForm();
                 form.setName(mName.getText().toString());
-                form.setPhoneNumber(mPhone.getText().toString());
+                form.setPhoneNumber(mPhone.getText().toString().replace(" ", "").replace("-",""));
                 form.setLocation(mLoc.getText().toString());
                 form.setCompany(mCom.getText().toString());
                 mfragment = new ProgressFragment();
@@ -94,22 +96,33 @@ public class QrcodeCreateActivity extends AppCompatActivity implements View.OnCl
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == RESULT_OK) {
+        if (resultCode == RESULT_OK) {
             Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
             if (requestCode == INTENT_PHONEBOOK) {
                 String id = data.getData().getLastPathSegment();
-                String[] projection = new String[]{ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
-                        ContactsContract.CommonDataKinds.Phone.NUMBER};
+
                 Cursor cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                         null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + "=?", new String[] { id },
                         null);
+
+                if (cursor.getCount()==0){
+                    ColoredSnackBar.primary(Snackbar.make(mMainLayout, "無電話資訊", Snackbar.LENGTH_LONG)).show();
+                    cursor.close();
+                    return;
+                }
                 cursor.moveToFirst();
                 String fuck = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME;
                 int idx = cursor.getColumnIndex(fuck);
 
-                mPhone.setText(cursor.getString(idx));
 
-
+                mPhone.setText( cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NORMALIZED_NUMBER)));
+                cursor.close();
+                cursor = getContentResolver().query(ContactsContract.Data.CONTENT_URI,
+                        null, ContactsContract.Data.CONTACT_ID + "=?", new String[] { id },
+                        null);
+                cursor.moveToFirst();
+                mName.setText( cursor.getString(cursor.getColumnIndex(ContactsContract.Data.DISPLAY_NAME)));
+                cursor.close();
 
             }
         }
