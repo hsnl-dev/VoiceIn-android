@@ -7,10 +7,13 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ShareActionProvider;
 
 import com.squareup.picasso.Picasso;
 
@@ -82,6 +85,9 @@ public class ProfileActivity extends AppCompatActivity {
         mConfirm = (Button) findViewById(R.id.profile_btn_confirm);
         mConfirm.setOnClickListener(new ConfirmListener());
     }
+
+
+
 
     private void submitInfo() {
         String name = mName.getText().toString();
