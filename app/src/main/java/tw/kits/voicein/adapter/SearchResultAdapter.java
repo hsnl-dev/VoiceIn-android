@@ -15,12 +15,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -42,17 +45,47 @@ import tw.kits.voicein.util.VoiceInService;
 /**
  * Created by Henry on 2016/3/2.
  */
-public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapter.ViewHolder> {
+public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapter.ViewHolder> implements Filterable{
     List<Contact> mContacts;
+    List<Contact> mFilteredList;
     Activity mActivity;
     ProgressDialog progressDialog;
     View mLayout;
+    Filter mFilter;
     private static final String TAG = SearchResultAdapter.class.getName();
 
     public SearchResultAdapter(List<Contact> contacts, Activity activity, View layout) {
         mContacts = contacts;
+        mFilteredList = contacts;
         mActivity= activity;
         mLayout = layout;
+        mFilter = new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                FilterResults results = new FilterResults();
+                List<Contact> filteredList = null;
+                if(constraint!=null && !"".equals(constraint)){
+                    filteredList=new ArrayList<>();
+                    for(Contact contact :mContacts){
+                        if(contact.getUserName().contains(constraint)){
+                            filteredList.add(contact);
+                        }
+                    }
+                }else{
+                    filteredList=mContacts;
+
+                }
+                results.count = filteredList.size();
+                results.values = filteredList;
+                return results;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults filteredList) {
+                SearchResultAdapter.this.mFilteredList = (List<Contact>)filteredList.values;
+                SearchResultAdapter.this.notifyDataSetChanged();
+            }
+        };
     }
 
     @Override
@@ -65,7 +98,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        final Contact contact = mContacts.get(position);
+        final Contact contact = mFilteredList.get(position);
         Log.e(TAG, contact.getNickName());
         if(contact.getNickName()!=null){
             if(contact.getNickName().equals("")==false){
@@ -149,6 +182,14 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
 
 
     }
+
+
+
+    @Override
+    public Filter getFilter() {
+        return  mFilter;
+    }
+
     private class CallCallBack implements Callback<ResponseBody>{
         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
             progressDialog.dismiss();
@@ -186,16 +227,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
 
     @Override
     public int getItemCount() {
-        return mContacts.size();
-    }
-    public void clear(){
-        mContacts.clear();
-
-    }
-    public boolean addAll(List<Contact> list){
-        boolean result = mContacts.addAll(list);
-
-        return result;
+        return mFilteredList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

@@ -18,7 +18,6 @@ public class MainActivity extends AppCompatActivity {
     private String userUuid;
     private String token;
     private static int INTENT_PROFILE_EDIT = 0x01;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +56,10 @@ public class MainActivity extends AppCompatActivity {
                 Intent edit =  new Intent(this, ProfileEditActivity.class);
                 startActivityForResult(edit,INTENT_PROFILE_EDIT);
                 break;
-
+            case R.id.main_menu_search:
+                Intent search = new Intent(this, SearchActivity.class);
+                startActivity(search);
+                break;
 
         }
         return true;
