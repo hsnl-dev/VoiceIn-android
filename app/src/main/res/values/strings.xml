@@ -62,4 +62,5 @@
     <string name="customer_phone_hint">請輸入您的服務對象的電話號碼</string>
     <string name="customer_qrcode_notice">請輸入以下資料，已完成QRcode 建立</string>
     <string name="i_finish_notice">我完成了</string>
+    <string name="search_title">尋找聯絡人</string>
 </resources>
