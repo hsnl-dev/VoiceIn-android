@@ -19,7 +19,13 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         style="@style/TextAppearance.AppCompat.Title" />
-
+    <Button
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/qrcode_create_btn_read"
+        android:text="@string/chose_from_phonebook"/>
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -39,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
-            android:text="@string/customer_name_hint"
+            android:hint="@string/customer_name_hint"
             android:ems="10"
             android:id="@+id/qrcode_create_et_name" />
     </LinearLayout>
@@ -65,7 +71,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="phone"
-            android:text="@string/customer_phone_hint"
+            android:hint="@string/customer_phone_hint"
             android:ems="10"
             android:id="@+id/qrcode_create_et_phone" />
     </LinearLayout>
@@ -90,7 +96,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:text="@string/customer_company_hint"
+            android:hint="@string/customer_company_hint"
             android:id="@+id/qrcode_create_et_com"
             android:layout_weight="1" />
 
@@ -115,7 +121,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
-            android:text="@string/customer_location_hint"
+            android:hint="@string/customer_location_hint"
             android:ems="10"
             android:id="@+id/qrcode_create_et_loc" />
     </LinearLayout>

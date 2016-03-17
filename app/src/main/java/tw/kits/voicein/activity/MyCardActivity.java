@@ -97,6 +97,10 @@ public class MyCardActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
+            case R.id.profile_menu_qrcode:
+                Intent qrcode = new Intent(this, QRCodeActivity.class);
+                startActivity(qrcode);
+                break;
             case R.id.profile_menu_share:
                 Intent i = new Intent();
                 i.setAction(Intent.ACTION_SEND);

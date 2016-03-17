@@ -63,4 +63,9 @@
     <string name="customer_qrcode_notice">請輸入以下資料，已完成QRcode 建立</string>
     <string name="i_finish_notice">我完成了</string>
     <string name="search_title">尋找聯絡人</string>
+    <string name="customer_qrcode">管理特製QRcode</string>
+    <string name="unknown_name">尚未設定姓名</string>
+    <string name="unknown_com">尚未設定任職單位</string>
+    <string name="custom_qrcode_add_title">新增客製QRcode</string>
+    <string name="chose_from_phonebook">從聯絡簿選擇</string>
 </resources>
