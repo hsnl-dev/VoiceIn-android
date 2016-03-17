@@ -6,4 +6,9 @@
         android:title="@string/action_share"
         app:showAsAction="ifRoom"
         />
+    <item
+        android:id="@+id/profile_menu_qrcode"
+        android:title="發送特製QRCode"
+        app:showAsAction="ifRoom"
+        />
 </menu>

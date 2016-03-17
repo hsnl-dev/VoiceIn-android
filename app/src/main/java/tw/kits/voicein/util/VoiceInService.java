@@ -20,6 +20,7 @@ import tw.kits.voicein.model.Contact;
 import tw.kits.voicein.model.ContactAddEntity;
 import tw.kits.voicein.model.CustomerQRcodeForm;
 import tw.kits.voicein.model.Provider;
+import tw.kits.voicein.model.QRcode;
 import tw.kits.voicein.model.Token;
 import tw.kits.voicein.model.UserInfo;
 import tw.kits.voicein.model.UserLoginRes;
@@ -77,5 +78,8 @@ public interface VoiceInService {
 
     @POST("api/v1/accounts/{accountUuid}/customQrcodes/")
     Call<ResponseBody> createcustomQrcodes(@Path("accountUuid") String uuid, @Body CustomerQRcodeForm form);
+
+    @GET("api/v1/accounts/{accountUuid}/customQrcodes/")
+    Call<List<QRcode>> getCustomQrcodes(@Path("accountUuid") String uuid);
 }
 

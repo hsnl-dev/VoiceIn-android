@@ -2,5 +2,65 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
+    ?xml version="1.0" encoding="utf-8"?>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="horizontal" android:layout_width="match_parent"
+        android:layout_height="76dp"
+        android:paddingBottom="8dp"
+        android:weightSum="1"
+        android:background="?attr/selectableItemBackground"
+        android:id="@+id/qrcodei_lo_item">
 
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/qrcodei_img_avatar"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_history_white_24dp"
+            app:civ_fill_color="@color/accent"
+            app:civ_border_width="1dp"
+            app:civ_border_color="@color/divider"
+            android:layout_marginLeft="16dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="72dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:id="@+id/linearLayout2"
+            android:layout_toLeftOf="@+id/qrcodei_img_setting"
+            android:layout_toStartOf="@+id/qrcodei_img_setting">
+            <TextView
+                android:id="@+id/qrcodei_tv_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/wait"
+                style="@style/Base.TextAppearance.AppCompat.Subhead" />
+            <TextView
+                android:id="@+id/qrcodei_tv_name_company"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/wait"
+                style="@style/Base.TextAppearance.AppCompat.Caption" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:id="@+id/qrcodei_img_setting"
+            android:src="@drawable/ic_phone_primary_36dp"
+            android:layout_marginRight="16dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:contentDescription="Call"
+            android:background="?attr/selectableItemBackground" />
+
+    </RelativeLayout>
 </LinearLayout>
