@@ -23,10 +23,10 @@ public class QRcode {
     private String state;
     @SerializedName("createdAt")
     @Expose
-    private Integer createdAt;
+    private Long createdAt;
     @SerializedName("updateAt")
     @Expose
-    private Integer updateAt;
+    private Long updateAt;
     @SerializedName("location")
     @Expose
     private String location;
@@ -96,28 +96,28 @@ public class QRcode {
     /**
      * @return The createdAt
      */
-    public Integer getCreatedAt() {
+    public Long getCreatedAt() {
         return createdAt;
     }
 
     /**
      * @param createdAt The createdAt
      */
-    public void setCreatedAt(Integer createdAt) {
+    public void setCreatedAt(Long createdAt) {
         this.createdAt = createdAt;
     }
 
     /**
      * @return The updateAt
      */
-    public Integer getUpdateAt() {
+    public Long getUpdateAt() {
         return updateAt;
     }
 
     /**
      * @param updateAt The updateAt
      */
-    public void setUpdateAt(Integer updateAt) {
+    public void setUpdateAt(Long updateAt) {
         this.updateAt = updateAt;
     }
 

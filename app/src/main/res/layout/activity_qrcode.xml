@@ -1,18 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/qrcode_lo_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:orientation="vertical"
-    android:id="@+id/qrcode_lo_main"
-    tools:context="tw.kits.voicein.activity.QRCodeActivity">
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/qrcode_rv_main"
-        android:layout_height="match_parent"
+    android:background="?android:attr/selectableItemBackground"
+    tools:context=".fragment.ContactFragment">
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/qrcode_rv_container"
         android:layout_width="match_parent"
-        />
-</LinearLayout>
+        android:layout_height="match_parent">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/qrcode_rv_main"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/qrcode_fab_plus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:clickable="true"
+        android:src="@drawable/ic_add_white_24dp"
+        app:fabSize="normal"
+        app:layout_anchor="@id/qrcode_rv_main"
+        app:layout_anchorGravity="right|end|bottom" />
+</android.support.design.widget.CoordinatorLayout>
+
