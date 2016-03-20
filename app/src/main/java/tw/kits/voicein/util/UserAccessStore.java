@@ -8,6 +8,11 @@ import java.io.IOException;
 /**
  * Created by Henry on 2016/3/4.
  */
+@Deprecated
+/***
+ * Please to Use Application 3/20/2016
+ */
+
 public class UserAccessStore {
     public final static String PREF_LOC = "LOGIN_PREF";
     private static String TOKEN;

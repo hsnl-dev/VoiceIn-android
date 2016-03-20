@@ -31,7 +31,7 @@ public class ServiceManager {
 
     /***
      * Create service with token or without token
-     *
+     * @deprecated
      * @param token user accesstoken
      * @return
      */
@@ -62,7 +62,6 @@ public class ServiceManager {
                 .addInterceptor(new VoiceInterceptor(token))
                 .addInterceptor(logging)
                 .build();
-
         OkHttp3Downloader okDownloader = new OkHttp3Downloader(client);
         return new Picasso.Builder(context).downloader(okDownloader).build();
     }
