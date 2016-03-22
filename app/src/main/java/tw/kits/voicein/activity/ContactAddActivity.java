@@ -1,6 +1,7 @@
 package tw.kits.voicein.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -20,7 +21,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import tw.kits.voicein.R;
-import tw.kits.voicein.model.Contact;
 import tw.kits.voicein.model.ContactAddEntity;
 import tw.kits.voicein.model.Provider;
 import tw.kits.voicein.util.ColoredSnackBar;
@@ -32,61 +32,63 @@ public class ContactAddActivity extends AppCompatActivity {
     private static final String TAG = ContactAddActivity.class.getName();
     public static final String ARG_QRCODE = "code";
     public static final String RETURN_CONTACT = "mContact";
-    TextView iCompany;
-    TextView iLocation;
-    TextView iName;
-    TextView iProfile;
-    ImageView iAvatar;
-    View iLayout;
-    VoiceInService service;
+    TextView mCompany;
+    TextView mLocation;
+    TextView mName;
+    TextView mProfile;
+    ImageView mAvatar;
+    View mLayout;
+    VoiceInService mService;
     Provider contact;
     LinearLayout layout;
     EditText iNickname;
+    String mQrCodeId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_add);
-        service = ServiceManager.createService(UserAccessStore.getToken());
+        mService = ServiceManager.createService(UserAccessStore.getToken());
         layout = (LinearLayout)findViewById(R.id.contact_add_lo_main);
-        iCompany = (TextView) findViewById(R.id.contact_add_tv_com);
-        iLocation = (TextView) findViewById(R.id.contact_add_tv_loc);
-        iName = (TextView) findViewById(R.id.contact_add_tv_name);
-        iProfile = (TextView) findViewById(R.id.contact_add_tv_profile);
-        iAvatar = (ImageView) findViewById(R.id.contact_add_img_avatar);
-        iLayout = findViewById(R.id.contact_add_lo_main);
+        mCompany = (TextView) findViewById(R.id.contact_add_tv_com);
+        mLocation = (TextView) findViewById(R.id.contact_add_tv_loc);
+        mName = (TextView) findViewById(R.id.contact_add_tv_name);
+        mProfile = (TextView) findViewById(R.id.contact_add_tv_profile);
+        mAvatar = (ImageView) findViewById(R.id.contact_add_img_avatar);
+        mLayout = findViewById(R.id.contact_add_lo_main);
         iNickname = (EditText)findViewById(R.id.contact_add_et_nickname);
-        String qrCodeId = getIntent().getStringExtra(ARG_QRCODE);
+        Log.e(TAG,getIntent().getStringExtra(ARG_QRCODE));
+        mQrCodeId = Uri.parse(getIntent().getStringExtra(ARG_QRCODE)).getQueryParameter("id");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        service.getProvider(qrCodeId).enqueue(new Callback<Provider>() {
+        mService.getProvider(mQrCodeId).enqueue(new Callback<Provider>() {
             @Override
             public void onResponse(Call<Provider> call, Response<Provider> response) {
                 if (response.isSuccess()) {
                     contact = response.body();
-                    iCompany.setText(contact.getCompany());
-                    iLocation.setText(contact.getLocation());
-                    iName.setText(contact.getName());
-                    iProfile.setText(contact.getProfile());
+                    mCompany.setText(contact.getCompany());
+                    mLocation.setText(contact.getLocation());
+                    mName.setText(contact.getName());
+                    mProfile.setText(contact.getProfile());
                     Picasso picasso = ServiceManager.getPicassoDowloader(ContactAddActivity.this, UserAccessStore.getToken());
                     picasso.load(ServiceManager.API_BASE + "api/v1/avatars/" + contact.getAvatarId() + "?size=large")
                             .placeholder(R.drawable.ic_user_placeholder)
                             .error(R.drawable.ic_user_placeholder)
-                            .into(iAvatar);
+                            .into(mAvatar);
                 } else {
                     Snackbar bar;
                     Log.w(TAG, response.code() + "");
                     switch (response.code()){
 
                         case 404:
-                            bar = Snackbar.make(iLayout, getResources().getString(R.string.user_not_found), Snackbar.LENGTH_SHORT);
+                            bar = Snackbar.make(mLayout, getResources().getString(R.string.user_not_found), Snackbar.LENGTH_SHORT);
                             ColoredSnackBar.primary(bar).show();
                             break;
                         case 401:
-                            bar = Snackbar.make(iLayout, getResources().getString(R.string.user_not_auth), Snackbar.LENGTH_SHORT);
+                            bar = Snackbar.make(mLayout, getResources().getString(R.string.user_not_auth), Snackbar.LENGTH_SHORT);
                             ColoredSnackBar.primary(bar).show();
                             break;
                         default:
-                            bar = Snackbar.make(iLayout, getResources().getString(R.string.server_err), Snackbar.LENGTH_SHORT);
+                            bar = Snackbar.make(mLayout, getResources().getString(R.string.server_err), Snackbar.LENGTH_SHORT);
                             ColoredSnackBar.primary(bar).show();
 
                     }
@@ -98,7 +100,7 @@ public class ContactAddActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Provider> call, Throwable t) {
-                Snackbar bar = Snackbar.make(iLayout, getResources().getString(R.string.network_err), Snackbar.LENGTH_SHORT);
+                Snackbar bar = Snackbar.make(mLayout, getResources().getString(R.string.network_err), Snackbar.LENGTH_SHORT);
                 ColoredSnackBar.primary(bar).show();
             }
         });
@@ -140,7 +142,7 @@ public class ContactAddActivity extends AppCompatActivity {
         entity.setIsEnable(true);
         entity.setNickName(iNickname.getText().toString());
         if (contact != null) {
-            service.addContactByQrcode(UserAccessStore.getUserUuid(), getIntent().getStringExtra(ARG_QRCODE),entity)
+            mService.addContactByQrcode(UserAccessStore.getUserUuid(), mQrCodeId, entity)
                     .enqueue(new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

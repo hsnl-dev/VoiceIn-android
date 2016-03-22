@@ -73,7 +73,8 @@ public class QrcodeCreateActivity extends AppCompatActivity implements View.OnCl
                             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                                 mfragment.dismiss();
                                 if (response.isSuccess()) {
-
+                                    Log.e("eeeeeeee","success");
+                                    setResult(RESULT_OK);
                                     finish();
                                 } else {
                                     ColoredSnackBar

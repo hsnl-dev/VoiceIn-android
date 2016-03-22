@@ -31,11 +31,11 @@ import tw.kits.voicein.model.UserUpdateForm;
  * Created by Henry on 2016/3/3.
  */
 public interface VoiceInService {
-    @POST("api/v1/accounts/validations/")
-    Call<UserLoginRes> getvalidationCode(@Body HashMap<String, String> user);
-
     @POST("api/v1/sandboxs/accounts/validations/")
     Call<UserLoginRes> getRealCode(@Body HashMap<String, String> user);
+
+    @POST("api/v1/accounts/validations/")
+    Call<UserLoginRes> getvalidationCode(@Body HashMap<String, String> user);
 
     @POST("api/v1/accounts/tokens/")
     Call<Token> getToken(@Body HashMap<String, String> user);
@@ -46,7 +46,7 @@ public interface VoiceInService {
     @GET("api/v1/accounts/{userUuid}")
     Call<UserInfo> getUser(@Path("userUuid") String userUuid);
 
-    @GET("api/v1/accounts/{userUuid}/contacts")
+    @GET("api/v2/accounts/{userUuid}/contacts")
     Call<List<Contact>> getContacts(@Path("userUuid") String userUuid);
 
     @Multipart
@@ -62,20 +62,20 @@ public interface VoiceInService {
     @POST("api/v1/accounts/{userUuid}/contacts/{qrCodeUuid}")
     Call<ResponseBody> addContactByQrcode(@Path("userUuid") String userUuid, @Path("qrCodeUuid") String qrCodeuid, @Body ContactAddEntity entity);
 
-    @DELETE("api/v1/accounts/{userUuid}/contacts/{qrCodeUuid}")
-    Call<ResponseBody> delContactByQrcode(@Path("userUuid") String userUuid, @Path("qrCodeUuid") String qrCodeuid);
 
-    @PUT("api/v1/accounts/{userUuid}/contacts/{qrCodeUuid}")
-    Call<ResponseBody> updateQRcodeInfo(@Path("userUuid") String userUuid,
-                                        @Path("qrCodeUuid") String qrCodeuid,
+    @DELETE("api/v2/accounts/{contactId}/contacts/")
+    Call<ResponseBody> delContact(@Path("contactId") String contactId);
+
+    @PUT("api/v2/accounts/{contactId}/contacts/")
+    Call<ResponseBody> updateQRcodeInfo(@Path("contactId") String contactId,
                                         @Query("nickName") String nickName,
                                         @Query("isEnable") boolean isEnable,
                                         @Query("availableStartTime") String availableStartTime,
                                         @Query("availableEndTime") String availableEndTime,
                                         @Query("isHigherPriorityThanGlobal") boolean isHigherPriorityThanGlobal);
 
-    @POST("api/v1/accounts/{userUuid}/calls/{qrCodeUuid}")
-    Call<ResponseBody> createCall(@Path("userUuid") String userUuid, @Path("qrCodeUuid") String qrCodeUuid, @Body CallForm form);
+    @POST("api/v2/accounts/{userUuid}/calls/")
+    Call<ResponseBody> createCall(@Path("userUuid") String userUuid, @Body CallForm form);
 
     @POST("api/v1/accounts/{accountUuid}/customQrcodes/")
     Call<ResponseBody> createcustomQrcodes(@Path("accountUuid") String uuid, @Body CustomerQRcodeForm form);

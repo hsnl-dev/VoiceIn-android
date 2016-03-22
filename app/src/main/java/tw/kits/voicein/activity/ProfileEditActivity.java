@@ -236,9 +236,9 @@ public class ProfileEditActivity extends AppCompatActivity {
             TimeParser end = new TimeParser(availableEtime.getText().toString());
             TimeParser start = new TimeParser(availableStime.getText().toString());
             if(start.compareTo(end)>=0){
-                availableEtime.setError(getString(R.string.illgal_input));
+                availableEtime.setError(getString(R.string.ilegal_input));
                 ColoredSnackBar.primary(
-                        Snackbar.make(layout, R.string.illgal_input, Snackbar.LENGTH_LONG)
+                        Snackbar.make(layout, R.string.ilegal_input, Snackbar.LENGTH_LONG)
                 ).show();
                 return null;
             }

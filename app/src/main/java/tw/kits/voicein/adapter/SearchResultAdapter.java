@@ -139,15 +139,14 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
                 @Override
                 public void onClick(View v) {
                     CallForm form = new CallForm();
-                    form.setCallee(contact.getPhoneNumber());
-                    form.setCaller(UserAccessStore.getPhoneNum());
+                    form.setContactId(contact.getId());
                     VoiceInService service = ServiceManager.createService(UserAccessStore.getToken());
                     progressDialog= ProgressDialog.show(
                             mActivity,
                             mActivity.getString(R.string.wait),
                             mActivity.getString(R.string.wait_notice),
                             true);
-                    service.createCall(UserAccessStore.getUserUuid(), contact.getQrCodeUuid(),form)
+                    service.createCall(UserAccessStore.getUserUuid(),form)
                             .enqueue(new CallCallBack());
                 }
             });

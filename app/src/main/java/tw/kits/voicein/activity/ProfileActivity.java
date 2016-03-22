@@ -104,7 +104,7 @@ public class ProfileActivity extends AppCompatActivity {
         usrProfile.setLocation(loc);
         usrProfile.setProfile(intro);
         usrProfile.setAvailableStartTime("00:00");
-        usrProfile.setAvailableEndTime("00:00");
+        usrProfile.setAvailableEndTime("23:59");
         usrProfile.setPhoneNumber(getIntent().getStringExtra("phoneNumber"));
         service = ServiceManager.createService(UserAccessStore.getToken());
 

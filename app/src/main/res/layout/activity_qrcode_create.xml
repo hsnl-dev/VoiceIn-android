@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:id="@+id/qrcode_create_btn_read"
-        android:text="@string/chose_from_phonebook"/>
+        android:text="@string/choose_from_phone_book"/>
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
