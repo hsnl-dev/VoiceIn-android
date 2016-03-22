@@ -65,24 +65,32 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         final Contact contact = mContacts.get(position);
-        Log.e(TAG, contact.getNickName());
-        if(contact.getNickName()!=null){
-            if(contact.getNickName().equals("")==false){
-                holder.mName.setText(contact.getNickName());
-            }else{
-                holder.mName.setText(contact.getUserName());
-            }
+        if(contact.getNickName()!=null && !"".equals(contact.getNickName())){
+            holder.mName.setText(contact.getNickName());
+
+        }else if(contact.getUserName()!=null && !"".equals(contact.getUserName())){
+
+            holder.mName.setText(contact.getUserName());
 
         }else{
-            holder.mName.setText(contact.getUserName());
+            holder.mName.setText(mFragment.getString(R.string.no_name));
+        }
+        if(contact.getCompany()!=null && !"".equals(contact.getCompany())){
+            holder.mCompany.setText(contact.getCompany());
+
+        }else{
+
+            holder.mCompany.setText(mFragment.getString(R.string.no_company));
+
         }
 
-        holder.mCompany.setText(contact.getCompany());
 
 
         Context context = holder.mCircleImageView.getContext();
         Picasso picasso = ServiceManager.getPicassoDowloader(context, UserAccessStore.getToken());
         picasso.load(ServiceManager.API_BASE + "api/v1/avatars/" + contact.getProfilePhotoId() + "?size=mid")
+                .noFade()
+                .placeholder(R.drawable.ic_person_white_48dp)
                 .into(holder.mCircleImageView);
         holder.mItemLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,15 +113,14 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
                 @Override
                 public void onClick(View v) {
                     CallForm form = new CallForm();
-                    form.setCallee(contact.getPhoneNumber());
-                    form.setCaller(UserAccessStore.getPhoneNum());
+                    form.setContactId(contact.getId());
                     VoiceInService service = ServiceManager.createService(UserAccessStore.getToken());
                     progressDialog= ProgressDialog.show(
                             mFragment.getContext(),
                             mFragment.getString(R.string.wait),
                             mFragment.getString(R.string.wait_notice),
                             true);
-                    service.createCall(UserAccessStore.getUserUuid(), contact.getQrCodeUuid(),form)
+                    service.createCall(UserAccessStore.getUserUuid(),form)
                             .enqueue(new CallCallBack());
                 }
             });

@@ -1,6 +1,7 @@
 package tw.kits.voicein.activity;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -26,6 +27,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import tw.kits.voicein.R;
+import tw.kits.voicein.fragment.DeleteDialogFragment;
 import tw.kits.voicein.fragment.TimePickerDialogFragment;
 import tw.kits.voicein.model.Contact;
 import tw.kits.voicein.util.ColoredSnackBar;
@@ -117,7 +119,16 @@ public class ContactEditActivity extends AppCompatActivity {
         mDelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                delContact();
+                DeleteDialogFragment fragment = DeleteDialogFragment.newInstance(
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                delContact();
+                            }
+                        }
+                );
+                fragment.show(getSupportFragmentManager(),"asking");
             }
         });
         mAStartText.setOnClickListener(new View.OnClickListener() {
@@ -152,8 +163,8 @@ public class ContactEditActivity extends AppCompatActivity {
                 true);
         VoiceInService service = ServiceManager.createService(UserAccessStore.getToken());
 
-        service.updateQRcodeInfo(UserAccessStore.getUserUuid(),
-                mContact.getQrCodeUuid(),
+        service.updateQRcodeInfo(
+                mContact.getId(),
                 mNickName.getText().toString(),
                 !mDisturbSw.isChecked(),
                 mAStartText.getText().toString(),
@@ -208,7 +219,7 @@ public class ContactEditActivity extends AppCompatActivity {
                 getBaseContext().getString(R.string.wait_notice),
                 true);
         VoiceInService service = ServiceManager.createService(UserAccessStore.getToken());
-        service.delContactByQrcode(UserAccessStore.getUserUuid(), mContact.getQrCodeUuid()).enqueue(new Callback<ResponseBody>() {
+        service.delContact(mContact.getId()).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 progressDialog.dismiss();
