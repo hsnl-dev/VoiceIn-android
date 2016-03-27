@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -41,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
     private final String TAG = LoginActivity.class.getName();
     private final VoiceInService service = ServiceManager.createService(null);
     TextView phoneNum;
-    private RelativeLayout mlayout;
+    private View mlayout;
     private Context mContext;
     private static final String TAIWAN_NATION_CODE = "+886";
     //private Spinner mSpinner;
@@ -52,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         Button confirmBtn = (Button) findViewById(R.id.login_btn_confirm);
         phoneNum = (TextView) findViewById(R.id.login_et_phonenum);
-        mlayout = (RelativeLayout) findViewById(R.id.login_lo_main);
+        mlayout = findViewById(R.id.login_lo_main);
         //mSpinner = (Spinner) findViewById(R.id.login_sn_country);
         mContext = getBaseContext();
 //        byte[] countryRaw = Base64.decode(getResources().getString(R.string.countries_code), Base64.DEFAULT);
