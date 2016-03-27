@@ -26,10 +26,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import tw.kits.voicein.G8penApplication;
 import tw.kits.voicein.R;
 import tw.kits.voicein.model.UserInfo;
 import tw.kits.voicein.util.ServiceManager;
 import tw.kits.voicein.util.UserAccessStore;
+import tw.kits.voicein.util.VoiceInService;
 
 public class MyCardActivity extends AppCompatActivity {
     private final static String TAG = MyCardActivity.class.getSimpleName();
@@ -39,7 +41,10 @@ public class MyCardActivity extends AppCompatActivity {
     TextView mProfile;
     ImageView mqrCode;
     CircleImageView mAvatar;
+    VoiceInService mApiService;
     View mLayout;
+    String mUserUuid;
+    String mToken;
     int mLoadCount = 0;
 
     @Override
@@ -55,8 +60,10 @@ public class MyCardActivity extends AppCompatActivity {
         mAvatar = (CircleImageView) findViewById(R.id.my_card_img_avatar);
         mLayout = findViewById(R.id.contact_add_lo_main).getRootView();
         mLayout.setDrawingCacheEnabled(true);
-
-        ServiceManager.createService(UserAccessStore.getToken()).getUser(UserAccessStore.getUserUuid()).enqueue(new Callback<UserInfo>() {
+        mApiService = ((G8penApplication)getApplication()).getAPIService();
+        mUserUuid = ((G8penApplication)getApplication()).getUserUuid();
+        mToken = ((G8penApplication)getApplication()).getToken();
+        mApiService.getUser(mUserUuid).enqueue(new Callback<UserInfo>() {
             @Override
             public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
                 if (response.isSuccess()) {
@@ -65,12 +72,12 @@ public class MyCardActivity extends AppCompatActivity {
                     mLoc.setText(usr.getLocation());
                     mName.setText(usr.getUserName());
                     mProfile.setText(usr.getProfile());
-                    Picasso downloader = ServiceManager.getPicassoDowloader(MyCardActivity.this.getBaseContext(), UserAccessStore.getToken());
-                    downloader.load(ServiceManager.getAvatarUri(UserAccessStore.getUserUuid(), ServiceManager.PIC_SIZE_LARGE))
+                    Picasso downloader = ServiceManager.getPicassoDowloader(MyCardActivity.this, mToken);
+                    downloader.load(ServiceManager.getAvatarUri(mUserUuid, ServiceManager.PIC_SIZE_LARGE))
                             .placeholder(R.drawable.ic_user_placeholder)
                             .error(R.drawable.ic_user_placeholder)
                             .into(mAvatar);
-                    downloader.load(ServiceManager.getQRcodeUri(UserAccessStore.getUserUuid()))
+                    downloader.load(ServiceManager.getQRcodeUri(mUserUuid))
                             .placeholder(R.drawable.ic_user_placeholder)
                             .error(R.drawable.ic_user_placeholder)
                             .into(mqrCode);

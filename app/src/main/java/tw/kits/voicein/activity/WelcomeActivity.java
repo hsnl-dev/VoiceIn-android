@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
 import io.fabric.sdk.android.Fabric;
+import tw.kits.voicein.G8penApplication;
 import tw.kits.voicein.R;
 import tw.kits.voicein.util.UserAccessStore;
 
@@ -42,9 +43,6 @@ public class WelcomeActivity extends AppCompatActivity {
 
             }else{
                 Intent i = new Intent(WelcomeActivity.this, MainActivity.class);
-                UserAccessStore.setUserUuid(userUuid);
-                UserAccessStore.setToken(token);
-                UserAccessStore.setPhoneNum(phoneNum);
                 startActivity(i);
             }
             finish();
@@ -54,14 +52,11 @@ public class WelcomeActivity extends AppCompatActivity {
         protected Void doInBackground(Integer[] params) {
             try {
                 Thread.sleep(params[0]);
+                token = ((G8penApplication)getApplication()).getToken();
+                userUuid = ((G8penApplication)getApplication()).getUserUuid();
             } catch (InterruptedException e) {
                 Log.w(TAG,e.toString());
             }
-            SharedPreferences sp = getSharedPreferences(UserAccessStore.PREF_LOC, Context.MODE_PRIVATE);
-            userUuid = sp.getString("userUuid", null);
-            token = sp.getString("token",null);
-            phoneNum = sp.getString("phoneNum",null);
-            Log.i(TAG, "L"+userUuid+token+"L");
 
             return null;
         }

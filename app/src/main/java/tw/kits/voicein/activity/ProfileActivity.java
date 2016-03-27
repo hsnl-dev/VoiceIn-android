@@ -5,20 +5,19 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.text.TextUtilsCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ShareActionProvider;
 
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.MediaType;
@@ -27,6 +26,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import tw.kits.voicein.G8penApplication;
 import tw.kits.voicein.R;
 import tw.kits.voicein.fragment.ProgressFragment;
 import tw.kits.voicein.model.UserInfo;
@@ -38,66 +38,77 @@ import tw.kits.voicein.util.UserAccessStore;
 import tw.kits.voicein.util.VoiceInService;
 
 public class ProfileActivity extends AppCompatActivity {
-    private final int INTENT_PICK = 1;
-    private final int INTENT_CROP = 2;
+    private final static int INTENT_PICK = 1;
+    private final static int INTENT_CROP = 2;
+    public final static String ARG_USER = "user";
+    public final static String ARG_PHONE = "phone";
+    public final static String WAIT_TAG = "wait";
     private final String TAG = ProfileActivity.class.getName();
     private Button mSelectAvatar;
     private CircleImageView mImg;
-    private EditText mCom;
-    private EditText mIntro;
-    private EditText mLoc;
-    private EditText mName;
-    private LinearLayout mlayout;
+    private EditText mComText;
+    private EditText mIntroText;
+    private EditText mLocText;
+    private EditText mNameText;
+    private View mLayout;
     private Button mConfirm;
     private Bitmap mBitmap; // May be null
-    private UserInfo user;
-    private VoiceInService service;
-    private ProgressFragment progressFragment;
+    private UserInfo mUser;
+    private VoiceInService mApiService;
+    private ProgressFragment mProgressDialog;
     private AvatarEditHelper helper;
+    private String mToken;
+    private String mUserUuid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         //get sufficient info
-        user = (UserInfo) getIntent().getSerializableExtra("userInfo");
+        mUser = (UserInfo) getIntent().getSerializableExtra(ARG_USER);
         mSelectAvatar = (Button) findViewById(R.id.profile_btn_upload);
-        mlayout = (LinearLayout) findViewById(R.id.profile_layout_main);
+        mLayout = findViewById(R.id.profile_layout_main);
         mImg = (CircleImageView) findViewById(R.id.profile_img_avatar);
-        mCom = (EditText) findViewById(R.id.profile_et_com);
-        mIntro = (EditText) findViewById(R.id.profile_et_intro);
-        mLoc = (EditText) findViewById(R.id.profile_et_loc);
-        mName = (EditText) findViewById(R.id.profile_et_name);
-        progressFragment = new ProgressFragment();
+        mComText = (EditText) findViewById(R.id.profile_et_com);
+        mIntroText = (EditText) findViewById(R.id.profile_et_intro);
+        mLocText = (EditText) findViewById(R.id.profile_et_loc);
+        mNameText = (EditText) findViewById(R.id.profile_et_name);
+        mProgressDialog = new ProgressFragment();
         helper = new AvatarEditHelper(this);
+
+        mToken = ((G8penApplication)getApplication()).getToken();
+        mUserUuid = ((G8penApplication)getApplication()).getUserUuid();
+        mApiService = ((G8penApplication)getApplication()).getAPIService();
+
         //set default
-        Picasso pDowloader = ServiceManager.getPicassoDowloader(getBaseContext(), UserAccessStore.getToken());
-        pDowloader.load(ServiceManager.getAvatarUri(UserAccessStore.getUserUuid(), ServiceManager.PIC_SIZE_LARGE))
+        Picasso pDownloader = ServiceManager.getPicassoDowloader(getBaseContext(),mToken);
+        pDownloader.load(ServiceManager.getAvatarUri(mUserUuid, ServiceManager.PIC_SIZE_LARGE))
                 .placeholder(R.drawable.ic_user_placeholder)
                 .error(R.drawable.ic_user_placeholder)
                 .into(mImg);
-        mLoc.setText(user.getLocation());
-        mIntro.setText(user.getProfile());
-        mName.setText(user.getUserName());
-        mCom.setText(user.getCompany());
+        mLocText.setText(mUser.getLocation());
+        mIntroText.setText(mUser.getProfile());
+        mNameText.setText(mUser.getUserName());
+        mComText.setText(mUser.getCompany());
 
         mSelectAvatar.setOnClickListener(new SelectBtnListener());
         mConfirm = (Button) findViewById(R.id.profile_btn_confirm);
         mConfirm.setOnClickListener(new ConfirmListener());
+
     }
 
 
 
 
     private void submitInfo() {
-        String name = mName.getText().toString();
-        if ("".equals(name)) {
-            mName.setError(getResources().getString(R.string.user_name_hint));
+        String name = mNameText.getText().toString();
+        if(TextUtils.isEmpty(name)){
+            mNameText.setError(getString(R.string.ilegal_input));
             return;
         }
-        String comp = mCom.getText().toString();
-        String loc = mLoc.getText().toString();
-        String intro = mIntro.getText().toString();
+        String comp = mComText.getText().toString();
+        String loc = mLocText.getText().toString();
+        String intro = mIntroText.getText().toString();
         UserUpdateForm usrProfile = new UserUpdateForm();
         usrProfile.setUserName(name);
         usrProfile.setCompany(comp);
@@ -105,11 +116,10 @@ public class ProfileActivity extends AppCompatActivity {
         usrProfile.setProfile(intro);
         usrProfile.setAvailableStartTime("00:00");
         usrProfile.setAvailableEndTime("23:59");
-        usrProfile.setPhoneNumber(getIntent().getStringExtra("phoneNumber"));
-        service = ServiceManager.createService(UserAccessStore.getToken());
+        usrProfile.setPhoneNumber(getIntent().getStringExtra(ARG_PHONE));
 
         //start
-        progressFragment.show(getSupportFragmentManager(), "wait");
+        mProgressDialog.show(getSupportFragmentManager(), WAIT_TAG);
 
 
         Callback<ResponseBody> cb = new Callback<ResponseBody>() {
@@ -126,24 +136,24 @@ public class ProfileActivity extends AppCompatActivity {
 
 
                 } else if (response.code() == 404) {
-                    progressFragment.dismiss();
+                    mProgressDialog.dismiss();
 
-                    ColoredSnackBar.primary(Snackbar.make(mlayout, getResources().getString(R.string.user_not_found), Snackbar.LENGTH_SHORT)).show();
+                    ColoredSnackBar.primary(Snackbar.make(mLayout, getResources().getString(R.string.user_not_found), Snackbar.LENGTH_SHORT)).show();
                 } else {
-                    progressFragment.dismiss();
-                    ColoredSnackBar.primary(Snackbar.make(mlayout, getResources().getString(R.string.server_err), Snackbar.LENGTH_SHORT)).show();
+                    mProgressDialog.dismiss();
+                    ColoredSnackBar.primary(Snackbar.make(mLayout, getResources().getString(R.string.server_err), Snackbar.LENGTH_SHORT)).show();
                 }
 
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                progressFragment.dismiss();
-                ColoredSnackBar.primary(Snackbar.make(mlayout, getResources().getString(R.string.server_err), Snackbar.LENGTH_SHORT)).show();
+                mProgressDialog.dismiss();
+                ColoredSnackBar.primary(Snackbar.make(mLayout, getResources().getString(R.string.server_err), Snackbar.LENGTH_SHORT)).show();
             }
 
         };
-        service.updateProfile(usrProfile, UserAccessStore.getUserUuid()).enqueue(cb);
+        mApiService.updateProfile(usrProfile, mUserUuid).enqueue(cb);
 
     }
 
@@ -151,22 +161,24 @@ public class ProfileActivity extends AppCompatActivity {
         try {
             File image = helper.prepareImg(uBitmap);
             RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), image);
-            Call<ResponseBody> res = service.uploadAvatar(UserAccessStore.getUserUuid(), requestBody);
+            Call<ResponseBody> res = mApiService.uploadAvatar(mUserUuid, requestBody);
             res.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     if (response.isSuccess()) {
                         genQRcodeWhenNotExisted();
                     } else {
-                        progressFragment.dismiss();
+                        mProgressDialog.dismiss();
                         //// TODO: 2016/3/9  handle more suituation
-                        ColoredSnackBar.primary(Snackbar.make(mlayout, getResources().getString(R.string.server_err), Snackbar.LENGTH_SHORT)).show();
+                        ColoredSnackBar
+                                .primary(Snackbar.make(mLayout, getResources().getString(R.string.server_err), Snackbar.LENGTH_SHORT))
+                                .show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    progressFragment.dismiss();
+                    mProgressDialog.dismiss();
                 }
             });
         } catch (IOException e) {
@@ -176,12 +188,11 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void genQRcodeWhenNotExisted() {
-        Log.e("123", "HiHI");
-        if (user.getQrCodeUuid() == null) {
-            service.setQRcode(UserAccessStore.getUserUuid()).enqueue(new Callback<ResponseBody>() {
+        if (mUser.getQrCodeUuid() == null) {
+            mApiService.setQRcode(mUserUuid).enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    progressFragment.dismiss();
+                    mProgressDialog.dismiss();
                     if (response.isSuccess()) {
                         Log.e(TAG, "success");
                         Intent i = new Intent(ProfileActivity.this, MainActivity.class);
@@ -190,17 +201,21 @@ public class ProfileActivity extends AppCompatActivity {
                     } else {
                         Log.e(TAG, Integer.toString(response.code()));
                         //// TODO: 2016/3/7 error more
-                        ColoredSnackBar.primary(Snackbar.make(mlayout, getResources().getString(R.string.server_err), Snackbar.LENGTH_SHORT)).show();
+                        ColoredSnackBar
+                                .primary(Snackbar.make(mLayout, getResources().getString(R.string.server_err), Snackbar.LENGTH_SHORT))
+                                .show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    progressFragment.dismiss();
+                    mProgressDialog.dismiss();
                     t.printStackTrace();
                     Log.e(TAG, t.toString());
                     //TODO handle error
-                    ColoredSnackBar.primary(Snackbar.make(mlayout, getResources().getString(R.string.server_err), Snackbar.LENGTH_SHORT)).show();
+                    ColoredSnackBar
+                            .primary(Snackbar.make(mLayout, getResources().getString(R.string.server_err), Snackbar.LENGTH_SHORT))
+                            .show();
                 }
             });
         } else {

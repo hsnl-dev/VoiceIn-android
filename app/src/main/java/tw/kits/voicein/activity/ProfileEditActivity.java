@@ -27,6 +27,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import tw.kits.voicein.G8penApplication;
 import tw.kits.voicein.R;
 import tw.kits.voicein.fragment.TimePickerDialogFragment;
 import tw.kits.voicein.model.UserInfo;
@@ -60,9 +61,9 @@ public class ProfileEditActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_edit);
-        token = UserAccessStore.getToken();
-        userUuid = UserAccessStore.getUserUuid();
-        service = ServiceManager.createService(token);
+        token = ((G8penApplication)getApplication()).getToken();
+        userUuid =((G8penApplication)getApplication()).getUserUuid();
+        service =((G8penApplication)getApplication()).getAPIService();
         name = (EditText) findViewById(R.id.profile_edit_et_name);
         company = (EditText) findViewById(R.id.profile_edit_et_com);
         location = (EditText) findViewById(R.id.profile_edit_et_loc);

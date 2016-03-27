@@ -1,10 +1,12 @@
 package tw.kits.voicein.activity;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -26,8 +28,10 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import tw.kits.voicein.G8penApplication;
 import tw.kits.voicein.R;
 import tw.kits.voicein.fragment.DeleteDialogFragment;
+import tw.kits.voicein.fragment.ProgressFragment;
 import tw.kits.voicein.fragment.TimePickerDialogFragment;
 import tw.kits.voicein.model.Contact;
 import tw.kits.voicein.util.ColoredSnackBar;
@@ -43,7 +47,7 @@ public class ContactEditActivity extends AppCompatActivity {
     Contact mContact;
     LinearLayout mLayout;
     EditText mNickName;
-    ProgressDialog progressDialog;
+    ProgressFragment progressDialog;
     TextView mCompany;
     TextView mLocation;
     TextView mName;
@@ -57,11 +61,21 @@ public class ContactEditActivity extends AppCompatActivity {
     TextView mAEndText;
     Switch mDisturbSw;
     Switch mEnhanceSw;
+    String mToken;
+    String mUserUuid;
+    VoiceInService mApiService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_edit);
+
+        mApiService = ((G8penApplication)getApplication()).getAPIService();
+        mToken = ((G8penApplication)getApplication()).getToken();
+        mUserUuid = ((G8penApplication)getApplication()).getUserUuid();
+
+        progressDialog = new ProgressFragment();
+
         mNickName = (EditText) findViewById(R.id.contact_edit_et_nickname);
         mCompany = (TextView) findViewById(R.id.contact_edit_tv_com);
         mLocation = (TextView) findViewById(R.id.contact_edit_tv_loc);
@@ -78,8 +92,8 @@ public class ContactEditActivity extends AppCompatActivity {
         mLayout = (LinearLayout) findViewById(R.id.contact_add_view);
         mContact = (Contact) getIntent().getSerializableExtra(ARG_CONTACT);
         mDelButton = (Button) findViewById(R.id.contact_edit_btn_del);
-        mPicasso = ServiceManager.getPicassoDowloader(this, UserAccessStore.getToken());
-        mPicasso.load(ServiceManager.API_BASE + "api/v1/avatars/" + mContact.getProfilePhotoId() + "?size=large")
+        mPicasso = ServiceManager.getPicassoDowloader(this, mToken);
+        mPicasso.load(ServiceManager.getAvatarById(mContact.getProfilePhotoId(),ServiceManager.PIC_SIZE_LARGE))
                 .placeholder(R.drawable.ic_user_placeholder)
                 .error(R.drawable.ic_user_placeholder)
                 .into(mAvatar);
@@ -134,11 +148,11 @@ public class ContactEditActivity extends AppCompatActivity {
         mAStartText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 TimeHandler handler = new TimeHandler(mAStartText);
-                Fragment fragment = TimePickerDialogFragment
+                DialogFragment fragment = TimePickerDialogFragment
                         .createInstance(handler, handler.getTextView());
-                FragmentManager fm = getSupportFragmentManager();
-                fm.beginTransaction().add(fragment, "timepicker_start").commit();
+                fragment.show(getSupportFragmentManager(),"timepicker_start");
 
             }
         });
@@ -146,24 +160,18 @@ public class ContactEditActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 TimeHandler handler = new TimeHandler(mAEndText);
-                Fragment fragment = TimePickerDialogFragment
+                DialogFragment fragment = TimePickerDialogFragment
                         .createInstance(handler, handler.getTextView());
-                FragmentManager fm = getSupportFragmentManager();
-                fm.beginTransaction().add(fragment, "timepicker_end").commit();
+                fragment.show(getSupportFragmentManager(),"timepicker_end");
 
             }
         });
     }
 
     private void updateContact() {
-        progressDialog = ProgressDialog.show(
-                ContactEditActivity.this,
-                getString(R.string.wait),
-                getString(R.string.wait_notice),
-                true);
-        VoiceInService service = ServiceManager.createService(UserAccessStore.getToken());
+        progressDialog.show(getSupportFragmentManager(),"update_wait");
 
-        service.updateQRcodeInfo(
+        mApiService.updateQRcodeInfo(
                 mContact.getId(),
                 mNickName.getText().toString(),
                 !mDisturbSw.isChecked(),
@@ -213,13 +221,8 @@ public class ContactEditActivity extends AppCompatActivity {
     }
 
     private void delContact() {
-        progressDialog = ProgressDialog.show(
-                ContactEditActivity.this,
-                getBaseContext().getString(R.string.wait),
-                getBaseContext().getString(R.string.wait_notice),
-                true);
-        VoiceInService service = ServiceManager.createService(UserAccessStore.getToken());
-        service.delContact(mContact.getId()).enqueue(new Callback<ResponseBody>() {
+        progressDialog.show(getSupportFragmentManager(),"del_wait");
+        mApiService.delContact(mContact.getId()).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 progressDialog.dismiss();

@@ -69,6 +69,9 @@ public class ServiceManager {
     public static String getQRcodeUri(String uuid) {
         return String.format("%sapi/v1/accounts/%s/qrcode", API_BASE, uuid);
     }
+    public static String getAvatarById(String avatarId, String size) {
+        return String.format("%sapi/v1/avatars/%s?size=%s", API_BASE, avatarId, size);
+    }
     public static String getQRcodeById(String uuid) {
         return String.format("%sapi/v1/qrcodes/%s/image", API_BASE, uuid);
     }

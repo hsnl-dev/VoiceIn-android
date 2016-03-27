@@ -1,7 +1,6 @@
 package tw.kits.voicein;
 
 import android.app.Application;
-import android.content.Context;
 import android.content.SharedPreferences;
 
 import java.io.IOException;
@@ -46,6 +45,7 @@ public class G8penApplication extends Application{
 
     }
 
+
     /***
      * get Retrofit API object
      * @return service object
@@ -87,7 +87,7 @@ public class G8penApplication extends Application{
         mLogger.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(new VoiceInterceptor(mToken))
+                .addInterceptor(new VoiceInterceptor(getToken()))
                 .addInterceptor(mLogger)
                 .build();
 
@@ -109,6 +109,17 @@ public class G8penApplication extends Application{
     }
 
 
+    public String getUserUuid() {
+        return mUserUuid;
+    }
+
+    public String getPhoneNum() {
+        return mPhoneNum;
+    }
+
+    public String getToken() {
+        return mToken;
+    }
 }
 class VoiceInterceptor implements Interceptor {
     String vToken;
