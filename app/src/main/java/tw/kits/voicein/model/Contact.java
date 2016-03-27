@@ -5,7 +5,7 @@ import java.io.Serializable;
 
 public class Contact implements Serializable{
 
-
+    private String id;
     private String userName;
     private String phoneNumber;
     private String location;
@@ -318,5 +318,13 @@ public class Contact implements Serializable{
 
     public void setIsHigherPriorityThanGlobal(Boolean isHigherPriorityThanGlobal) {
         this.isHigherPriorityThanGlobal = isHigherPriorityThanGlobal;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

@@ -3,6 +3,7 @@ package tw.kits.voicein.activity;
 import android.app.Service;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import tw.kits.voicein.R;
 import tw.kits.voicein.adapter.QrcodeAdapter;
 import tw.kits.voicein.model.QRcode;
 import tw.kits.voicein.model.QRcodeContainer;
+import tw.kits.voicein.util.ColoredSnackBar;
 import tw.kits.voicein.util.ServiceManager;
 import tw.kits.voicein.util.UserAccessStore;
 import tw.kits.voicein.util.VoiceInService;
@@ -31,6 +33,7 @@ public class QRCodeActivity extends AppCompatActivity implements View.OnClickLis
     VoiceInService mService;
     SwipeRefreshLayout mRefresh;
     FloatingActionButton mFab;
+    private final static int INTENT_ADD = 1;
     private static String TAG = QRCodeActivity.class.getName();
 
     @Override
@@ -60,7 +63,7 @@ public class QRCodeActivity extends AppCompatActivity implements View.OnClickLis
         switch (v.getId()){
             case R.id.qrcode_fab_plus:
                 Intent add = new Intent(QRCodeActivity.this, QrcodeCreateActivity.class);
-                startActivity(add);
+                startActivityForResult(add,INTENT_ADD );
         }
     }
 
@@ -93,4 +96,18 @@ public class QRCodeActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode==RESULT_OK){
+            Log.e(TAG, "OK");
+            switch (requestCode) {
+                case INTENT_ADD:
+                    ColoredSnackBar.primary(Snackbar.make(mMainView,getString(R.string.success),Snackbar.LENGTH_SHORT)).show();
+                    refresh();
+                    break;
+
+            }
+
+        }
+    }
 }

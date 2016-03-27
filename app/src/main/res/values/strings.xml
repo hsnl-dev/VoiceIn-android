@@ -39,15 +39,15 @@
     <string name="user_have_added">您已經有此聯絡人</string>
     <string name="user_not_auth">您的動作不被允許，請嘗試重新登入</string>
     <string name="user_not_found">查無此使用者</string>
-    <string name="server_err">Oops，伺服器似乎有點問題</string>
+    <string name="server_err">抱歉，伺服器似乎有點問題</string>
     <string name="nickname_edit_hint">請填入您對她/他的暱稱</string>
     <string name="del_contact">刪除此聯絡人</string>
     <string name="available_start">開放通話開始時間</string>
     <string name="available_stop">開放通話截止時間</string>
     <string name="phone_num">電話號碼</string>
-    <string name="illgal_input">請檢查您的資料是否正確</string>
+    <string name="ilegal_input">請檢查您的資料是否正確</string>
     <string name="free_charge">免費</string>
-    <string name="icon_charge">付費</string>
+    <string name="icon_charge">付費，由非APP用戶創立</string>
     <string name="must_charge">付費</string>
     <string name="disturb_switch">開啟勿擾模式</string>
     <string name="contact_available_switch">開啟管理此聯絡人可通話時段</string>
@@ -60,12 +60,15 @@
     <string name="customer_location_hint">請輸入您的服務對象所在地</string>
     <string name="customer_company_hint">請輸入您的服務對象的單位名稱</string>
     <string name="customer_phone_hint">請輸入您的服務對象的電話號碼</string>
-    <string name="customer_qrcode_notice">請輸入以下資料，已完成QRcode 建立</string>
-    <string name="i_finish_notice">我完成了</string>
+    <string name="customer_qrcode_notice">請輸入以下資料，以完成QRcode 建立</string>
+    <string name="i_finish_notice">完成</string>
     <string name="search_title">尋找聯絡人</string>
-    <string name="customer_qrcode">管理特製QRcode</string>
+    <string name="customer_qrcode">特製QRcode</string>
     <string name="unknown_name">尚未設定姓名</string>
     <string name="unknown_com">尚未設定任職單位</string>
     <string name="custom_qrcode_add_title">新增客製QRcode</string>
-    <string name="chose_from_phonebook">從聯絡簿選擇</string>
+    <string name="choose_from_phone_book">從聯絡簿選擇</string>
+    <string name="no_name">未設定用戶名稱</string>
+    <string name="no_company">未設定公司</string>
+
 </resources>
