@@ -1,14 +1,10 @@
 package tw.kits.voicein.activity;
 
-import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -35,9 +31,8 @@ import tw.kits.voicein.fragment.ProgressFragment;
 import tw.kits.voicein.fragment.TimePickerDialogFragment;
 import tw.kits.voicein.model.Contact;
 import tw.kits.voicein.util.ColoredSnackBar;
-import tw.kits.voicein.util.ServiceManager;
+import tw.kits.voicein.util.ServiceConstant;
 import tw.kits.voicein.util.TimeHandler;
-import tw.kits.voicein.util.UserAccessStore;
 import tw.kits.voicein.util.VoiceInService;
 
 public class ContactEditActivity extends AppCompatActivity {
@@ -92,8 +87,8 @@ public class ContactEditActivity extends AppCompatActivity {
         mLayout = (LinearLayout) findViewById(R.id.contact_add_view);
         mContact = (Contact) getIntent().getSerializableExtra(ARG_CONTACT);
         mDelButton = (Button) findViewById(R.id.contact_edit_btn_del);
-        mPicasso = ServiceManager.getPicassoDowloader(this, mToken);
-        mPicasso.load(ServiceManager.getAvatarById(mContact.getProfilePhotoId(),ServiceManager.PIC_SIZE_LARGE))
+        mPicasso = ((G8penApplication)getApplication()).getImgLoader(this);
+        mPicasso.load(ServiceConstant.getAvatarById(mContact.getProfilePhotoId(), ServiceConstant.PIC_SIZE_LARGE))
                 .placeholder(R.drawable.ic_user_placeholder)
                 .error(R.drawable.ic_user_placeholder)
                 .into(mAvatar);

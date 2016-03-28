@@ -1,6 +1,5 @@
 package tw.kits.voicein.activity;
 
-import android.app.Activity;
 import android.app.SearchManager;
 import android.app.SearchableInfo;
 import android.content.Context;
@@ -11,11 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.widget.LinearLayout;
-
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
 
 import java.util.List;
 
@@ -25,14 +20,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import tw.kits.voicein.G8penApplication;
 import tw.kits.voicein.R;
-import tw.kits.voicein.adapter.ContactAdapter;
 import tw.kits.voicein.adapter.SearchResultAdapter;
 import tw.kits.voicein.fragment.ProgressFragment;
 import tw.kits.voicein.model.CallForm;
 import tw.kits.voicein.model.Contact;
 import tw.kits.voicein.util.ColoredSnackBar;
-import tw.kits.voicein.util.ServiceManager;
-import tw.kits.voicein.util.UserAccessStore;
 import tw.kits.voicein.util.VoiceInService;
 
 public class SearchActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {

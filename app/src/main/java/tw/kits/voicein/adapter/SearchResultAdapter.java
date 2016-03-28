@@ -3,7 +3,6 @@ package tw.kits.voicein.adapter;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -24,9 +23,10 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import tw.kits.voicein.G8penApplication;
 import tw.kits.voicein.R;
+import tw.kits.voicein.activity.ContactAddActivity;
 import tw.kits.voicein.model.Contact;
 import tw.kits.voicein.util.ChargeTypeConstant;
-import tw.kits.voicein.util.ServiceManager;
+import tw.kits.voicein.util.ServiceConstant;
 
 /**
  * Created by Henry on 2016/3/2.
@@ -40,6 +40,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
     View mLayout;
     String mToken;
     String mUserUuid;
+    Picasso mImgLoader;
     AdapterListener listListener;
 
     public SearchResultAdapter(List<Contact> contacts, AppCompatActivity activity,
@@ -47,8 +48,10 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         mToken = ((G8penApplication) activity.getApplication()).getToken();
         mUserUuid = ((G8penApplication) activity.getApplication()).getUserUuid();
         mContacts = contacts;
+        mFilteredList = contacts;
         mActivity = activity;
         mLayout = layout;
+        mImgLoader = ((G8penApplication)activity.getApplication()).getImgLoader(activity);
         mFilter = new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
@@ -119,8 +122,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
 
 
         Context context = holder.mCircleImageView.getContext();
-        Picasso picasso = ServiceManager.getPicassoDowloader(context, mToken);
-        picasso.load(ServiceManager.getAvatarById(contact.getProfilePhotoId(), ServiceManager.PIC_SIZE_MID))
+        mImgLoader.load(ServiceConstant.getAvatarById(contact.getProfilePhotoId(), ServiceConstant.PIC_SIZE_MID))
                 .noFade()
                 .placeholder(R.drawable.ic_person_white_48dp)
                 .into(holder.mCircleImageView);

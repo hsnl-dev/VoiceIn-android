@@ -13,12 +13,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 import tw.kits.voicein.G8penApplication;
 import tw.kits.voicein.R;
 import tw.kits.voicein.model.QRcode;
-import tw.kits.voicein.util.ServiceManager;
+import tw.kits.voicein.util.ServiceConstant;
 
 /**
  * Created by Henry on 2016/3/2.
@@ -29,6 +31,7 @@ public class QrcodeAdapter extends RecyclerView.Adapter<QrcodeAdapter.ViewHolder
     String mToken;
     View mLayout;
     AdapterListener mAdapterListener;
+    Picasso mImgLoader;
     private static final String TAG = QrcodeAdapter.class.getName();
 
     public QrcodeAdapter(List<QRcode> contacts, AppCompatActivity activity, View layout) {
@@ -36,6 +39,7 @@ public class QrcodeAdapter extends RecyclerView.Adapter<QrcodeAdapter.ViewHolder
         mActivity = activity;
         mLayout = layout;
         mToken = ((G8penApplication) activity.getApplication()).getToken();
+        mImgLoader = ((G8penApplication) activity.getApplication()).getImgLoader(activity);
     }
 
     public interface AdapterListener {
@@ -67,9 +71,8 @@ public class QrcodeAdapter extends RecyclerView.Adapter<QrcodeAdapter.ViewHolder
         holder.mPhone.setText(code.getPhoneNumber());
         holder.mName.setText(code.getUserName().equals("") ? mActivity.getString(R.string.unknown_name) : code.getUserName());
         holder.mCompany.setText(code.getCompany().equals("") ? mActivity.getString(R.string.unknown_com) : code.getCompany());
-        ServiceManager
-                .getPicassoDowloader(mActivity, mToken)
-                .load(ServiceManager.getQRcodeById(code.getId()))
+        mImgLoader
+                .load(ServiceConstant.getQRcodeById(code.getId()))
                 .into(holder.mImageView);
         holder.mItemLayout.setOnClickListener(new View.OnClickListener() {
             @Override

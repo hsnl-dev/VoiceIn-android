@@ -1,48 +1,27 @@
 package tw.kits.voicein.activity;
 
-import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v4.text.TextUtilsCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import tw.kits.voicein.G8penApplication;
 import tw.kits.voicein.R;
-import tw.kits.voicein.adapter.CountryAdapter;
 import tw.kits.voicein.fragment.ProgressFragment;
-import tw.kits.voicein.model.CountryCode;
 import tw.kits.voicein.model.UserLoginRes;
 import tw.kits.voicein.util.ColoredSnackBar;
 import tw.kits.voicein.util.PhoneNumberHelper;
-import tw.kits.voicein.util.ServiceManager;
 import tw.kits.voicein.util.VoiceInService;
 
 public class LoginActivity extends AppCompatActivity {

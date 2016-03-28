@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
-import android.support.v4.text.TextUtilsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -17,7 +16,6 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.MediaType;
@@ -33,8 +31,7 @@ import tw.kits.voicein.model.UserInfo;
 import tw.kits.voicein.model.UserUpdateForm;
 import tw.kits.voicein.util.AvatarEditHelper;
 import tw.kits.voicein.util.ColoredSnackBar;
-import tw.kits.voicein.util.ServiceManager;
-import tw.kits.voicein.util.UserAccessStore;
+import tw.kits.voicein.util.ServiceConstant;
 import tw.kits.voicein.util.VoiceInService;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -81,8 +78,8 @@ public class ProfileActivity extends AppCompatActivity {
         mApiService = ((G8penApplication)getApplication()).getAPIService();
 
         //set default
-        Picasso pDownloader = ServiceManager.getPicassoDowloader(getBaseContext(),mToken);
-        pDownloader.load(ServiceManager.getAvatarUri(mUserUuid, ServiceManager.PIC_SIZE_LARGE))
+        Picasso pDownloader =  ((G8penApplication)getApplication()).getImgLoader(this);
+        pDownloader.load(ServiceConstant.getAvatarUri(mUserUuid, ServiceConstant.PIC_SIZE_LARGE))
                 .placeholder(R.drawable.ic_user_placeholder)
                 .error(R.drawable.ic_user_placeholder)
                 .into(mImg);

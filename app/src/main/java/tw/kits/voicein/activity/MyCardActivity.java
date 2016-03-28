@@ -4,15 +4,11 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.ShareActionProvider;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -29,8 +25,7 @@ import retrofit2.Response;
 import tw.kits.voicein.G8penApplication;
 import tw.kits.voicein.R;
 import tw.kits.voicein.model.UserInfo;
-import tw.kits.voicein.util.ServiceManager;
-import tw.kits.voicein.util.UserAccessStore;
+import tw.kits.voicein.util.ServiceConstant;
 import tw.kits.voicein.util.VoiceInService;
 
 public class MyCardActivity extends AppCompatActivity {
@@ -72,12 +67,12 @@ public class MyCardActivity extends AppCompatActivity {
                     mLoc.setText(usr.getLocation());
                     mName.setText(usr.getUserName());
                     mProfile.setText(usr.getProfile());
-                    Picasso downloader = ServiceManager.getPicassoDowloader(MyCardActivity.this, mToken);
-                    downloader.load(ServiceManager.getAvatarUri(mUserUuid, ServiceManager.PIC_SIZE_LARGE))
+                    Picasso downloader = ((G8penApplication)getApplication()).getImgLoader(MyCardActivity.this);
+                    downloader.load(ServiceConstant.getAvatarUri(mUserUuid, ServiceConstant.PIC_SIZE_LARGE))
                             .placeholder(R.drawable.ic_user_placeholder)
                             .error(R.drawable.ic_user_placeholder)
                             .into(mAvatar);
-                    downloader.load(ServiceManager.getQRcodeUri(mUserUuid))
+                    downloader.load(ServiceConstant.getQRcodeUri(mUserUuid))
                             .placeholder(R.drawable.ic_user_placeholder)
                             .error(R.drawable.ic_user_placeholder)
                             .into(mqrCode);

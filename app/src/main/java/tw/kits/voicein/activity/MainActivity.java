@@ -10,10 +10,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import tw.kits.voicein.G8penApplication;
 import tw.kits.voicein.R;
 import tw.kits.voicein.adapter.MainAdapter;
-import tw.kits.voicein.util.UserAccessStore;
 
 public class MainActivity extends AppCompatActivity {
     private static int INTENT_PROFILE_EDIT = 0x01;

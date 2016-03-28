@@ -1,7 +1,10 @@
 package tw.kits.voicein;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.SharedPreferences;
+
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 
@@ -12,7 +15,8 @@ import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import tw.kits.voicein.util.ServiceManager;
+import tw.kits.voicein.util.ImageHelper;
+import tw.kits.voicein.util.ServiceConstant;
 import tw.kits.voicein.util.VoiceInService;
 
 /**
@@ -28,12 +32,19 @@ public class G8penApplication extends Application{
     private String mToken;
     private VoiceInService mService;
     private HttpLoggingInterceptor mLogger = new HttpLoggingInterceptor();
+    private ImageHelper mImageHelper;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        mLogger.setLevel(HttpLoggingInterceptor.Level.BODY);
         readUserInfoAndSet();
         setService();
+    }
+    public Picasso getImgLoader(Context context){
+        if(mImageHelper==null)
+            mImageHelper = new ImageHelper(this, mToken);
+        return mImageHelper.getDownloader(context);
     }
     public void refreshAccessInfo(String token,String userUuid, String phoneNum){
         this.mUserUuid = userUuid;
@@ -41,9 +52,10 @@ public class G8penApplication extends Application{
         this.mToken = token;
         saveLoginPref(token, userUuid, phoneNum);
         setService();
-
+        mImageHelper=null;
 
     }
+
 
 
     /***
@@ -75,9 +87,9 @@ public class G8penApplication extends Application{
 
     private void readUserInfoAndSet (){
         SharedPreferences sp = getSharedPreferences(LOGIN_PREF,MODE_PRIVATE);
-        mUserUuid = sp.getString(TOKEN_KEY, null);
-        mPhoneNum = sp.getString(USER_UUID_KEY,null);
-        mToken = sp.getString(PHONE_NUM_KEY, null);
+        mToken = sp.getString(TOKEN_KEY, null);
+        mUserUuid = sp.getString(USER_UUID_KEY,null);
+        mPhoneNum = sp.getString(PHONE_NUM_KEY, null);
     }
     /***
      * This method is to get token by local var
@@ -92,7 +104,7 @@ public class G8penApplication extends Application{
                 .build();
 
         mService = new Retrofit.Builder()
-                .baseUrl(ServiceManager.API_BASE)
+                .baseUrl(ServiceConstant.API_BASE)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build()
@@ -134,14 +146,14 @@ class VoiceInterceptor implements Interceptor {
         Request req;
         if (vToken != null) {
             req = chain.request().newBuilder()
-                    .addHeader("apiKey", ServiceManager.API_KEY)
+                    .addHeader("apiKey", ServiceConstant.API_KEY)
                     .addHeader("token", this.vToken)
                     .addHeader("Cache-Control", "public,max-age=300")
                     .removeHeader("Pragma")
                     .build();
         } else {
             req = chain.request().newBuilder()
-                    .addHeader("apiKey", ServiceManager.API_KEY)
+                    .addHeader("apiKey", ServiceConstant.API_KEY)
                     .build();
         }
         return chain.proceed(req);

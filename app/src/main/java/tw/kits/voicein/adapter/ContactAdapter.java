@@ -1,7 +1,6 @@
 package tw.kits.voicein.adapter;
 
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.design.widget.CoordinatorLayout;
@@ -24,7 +23,7 @@ import tw.kits.voicein.G8penApplication;
 import tw.kits.voicein.R;
 import tw.kits.voicein.model.Contact;
 import tw.kits.voicein.util.ChargeTypeConstant;
-import tw.kits.voicein.util.ServiceManager;
+import tw.kits.voicein.util.ServiceConstant;
 
 /**
  * Created by Henry on 2016/3/2.
@@ -36,6 +35,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
     String mToken;
     String mUserUuid;
     AdapterListener listListener;
+    Picasso mImgLoader;
     private static final String TAG = ContactAdapter.class.getName();
     public interface AdapterListener {
         public void onPhoneClick(int pos, Contact item);
@@ -51,6 +51,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
                           CoordinatorLayout layout) {
         mToken =((G8penApplication)fragment.getActivity().getApplication()).getToken();
         mUserUuid = ((G8penApplication)fragment.getActivity().getApplication()).getUserUuid();
+        mImgLoader = ((G8penApplication)fragment.getActivity().getApplication()).getImgLoader(fragment.getContext());
         mContacts = contacts;
         mFragment = fragment;
         mLayout = layout;
@@ -89,8 +90,8 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
 
 
         Context context = holder.mCircleImageView.getContext();
-        Picasso picasso = ServiceManager.getPicassoDowloader(context, mToken);
-        picasso.load(ServiceManager.getAvatarById(contact.getProfilePhotoId(),ServiceManager.PIC_SIZE_MID))
+        Picasso picasso = mImgLoader;
+        picasso.load(ServiceConstant.getAvatarById(contact.getProfilePhotoId(), ServiceConstant.PIC_SIZE_MID))
                 .noFade()
                 .placeholder(R.drawable.ic_person_white_48dp)
                 .into(holder.mCircleImageView);
