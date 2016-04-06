@@ -26,19 +26,20 @@ import tw.kits.voicein.model.Token;
 import tw.kits.voicein.model.UserInfo;
 import tw.kits.voicein.model.UserLoginRes;
 import tw.kits.voicein.model.UserUpdateForm;
+import tw.kits.voicein.model.VerifyForm;
 
 /**
  * Created by Henry on 2016/3/3.
  */
 public interface VoiceInService {
-    @POST("api/v1/sandboxs/accounts/validations/")
+    @POST("api/v1/accounts/validations/")
     Call<UserLoginRes> getRealCode(@Body HashMap<String, String> user);
 
-    @POST("api/v1/accounts/validations/")
+    @POST("api/v1/sandboxs/accounts/validations/")
     Call<UserLoginRes> getvalidationCode(@Body HashMap<String, String> user);
 
     @POST("api/v1/accounts/tokens/")
-    Call<Token> getToken(@Body HashMap<String, String> user);
+    Call<Token> getToken(@Body VerifyForm verifyInfo);
 
     @PUT("api/v1/accounts/{userUuid}")
     Call<ResponseBody> updateProfile(@Body UserUpdateForm profile, @Path("userUuid") String userUuid);

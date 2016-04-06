@@ -12,11 +12,8 @@ import android.view.MenuItem;
 
 import tw.kits.voicein.R;
 import tw.kits.voicein.adapter.MainAdapter;
-import tw.kits.voicein.util.UserAccessStore;
 
 public class MainActivity extends AppCompatActivity {
-    private String userUuid;
-    private String token;
     private static int INTENT_PROFILE_EDIT = 0x01;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +31,7 @@ public class MainActivity extends AppCompatActivity {
             TabLayout.Tab tab = tabLayout.getTabAt(i);
             tab.setCustomView(mainAdapter.getTabView(tabLayout, i));
         }
-        userUuid = UserAccessStore.getUserUuid();
-        token = UserAccessStore.getToken();
+
 
     }
 

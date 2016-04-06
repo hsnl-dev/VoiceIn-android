@@ -27,16 +27,16 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import tw.kits.voicein.G8penApplication;
 import tw.kits.voicein.R;
 import tw.kits.voicein.fragment.TimePickerDialogFragment;
 import tw.kits.voicein.model.UserInfo;
 import tw.kits.voicein.model.UserUpdateForm;
 import tw.kits.voicein.util.AvatarEditHelper;
 import tw.kits.voicein.util.ColoredSnackBar;
-import tw.kits.voicein.util.ServiceManager;
+import tw.kits.voicein.util.ServiceConstant;
 import tw.kits.voicein.util.TimeHandler;
 import tw.kits.voicein.util.TimeParser;
-import tw.kits.voicein.util.UserAccessStore;
 import tw.kits.voicein.util.VoiceInService;
 
 public class ProfileEditActivity extends AppCompatActivity {
@@ -56,13 +56,15 @@ public class ProfileEditActivity extends AppCompatActivity {
     private CircleImageView avatar;
     private Bitmap uploadAvatar;
     ProgressDialog progressDialog;
+    private Picasso mImgLoader;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_edit);
-        token = UserAccessStore.getToken();
-        userUuid = UserAccessStore.getUserUuid();
-        service = ServiceManager.createService(token);
+        token = ((G8penApplication)getApplication()).getToken();
+        userUuid =((G8penApplication)getApplication()).getUserUuid();
+        service =((G8penApplication)getApplication()).getAPIService();
+        mImgLoader = ((G8penApplication)getApplication()).getImgLoader(this);
         name = (EditText) findViewById(R.id.profile_edit_et_name);
         company = (EditText) findViewById(R.id.profile_edit_et_com);
         location = (EditText) findViewById(R.id.profile_edit_et_loc);
@@ -84,8 +86,7 @@ public class ProfileEditActivity extends AppCompatActivity {
             public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
                 if (response.isSuccess()) {
                     progressDialog.dismiss();
-                    Picasso picasso = ServiceManager.getPicassoDowloader(ProfileEditActivity.this, token);
-                    picasso.load(ServiceManager.getAvatarUri(userUuid, ServiceManager.PIC_SIZE_MID))
+                    mImgLoader.load(ServiceConstant.getAvatarUri(userUuid, ServiceConstant.PIC_SIZE_MID))
                             .placeholder(R.drawable.ic_user_placeholder)
                             .error(R.drawable.ic_user_placeholder)
                             .into(avatar);

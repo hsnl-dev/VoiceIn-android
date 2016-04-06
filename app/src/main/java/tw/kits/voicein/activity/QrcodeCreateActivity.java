@@ -12,29 +12,30 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import tw.kits.voicein.G8penApplication;
 import tw.kits.voicein.R;
 import tw.kits.voicein.fragment.ProgressFragment;
 import tw.kits.voicein.model.CustomerQRcodeForm;
 import tw.kits.voicein.util.ColoredSnackBar;
-import tw.kits.voicein.util.ServiceManager;
-import tw.kits.voicein.util.UserAccessStore;
 import tw.kits.voicein.util.VoiceInService;
 
 public class QrcodeCreateActivity extends AppCompatActivity implements View.OnClickListener {
 
-    DialogFragment mfragment;
-    int INTENT_PHONEBOOK = 0x01;
+    DialogFragment mFragment;
+    int INTENT_PHONE_BOOK = 0x01;
     private EditText mName;
     private EditText mPhone;
     private EditText mCom;
     private EditText mLoc;
     private LinearLayout mMainLayout;
+    VoiceInService mApiService;
+    String mToken;
+    String mUserUuid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,11 @@ public class QrcodeCreateActivity extends AppCompatActivity implements View.OnCl
         mCom = (EditText) findViewById(R.id.qrcode_create_et_com);
         mLoc = (EditText) findViewById(R.id.qrcode_create_et_loc);
         mMainLayout = (LinearLayout) findViewById(R.id.qrcode_create_lo_main);
+
+        mApiService = ((G8penApplication)getApplication()).getAPIService();
+        mToken = ((G8penApplication)getApplication()).getToken();
+        mUserUuid = ((G8penApplication)getApplication()).getUserUuid();
+
     }
 
     @Override
@@ -55,23 +61,22 @@ public class QrcodeCreateActivity extends AppCompatActivity implements View.OnCl
         switch (view.getId()) {
             case R.id.qrcode_create_btn_read:
                 Intent i = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-                startActivityForResult(i, INTENT_PHONEBOOK);
+                startActivityForResult(i, INTENT_PHONE_BOOK);
                 break;
             case R.id.customer_qrcode_confirm:
-                VoiceInService service = ServiceManager.createService(UserAccessStore.getToken());
                 CustomerQRcodeForm form = new CustomerQRcodeForm();
                 form.setName(mName.getText().toString());
                 form.setPhoneNumber(mPhone.getText().toString().replace(" ", "").replace("-",""));
                 form.setLocation(mLoc.getText().toString());
                 form.setCompany(mCom.getText().toString());
-                mfragment = new ProgressFragment();
-                mfragment.show(getSupportFragmentManager(), "load");
+                mFragment = new ProgressFragment();
+                mFragment.show(getSupportFragmentManager(), "load");
 
-                service.createcustomQrcodes(UserAccessStore.getUserUuid(), form)
+                mApiService.createcustomQrcodes(mUserUuid, form)
                         .enqueue(new Callback<ResponseBody>() {
                             @Override
                             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                                mfragment.dismiss();
+                                mFragment.dismiss();
                                 if (response.isSuccess()) {
                                     Log.e("eeeeeeee","success");
                                     setResult(RESULT_OK);
@@ -85,7 +90,7 @@ public class QrcodeCreateActivity extends AppCompatActivity implements View.OnCl
 
                             @Override
                             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                                mfragment.dismiss();
+                                mFragment.dismiss();
                                 ColoredSnackBar
                                         .primary(Snackbar.make(mMainLayout, R.string.network_err, Snackbar.LENGTH_LONG))
                                         .show();
@@ -99,7 +104,7 @@ public class QrcodeCreateActivity extends AppCompatActivity implements View.OnCl
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
-            if (requestCode == INTENT_PHONEBOOK) {
+            if (requestCode == INTENT_PHONE_BOOK) {
                 String id = data.getData().getLastPathSegment();
 
                 Cursor cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
@@ -112,8 +117,6 @@ public class QrcodeCreateActivity extends AppCompatActivity implements View.OnCl
                     return;
                 }
                 cursor.moveToFirst();
-                String fuck = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME;
-                int idx = cursor.getColumnIndex(fuck);
 
 
                 mPhone.setText( cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NORMALIZED_NUMBER)));

@@ -20,12 +20,12 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import tw.kits.voicein.G8penApplication;
 import tw.kits.voicein.R;
 import tw.kits.voicein.model.ContactAddEntity;
 import tw.kits.voicein.model.Provider;
 import tw.kits.voicein.util.ColoredSnackBar;
-import tw.kits.voicein.util.ServiceManager;
-import tw.kits.voicein.util.UserAccessStore;
+import tw.kits.voicein.util.ServiceConstant;
 import tw.kits.voicein.util.VoiceInService;
 
 public class ContactAddActivity extends AppCompatActivity {
@@ -38,17 +38,23 @@ public class ContactAddActivity extends AppCompatActivity {
     TextView mProfile;
     ImageView mAvatar;
     View mLayout;
-    VoiceInService mService;
+    VoiceInService mApiService;
     Provider contact;
     LinearLayout layout;
     EditText iNickname;
     String mQrCodeId;
+    String mToken;
+    String mUserUuid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_add);
-        mService = ServiceManager.createService(UserAccessStore.getToken());
+
+        mApiService = ((G8penApplication)getApplication()).getAPIService();
+        mToken = ((G8penApplication)getApplication()).getToken();
+        mUserUuid = ((G8penApplication)getApplication()).getUserUuid();
+
         layout = (LinearLayout)findViewById(R.id.contact_add_lo_main);
         mCompany = (TextView) findViewById(R.id.contact_add_tv_com);
         mLocation = (TextView) findViewById(R.id.contact_add_tv_loc);
@@ -60,7 +66,7 @@ public class ContactAddActivity extends AppCompatActivity {
         Log.e(TAG,getIntent().getStringExtra(ARG_QRCODE));
         mQrCodeId = Uri.parse(getIntent().getStringExtra(ARG_QRCODE)).getQueryParameter("id");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mService.getProvider(mQrCodeId).enqueue(new Callback<Provider>() {
+        mApiService.getProvider(mQrCodeId).enqueue(new Callback<Provider>() {
             @Override
             public void onResponse(Call<Provider> call, Response<Provider> response) {
                 if (response.isSuccess()) {
@@ -69,8 +75,8 @@ public class ContactAddActivity extends AppCompatActivity {
                     mLocation.setText(contact.getLocation());
                     mName.setText(contact.getName());
                     mProfile.setText(contact.getProfile());
-                    Picasso picasso = ServiceManager.getPicassoDowloader(ContactAddActivity.this, UserAccessStore.getToken());
-                    picasso.load(ServiceManager.API_BASE + "api/v1/avatars/" + contact.getAvatarId() + "?size=large")
+                    Picasso picasso = ((G8penApplication)getApplication()).getImgLoader(ContactAddActivity.this);
+                    picasso.load(ServiceConstant.getAvatarById(contact.getAvatarId(), ServiceConstant.PIC_SIZE_LARGE))
                             .placeholder(R.drawable.ic_user_placeholder)
                             .error(R.drawable.ic_user_placeholder)
                             .into(mAvatar);
@@ -142,7 +148,7 @@ public class ContactAddActivity extends AppCompatActivity {
         entity.setIsEnable(true);
         entity.setNickName(iNickname.getText().toString());
         if (contact != null) {
-            mService.addContactByQrcode(UserAccessStore.getUserUuid(), mQrCodeId, entity)
+            mApiService.addContactByQrcode(mUserUuid, mQrCodeId, entity)
                     .enqueue(new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
