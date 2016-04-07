@@ -6,10 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.ColorUtils;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +28,7 @@ import tw.kits.voicein.util.ServiceConstant;
 /**
  * Created by Henry on 2016/3/2.
  */
-public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHolder> {
+public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHolder> {
     List<Contact> mContacts;
     Fragment mFragment;
     CoordinatorLayout mLayout;
@@ -39,11 +36,10 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
     String mUserUuid;
     AdapterListener listListener;
     Picasso mImgLoader;
-    private static final String TAG = ContactAdapter.class.getName();
+    private static final String TAG = FavoriteAdapter.class.getName();
     public interface AdapterListener {
         public void onPhoneClick(int pos, Contact item);
         public void onNoPhoneClick(int pos, Contact item);
-        public void onFavoriteClick(int pos, Contact item);
         public void onListClick(int pos, Contact item);
     }
 
@@ -51,8 +47,8 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
         this.listListener = listListener;
     }
 
-    public ContactAdapter(List<Contact> contacts, Fragment fragment,
-                          CoordinatorLayout layout) {
+    public FavoriteAdapter(List<Contact> contacts, Fragment fragment,
+                           CoordinatorLayout layout) {
         mToken =((G8penApplication)fragment.getActivity().getApplication()).getToken();
         mUserUuid = ((G8penApplication)fragment.getActivity().getApplication()).getUserUuid();
         mImgLoader = ((G8penApplication)fragment.getActivity().getApplication()).getImgLoader(fragment.getContext());
@@ -64,7 +60,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
-        View contactView = LayoutInflater.from(context).inflate(R.layout.item_contact, parent, false);
+        View contactView = LayoutInflater.from(context).inflate(R.layout.item_favorite, parent, false);
         ViewHolder viewHolder = new ViewHolder(contactView);
         return viewHolder;
     }
@@ -106,17 +102,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
             }
         });
 
-        if(contact.getLike()){
-            holder.mImgFavorite.setColorFilter(ContextCompat.getColor(mFragment.getContext(),R.color.colorAccent));
-        }else{
-            holder.mImgFavorite.setColorFilter(ContextCompat.getColor(mFragment.getContext(),R.color.divider));
-        }
-        holder.mImgFavorite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listListener.onFavoriteClick(position, contact);
-            }
-        });
+
         if(contact.getProviderIsEnable()){
             holder.bindPositive(listListener,position,contact);
         }else {
@@ -147,14 +133,12 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
                 , R.drawable.ic_phone_locked_grey_600_36dp);
         Drawable phoneIcon = ContextCompat.getDrawable(mFragment.getContext()
                 , R.drawable.ic_call_blue_grey_900_36dp);
-
         public TextView mName;
         public CircleImageView mCircleImageView;
         public TextView mCompany;
         public RelativeLayout mItemLayout;
         public TextView mStatus;
         public ImageView mImgCall;
-        public ImageView mImgFavorite;
         public void  bindPositive(final AdapterListener listListener, final int position, final Contact contact){
             mImgCall.setImageDrawable(phoneIcon);
             mImgCall.setOnClickListener(new View.OnClickListener() {
@@ -192,13 +176,12 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
         }
         public ViewHolder(View itemView) {
             super(itemView);
-            mStatus = (TextView) itemView.findViewById(R.id.contacti_tv_status);
-            mName = (TextView) itemView.findViewById(R.id.contacti_tv_name);
-            mCircleImageView = (CircleImageView) itemView.findViewById(R.id.contacti_img_avatar);
-            mCompany = (TextView) itemView.findViewById(R.id.contacti_tv_company);
-            mItemLayout = (RelativeLayout) itemView.findViewById(R.id.contacti_lo_item);
-            mImgCall = (ImageView) itemView.findViewById(R.id.contacti_img_call);
-            mImgFavorite = (ImageView) itemView.findViewById(R.id.contacti_img_favorite);
+            mStatus = (TextView) itemView.findViewById(R.id.favoritei_tv_status);
+            mName = (TextView) itemView.findViewById(R.id.favoritei_tv_name);
+            mCircleImageView = (CircleImageView) itemView.findViewById(R.id.favoritei_img_avatar);
+            mCompany = (TextView) itemView.findViewById(R.id.favoritei_tv_company);
+            mItemLayout = (RelativeLayout) itemView.findViewById(R.id.favoritei_lo_item);
+            mImgCall = (ImageView) itemView.findViewById(R.id.favoritei_img_call);
         }
 
     }

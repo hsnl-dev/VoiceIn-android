@@ -23,6 +23,7 @@ public class Contact implements Serializable{
     private String qrCodeUuid;
     private Object customerIcon;
     private Boolean isHigherPriorityThanGlobal;
+    private boolean isLike;
 
     /**
      *
@@ -326,5 +327,13 @@ public class Contact implements Serializable{
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Boolean getLike() {
+        return isLike;
+    }
+
+    public void setLike(Boolean like) {
+        this.isLike = like;
     }
 }

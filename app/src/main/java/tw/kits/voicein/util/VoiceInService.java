@@ -50,6 +50,9 @@ public interface VoiceInService {
     @GET("api/v2/accounts/{userUuid}/contacts")
     Call<List<Contact>> getContacts(@Path("userUuid") String userUuid);
 
+    @GET("api/v2/accounts/{userUuid}/contacts?filter=like")
+    Call<List<Contact>> getFavoriteContacts(@Path("userUuid") String userUuid);
+
     @Multipart
     @POST("api/v1/accounts/{userUuid}/avatar")
     Call<ResponseBody> uploadAvatar(@Path("userUuid") String userUuid, @Part("photo") RequestBody file);
@@ -73,8 +76,11 @@ public interface VoiceInService {
                                         @Query("isEnable") boolean isEnable,
                                         @Query("availableStartTime") String availableStartTime,
                                         @Query("availableEndTime") String availableEndTime,
-                                        @Query("isHigherPriorityThanGlobal") boolean isHigherPriorityThanGlobal);
-
+                                        @Query("isHigherPriorityThanGlobal") boolean isHigherPriorityThanGlobal
+                                       );
+    @PUT("api/v2/accounts/{contactId}/contacts/")
+    Call<ResponseBody> updateQRcodeILike(@Path("contactId") String contactId,
+                                        @Query("like") boolean like);
     @POST("api/v2/accounts/{userUuid}/calls/")
     Call<ResponseBody> createCall(@Path("userUuid") String userUuid, @Body CallForm form);
 
