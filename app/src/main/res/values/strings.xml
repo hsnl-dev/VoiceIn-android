@@ -70,5 +70,6 @@
     <string name="choose_from_phone_book">從聯絡簿選擇</string>
     <string name="no_name">未設定用戶名稱</string>
     <string name="no_company">未設定公司</string>
+    <string name="call_action">撥打電話給聯絡人</string>
 
 </resources>

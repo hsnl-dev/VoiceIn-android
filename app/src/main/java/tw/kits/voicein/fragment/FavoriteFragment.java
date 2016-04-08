@@ -32,6 +32,7 @@ import tw.kits.voicein.R;
 import tw.kits.voicein.activity.ContactAddActivity;
 import tw.kits.voicein.activity.ContactEditActivity;
 import tw.kits.voicein.adapter.ContactAdapter;
+import tw.kits.voicein.adapter.FavoriteAdapter;
 import tw.kits.voicein.model.CallForm;
 import tw.kits.voicein.model.Contact;
 import tw.kits.voicein.util.ColoredSnackBar;
@@ -42,10 +43,10 @@ import tw.kits.voicein.util.VoiceInService;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ContactFragment extends Fragment implements View.OnClickListener {
+public class FavoriteFragment extends Fragment implements View.OnClickListener {
     public static final int INTENT_ADD_CONTACT = 900;
     public static final int INTENT_EDIT_CONTACT = 800;
-    public static final String TAG = ContactFragment.class.getName();
+    public static final String TAG = FavoriteFragment.class.getName();
     String mUserUuid;
     String mToken;
     Context mContext;
@@ -53,11 +54,11 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
     CoordinatorLayout mMainLayout;
     FloatingActionButton mActionBtn;
     SwipeRefreshLayout mRefreshContainer;
-    ContactAdapter mContactAdapter;
+    FavoriteAdapter mContactAdapter;
     VoiceInService mApiService;
     ProgressFragment mProgressDialog;
 
-    public ContactFragment() {
+    public FavoriteFragment() {
         // Required empty public constructor
 
     }
@@ -85,10 +86,10 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
                 DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST);
         mRvContact.addItemDecoration(itemDecoration);
         mRvContact.setLayoutManager(new LinearLayoutManager(mContext));
-        mContactAdapter = new ContactAdapter(new ArrayList<Contact>(), ContactFragment.this, mMainLayout);
+        mContactAdapter = new FavoriteAdapter(new ArrayList<Contact>(), FavoriteFragment.this, mMainLayout);
         mRvContact.setAdapter(mContactAdapter);
         mRvContact.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        ContactAdapter.AdapterListener listListener = new ContactAdapter.AdapterListener() {
+        FavoriteAdapter.AdapterListener listListener = new FavoriteAdapter.AdapterListener() {
             @Override
             public void onListClick(int pos, Contact item) {
                 Intent intent = new Intent(getActivity(), ContactEditActivity.class);
@@ -110,13 +111,6 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
                 mProgressDialog.show(getFragmentManager(),"wait");
                 mApiService.createCall(mUserUuid, form)
                         .enqueue(new CallCallBack());
-            }
-            @Override
-            public void onFavoriteClick(int pos, Contact item){
-                Log.e(TAG,item.toString());
-                mProgressDialog.show(getFragmentManager(),"wait");
-                mApiService.updateQRcodeILike(item.getId(),!item.getLike())
-                        .enqueue(new FavoriteCallBack(item,mContactAdapter,pos));
             }
         };
         mContactAdapter.setContatctListListener(listListener);
@@ -145,7 +139,7 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.contact_fab_plus:
-                IntentIntegrator scanIntegrator = IntentIntegrator.forSupportFragment(ContactFragment.this);
+                IntentIntegrator scanIntegrator = IntentIntegrator.forSupportFragment(FavoriteFragment.this);
                 scanIntegrator.initiateScan();
                 break;
         }
@@ -154,7 +148,7 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
 
     private void refreshContact() {
         mApiService
-                .getContacts(mUserUuid)
+                .getFavoriteContacts(mUserUuid)
                 .enqueue(new Callback<List<Contact>>() {
                     @Override
                     public void onResponse(Call<List<Contact>> call, Response<List<Contact>> response) {
@@ -214,50 +208,7 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
 
         }
     }
-    private class FavoriteCallBack implements Callback<ResponseBody>{
-        Contact contact;
-        ContactAdapter adapter;
-        int pos;
-        public FavoriteCallBack(Contact contact, ContactAdapter adapter, int pos){
 
-            this.contact = contact;
-            this.adapter = adapter;
-            this.pos = pos;
-        }
-        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-            mProgressDialog.dismiss();
-            if(response.isSuccess()){
-                contact.setLike(!contact.getLike());
-                adapter.notifyItemChanged(pos);
-            }else{
-                switch (response.code()){
-                    case 403:
-                        ColoredSnackBar.primary(
-                                Snackbar.make(mMainLayout, getString(R.string.forbidden_call_hint), Snackbar.LENGTH_SHORT)
-                        ).show();
-                        break;
-                    case 401:
-                        ColoredSnackBar.primary(
-                                Snackbar.make(mMainLayout, getString(R.string.user_not_auth), Snackbar.LENGTH_SHORT)
-                        ).show();
-                        break;
-                    default:
-                        ColoredSnackBar.primary(
-                                Snackbar.make(mMainLayout, getString(R.string.server_err), Snackbar.LENGTH_SHORT)
-                        ).show();
-
-                }
-            }
-        }
-
-        @Override
-        public void onFailure(Call<ResponseBody> call, Throwable t) {
-            mProgressDialog.dismiss();
-            ColoredSnackBar.primary(
-                    Snackbar.make(mMainLayout, getString(R.string.network_err), Snackbar.LENGTH_SHORT)
-            ).show();
-        }
-    }
     private class CallCallBack implements Callback<ResponseBody>{
         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
             mProgressDialog.dismiss();

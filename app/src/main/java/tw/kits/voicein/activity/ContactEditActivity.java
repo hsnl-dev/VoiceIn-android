@@ -2,10 +2,14 @@ package tw.kits.voicein.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,7 +19,6 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -29,6 +32,7 @@ import tw.kits.voicein.R;
 import tw.kits.voicein.fragment.DeleteDialogFragment;
 import tw.kits.voicein.fragment.ProgressFragment;
 import tw.kits.voicein.fragment.TimePickerDialogFragment;
+import tw.kits.voicein.model.CallForm;
 import tw.kits.voicein.model.Contact;
 import tw.kits.voicein.util.ColoredSnackBar;
 import tw.kits.voicein.util.ServiceConstant;
@@ -49,13 +53,15 @@ public class ContactEditActivity extends AppCompatActivity {
     TextView mProfile;
     ImageView mAvatar;
     Button mDelButton;
+    Button mLikeButton;
+    Button mCallButton;
     Picasso mPicasso;
     TextView mDisturbText;
     TextView mEnhanceText;
     TextView mAStartText;
     TextView mAEndText;
-    Switch mDisturbSw;
-    Switch mEnhanceSw;
+    SwitchCompat mDisturbSw;
+    SwitchCompat mEnhanceSw;
     String mToken;
     String mUserUuid;
     VoiceInService mApiService;
@@ -65,9 +71,9 @@ public class ContactEditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_edit);
 
-        mApiService = ((G8penApplication)getApplication()).getAPIService();
-        mToken = ((G8penApplication)getApplication()).getToken();
-        mUserUuid = ((G8penApplication)getApplication()).getUserUuid();
+        mApiService = ((G8penApplication) getApplication()).getAPIService();
+        mToken = ((G8penApplication) getApplication()).getToken();
+        mUserUuid = ((G8penApplication) getApplication()).getUserUuid();
 
         progressDialog = new ProgressFragment();
 
@@ -80,14 +86,15 @@ public class ContactEditActivity extends AppCompatActivity {
         mEnhanceText = (TextView) findViewById(R.id.contact_edit_tv_enhance);
         mAStartText = (TextView) findViewById(R.id.contact_edit_tv_start_time);
         mAEndText = (TextView) findViewById(R.id.contact_edit_tv_end_time);
-        mDisturbSw = (Switch) findViewById(R.id.contact_edit_sw_disturb);
-        mEnhanceSw = (Switch) findViewById(R.id.contact_edit_sw_enhance);
-
+        mDisturbSw = (SwitchCompat) findViewById(R.id.contact_edit_sw_disturb);
+        mEnhanceSw = (SwitchCompat) findViewById(R.id.contact_edit_sw_enhance);
+        mLikeButton = (Button) findViewById(R.id.contact_edit_btn_like);
         mAvatar = (ImageView) findViewById(R.id.contact_edit_img_avatar);
         mLayout = (LinearLayout) findViewById(R.id.contact_add_view);
         mContact = (Contact) getIntent().getSerializableExtra(ARG_CONTACT);
         mDelButton = (Button) findViewById(R.id.contact_edit_btn_del);
-        mPicasso = ((G8penApplication)getApplication()).getImgLoader(this);
+        mCallButton = (Button) findViewById(R.id.contact_edit_btn_call);
+        mPicasso = ((G8penApplication) getApplication()).getImgLoader(this);
         mPicasso.load(ServiceConstant.getAvatarById(mContact.getProfilePhotoId(), ServiceConstant.PIC_SIZE_LARGE))
                 .placeholder(R.drawable.ic_user_placeholder)
                 .error(R.drawable.ic_user_placeholder)
@@ -137,7 +144,7 @@ public class ContactEditActivity extends AppCompatActivity {
                             }
                         }
                 );
-                fragment.show(getSupportFragmentManager(),"asking");
+                fragment.show(getSupportFragmentManager(), "asking");
             }
         });
         mAStartText.setOnClickListener(new View.OnClickListener() {
@@ -147,7 +154,7 @@ public class ContactEditActivity extends AppCompatActivity {
                 TimeHandler handler = new TimeHandler(mAStartText);
                 DialogFragment fragment = TimePickerDialogFragment
                         .createInstance(handler, handler.getTextView());
-                fragment.show(getSupportFragmentManager(),"timepicker_start");
+                fragment.show(getSupportFragmentManager(), "timepicker_start");
 
             }
         });
@@ -157,14 +164,49 @@ public class ContactEditActivity extends AppCompatActivity {
                 TimeHandler handler = new TimeHandler(mAEndText);
                 DialogFragment fragment = TimePickerDialogFragment
                         .createInstance(handler, handler.getTextView());
-                fragment.show(getSupportFragmentManager(),"timepicker_end");
+                fragment.show(getSupportFragmentManager(), "timepicker_end");
 
+            }
+        });
+        if(mContact.getProviderIsEnable()){
+            mCallButton.setText(getString(R.string.call_action));
+            Drawable drawable = ContextCompat.getDrawable(this,R.drawable.ic_phone_white_24dp);
+            drawable.setBounds(0, 0, drawable.getMinimumWidth(),drawable.getMinimumHeight());
+            mCallButton.setCompoundDrawables(drawable,null,null,null);
+
+            mCallButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    call();
+                }
+            });
+        }else{
+            mCallButton.setText(getString(R.string.forbidden_call));
+            Drawable drawable = ContextCompat.getDrawable(this,R.drawable.ic_phone_locked_white_24dp);
+            drawable.setBounds(0, 0, drawable.getMinimumWidth(),drawable.getMinimumHeight());
+            mCallButton.setCompoundDrawables(drawable,null,null,null);
+            mCallButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ColoredSnackBar
+                            .primary(Snackbar.make(mLayout, R.string.forbidden_call_hint, Snackbar.LENGTH_INDEFINITE))
+                            .show();
+                }
+            });
+        }
+
+
+        refreshLike();
+        mLikeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleLikePerson();
             }
         });
     }
 
     private void updateContact() {
-        progressDialog.show(getSupportFragmentManager(),"update_wait");
+        progressDialog.show(getSupportFragmentManager(), "update_wait");
 
         mApiService.updateQRcodeInfo(
                 mContact.getId(),
@@ -215,8 +257,86 @@ public class ContactEditActivity extends AppCompatActivity {
 
     }
 
+    private void refreshLike() {
+        if (mContact.getLike()) {
+            mLikeButton.setText("取消常用聯絡人");
+
+        } else {
+            mLikeButton.setText("加入常用聯絡人");
+        }
+
+    }
+
+    private void call() {
+        progressDialog.show(getSupportFragmentManager(), "call_wait");
+        CallForm callForm = new CallForm();
+        callForm.setContactId(mContact.getId());
+        mApiService.createCall(mUserUuid, callForm).enqueue(new Callback<ResponseBody>() {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                progressDialog.dismiss();
+                if (response.isSuccess()) {
+
+                } else {
+                    switch (response.code()) {
+                        case 403:
+                            ColoredSnackBar.primary(
+                                    Snackbar.make(mLayout, getString(R.string.forbidden_call_hint), Snackbar.LENGTH_SHORT)
+                            ).show();
+                            break;
+                        case 401:
+                            ColoredSnackBar.primary(
+                                    Snackbar.make(mLayout, getString(R.string.user_not_auth), Snackbar.LENGTH_SHORT)
+                            ).show();
+                            break;
+                        default:
+                            ColoredSnackBar.primary(
+                                    Snackbar.make(mLayout, getString(R.string.server_err), Snackbar.LENGTH_SHORT)
+                            ).show();
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                progressDialog.dismiss();
+                ColoredSnackBar.primary(
+                        Snackbar.make(mLayout, getString(R.string.network_err), Snackbar.LENGTH_SHORT)
+                ).show();
+            }
+
+        });
+    }
+
+    private void toggleLikePerson() {
+        progressDialog.show(getSupportFragmentManager(), "like_wait");
+        mApiService.updateQRcodeILike(mContact.getId(), !mContact.getLike()).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccess()) {
+                    progressDialog.dismiss();
+                    mContact.setLike(!mContact.getLike());
+                    refreshLike();
+
+                } else {
+                    ColoredSnackBar
+                            .primary(Snackbar.make(mLayout, R.string.user_not_found, Snackbar.LENGTH_LONG))
+                            .show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                ColoredSnackBar
+                        .primary(Snackbar.make(mLayout, R.string.server_err, Snackbar.LENGTH_LONG))
+                        .show();
+            }
+        });
+
+    }
+
     private void delContact() {
-        progressDialog.show(getSupportFragmentManager(),"del_wait");
+        progressDialog.show(getSupportFragmentManager(), "del_wait");
         mApiService.delContact(mContact.getId()).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

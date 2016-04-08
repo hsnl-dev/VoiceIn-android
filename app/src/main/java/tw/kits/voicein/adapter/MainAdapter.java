@@ -5,6 +5,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,6 +16,7 @@ import java.util.List;
 
 import tw.kits.voicein.R;
 import tw.kits.voicein.fragment.ContactFragment;
+import tw.kits.voicein.fragment.FavoriteFragment;
 import tw.kits.voicein.fragment.UnderDevelopFragment;
 
 /**
@@ -40,7 +42,7 @@ public class MainAdapter extends FragmentPagerAdapter {
         super(manager);
         fragments = new ArrayList<>();
         fragments.add(new ContactFragment());
-        fragments.add(new UnderDevelopFragment());
+        fragments.add(new FavoriteFragment());
         fragments.add(new UnderDevelopFragment());
         fragments.add(new UnderDevelopFragment());
         this.context = context;
@@ -61,10 +63,15 @@ public class MainAdapter extends FragmentPagerAdapter {
     }
     public View getTabView(TabLayout tablayout, int position){
         View v = LayoutInflater.from(context).inflate(R.layout.tab_main, tablayout, false);
-        ImageView uImageView = (ImageView) v.findViewById(R.id.img_tab);
+        final ImageView uImageView = (ImageView) v.findViewById(R.id.img_tab);
         TextView uTextView = (TextView) v.findViewById(R.id.text_tab);
         uTextView.setText(titles[position]);
         uImageView.setImageResource(imageR[position]);
+        if(position==0)
+            uImageView.setColorFilter(ContextCompat.getColor(context,R.color.icons));
+
+
+
         return v;
     }
 }
