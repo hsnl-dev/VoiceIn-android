@@ -3,12 +3,14 @@ package tw.kits.voicein.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 import tw.kits.voicein.R;
 import tw.kits.voicein.adapter.MainAdapter;
@@ -26,11 +28,14 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(mainAdapter);
         viewPager.setOffscreenPageLimit(3);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_main);
+
         tabLayout.setupWithViewPager(viewPager);
         for (int i = 0; i < tabLayout.getTabCount(); i++) {
             TabLayout.Tab tab = tabLayout.getTabAt(i);
             tab.setCustomView(mainAdapter.getTabView(tabLayout, i));
         }
+
+        viewPager.setCurrentItem(0);
 
 
     }

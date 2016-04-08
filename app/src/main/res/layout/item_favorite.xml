@@ -30,8 +30,8 @@
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:id="@+id/linearLayout2"
-        android:layout_toStartOf="@+id/favoritei_img_favorite"
-        android:layout_toLeftOf="@+id/favoritei_img_favorite">
+        android:layout_toStartOf="@+id/favoritei_img_call"
+        android:layout_toLeftOf="@+id/favoritei_img_call">
         <TextView
             android:id="@+id/favoritei_tv_name"
             android:layout_width="match_parent"

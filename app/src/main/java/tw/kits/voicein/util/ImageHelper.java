@@ -42,35 +42,34 @@ public class ImageHelper {
 
     }
     public Picasso getDownloader(Context context){
-        return new Picasso.Builder(context).downloader(downloader).loggingEnabled(true).indicatorsEnabled(true).build();
+        return new Picasso.Builder(context).downloader(downloader).loggingEnabled(true).indicatorsEnabled(false).build();
     }
+    class ImgInterceptor implements Interceptor {
+        String vToken;
 
-
-}
-class ImgInterceptor implements Interceptor {
-    String vToken;
-
-    ImgInterceptor(String token) {
-        super();
-        vToken = token;
-    }
-
-    @Override
-    public Response intercept(Chain chain) throws IOException {
-        Request req;
-        if (vToken != null) {
-            req = chain.request().newBuilder()
-                    .addHeader("apiKey", ServiceConstant.API_KEY)
-                    .addHeader("token", this.vToken)
-                    .addHeader("Cache-Control", "public,max-age=900")
-                    .removeHeader("Pragma")
-                    .build();
-        } else {
-            req = chain.request().newBuilder()
-                    .addHeader("apiKey", ServiceConstant.API_KEY)
-                    .build();
+        ImgInterceptor(String token) {
+            super();
+            vToken = token;
         }
-        return chain.proceed(req);
+
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            Request req;
+            if (vToken != null) {
+                req = chain.request().newBuilder()
+                        .addHeader("apiKey", ServiceConstant.API_KEY)
+                        .addHeader("token", this.vToken)
+                        .addHeader("Cache-Control", "public,max-age=900")
+                        .removeHeader("Pragma")
+                        .build();
+            } else {
+                req = chain.request().newBuilder()
+                        .addHeader("apiKey", ServiceConstant.API_KEY)
+                        .build();
+            }
+            return chain.proceed(req);
+        }
+
     }
 
 }
