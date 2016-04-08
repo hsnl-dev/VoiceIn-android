@@ -1,12 +1,14 @@
 # Voice-in-android
 聚寶盆 - (version: voiceIn)
 
-Prequistie
+[Join the alpha test](https://play.google.com/apps/testing/tw.kits.voicein).
+Prerequisite
 ===
-- JDK >= 1.7
+- JDK == 1.7
 - Android studio
 - Android SDK 
   - build tool 23.0.2
+- Android support library
 
 Development
 ===
@@ -20,5 +22,3 @@ cd your project folder
 ./gradle assembleRelease
 ```
 
-Thanks to Third Party Library
-===
