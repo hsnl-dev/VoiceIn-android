@@ -23,7 +23,7 @@
         android:layout_margin="16dp"
         android:layout_width="wrap_content"
         android:clickable="true"
-        android:src="@drawable/ic_face_white_24dp"
+        android:src="@drawable/ic_group_add_white_24dp"
         android:id="@+id/group_frag_fab_add"
         app:fabSize="normal"
         app:layout_anchor="@id/group_frag_rv_main"

@@ -14,6 +14,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -23,7 +26,9 @@ import retrofit2.Response;
 import tw.kits.voicein.G8penApplication;
 import tw.kits.voicein.R;
 import tw.kits.voicein.adapter.MemberAdapter;
+import tw.kits.voicein.fragment.ProgressFragment;
 import tw.kits.voicein.model.Contact;
+import tw.kits.voicein.model.ContactList;
 import tw.kits.voicein.model.Group;
 import tw.kits.voicein.model.GroupChangeEntity;
 import tw.kits.voicein.model.GroupInfoEntity;
@@ -34,7 +39,8 @@ public class GroupAddActivity extends AppCompatActivity {
     EditText mNameText;
     public static final String ARG_GROUP = "group";
     public static final String ARG_LIST = "list";
-    List<Contact> mContacts;
+    public static final String RETURN_NAME = "gname";
+    ContactList mContacts;
     Group mGroup;
     View mMainView;
     RecyclerView mMemberListView;
@@ -42,13 +48,15 @@ public class GroupAddActivity extends AppCompatActivity {
     String mUserUuid;
     MemberAdapter mAdapter;
     SnackBarHelper mSnackBarHelper;
+    ProgressFragment mProgressFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_add);
-
+        mProgressFragment = new ProgressFragment();
+        mProgressFragment.show(getSupportFragmentManager(),"wait");
         mGroup = (Group)getIntent().getSerializableExtra(ARG_GROUP);
-        mContacts = (List<Contact>) getIntent().getSerializableExtra(ARG_LIST);
+        mContacts = (ContactList) getIntent().getSerializableExtra(ARG_LIST);
         mNameText = (EditText) findViewById(R.id.group_add_et_group_name);
         mAPIService = ((G8penApplication)getApplication()).getAPIService();
         mUserUuid = ((G8penApplication)getApplication()).getUserUuid();
@@ -56,13 +64,18 @@ public class GroupAddActivity extends AppCompatActivity {
         mMemberListView = (RecyclerView) findViewById(R.id.group_add_rl_contact_list);
         mMemberListView.setLayoutManager(new LinearLayoutManager(this));
         mSnackBarHelper = new SnackBarHelper(mMainView,this);
+
+
         mAPIService.getContacts(mUserUuid).enqueue(new Callback<List<Contact>>() {
             @Override
             public void onResponse(Call<List<Contact>> call, Response<List<Contact>> response) {
+                mProgressFragment.dismiss();
                 if(response.isSuccess()){
-                    mAdapter = new MemberAdapter(response.body(),GroupAddActivity.this);
+                    List<Contact> res = response.body();
+
+                    mAdapter = new MemberAdapter(res,GroupAddActivity.this);
                     if(mGroup!=null){
-                        mAdapter.setInitState(mContacts);
+                        mAdapter.setInitState(mContacts.getContactList());
                     }
 
                     mMemberListView.setAdapter(mAdapter);
@@ -73,6 +86,7 @@ public class GroupAddActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<Contact>> call, Throwable t) {
+                mProgressFragment.dismiss();
                 mSnackBarHelper.showSnackBar(SnackBarHelper.NETWORK_ERR);
             }
         });
@@ -82,6 +96,7 @@ public class GroupAddActivity extends AppCompatActivity {
         }else{
             getSupportActionBar().setTitle(R.string.add_group_bar);
         }
+
         getSupportActionBar().setHomeButtonEnabled(true);
 
     }
@@ -90,6 +105,7 @@ public class GroupAddActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.contact_edit_menu, menu);
         return true;
+
     }
 
     @Override
@@ -120,10 +136,8 @@ public class GroupAddActivity extends AppCompatActivity {
                 if (response.isSuccess()) {
 
                     Intent intent = new Intent();
-                    intent.putExtra("provider", "");
-                    setResult(RESULT_OK, intent);
-                    Log.i("TAG", "Contact set OK");
-                    GroupAddActivity.this.setResult(Activity.RESULT_OK);
+                    intent.putExtra(RETURN_NAME, mNameText.getText().toString());
+                    setResult(RESULT_OK,intent);
                     finish();
                 } else {
                     mSnackBarHelper.showSnackBar(response.code());

@@ -31,6 +31,7 @@ import tw.kits.voicein.activity.GroupAddActivity;
 import tw.kits.voicein.adapter.GroupAdapter;
 import tw.kits.voicein.model.Group;
 import tw.kits.voicein.model.GroupList;
+import tw.kits.voicein.util.DividerItemDecoration;
 import tw.kits.voicein.util.SnackBarHelper;
 import tw.kits.voicein.util.VoiceInService;
 
@@ -82,7 +83,9 @@ public class GroupFragment extends Fragment implements GroupAdapter.OnClickListe
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
-
+        RecyclerView.ItemDecoration itemDecoration = new
+                DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST);
+        mRview.addItemDecoration(itemDecoration);
 
         mSnackBarHelper = new SnackBarHelper(mMainView,this.getContext());
         return view;

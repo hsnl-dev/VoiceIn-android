@@ -114,6 +114,11 @@
             android:theme="@style/AppTheme.DarkActionBar">
         </activity>
         <activity
+            android:name=".activity.IntroActivity"
+            android:label="@string/app_intro_appbar"
+            android:theme="@style/AppTheme"
+            />
+        <activity
             android:name=".activity.GroupActivity"
             android:label="@string/app_bar_default_group"
             android:parentActivityName=".activity.MainActivity"

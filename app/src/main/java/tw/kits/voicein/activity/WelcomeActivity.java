@@ -36,7 +36,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
             super.onPostExecute(aVoid);
             if(userUuid==null || token == null) {
-                Intent i = new Intent(WelcomeActivity.this, LoginActivity.class);
+                Intent i = new Intent(WelcomeActivity.this, IntroActivity.class);
                 startActivity(i);
 
             }else{

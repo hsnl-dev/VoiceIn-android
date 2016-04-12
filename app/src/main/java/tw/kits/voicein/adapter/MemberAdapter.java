@@ -55,13 +55,19 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
         mChecked = new SparseBooleanArray(contacts.size());
     }
     public void setInitState(List<Contact> members){
-        int curIdx = 0;
+        for(int i =0;i<mContacts.size();i++){
+            Contact target = mContacts.get(i);
 
-        for(int i = 0 ; i<members.size() ; i++){
-            if(curIdx >= members.size())
-                break;
-            mChecked.put(i,true);
+            for(int j=0; j<members.size();j++){
+               if(target.getId().equals(members.get(j).getId())){
+                   Log.e("er","SET");
+                   mChecked.put(i,true);
+                   break;
+               }
+            }
+
         }
+
     }
 
     @Override
@@ -104,6 +110,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
         }else{
             holder.mImgFavorite.setColorFilter(ContextCompat.getColor(mFragment,R.color.divider));
         }
+        holder.mCheck.setChecked(mChecked.get(position));
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {

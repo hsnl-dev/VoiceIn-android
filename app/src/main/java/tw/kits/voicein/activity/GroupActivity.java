@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,17 +30,17 @@ import tw.kits.voicein.model.ContactList;
 import tw.kits.voicein.model.Group;
 import tw.kits.voicein.model.GroupList;
 import tw.kits.voicein.util.ColoredSnackBar;
+import tw.kits.voicein.util.DividerItemDecoration;
 import tw.kits.voicein.util.SnackBarHelper;
 import tw.kits.voicein.util.VoiceInService;
 
 public class GroupActivity extends AppCompatActivity {
     public static final String ARG_GROUP = "group";
- public static final String TAG = GroupActivity.class.getName();
+    public static final String TAG = GroupActivity.class.getName();
     public static final int INTENT_EDIT_CONTACT = 8000;
     public static final int INTENT_EDIT_GROUP = 9000;
 
     FloatingActionButton editFab;
-
     RecyclerView mListView;
     View mMainView;
     VoiceInService mApiService;
@@ -53,6 +54,7 @@ public class GroupActivity extends AppCompatActivity {
     SnackBarHelper helper;
     Group mGroup;
     ContactAdapter.AdapterListener mlistListener;
+    SwipeRefreshLayout mRefreshContainer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +74,9 @@ public class GroupActivity extends AppCompatActivity {
         helper = new SnackBarHelper(mMainView, this);
         helper.setErrorMessage(403, getString(R.string.forbidden_call_hint));
         getSupportActionBar().setTitle(mGName);
-        refresh();
+        RecyclerView.ItemDecoration itemDecoration = new
+                DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST);
+        mListView.addItemDecoration(itemDecoration);
         mlistListener = new ContactAdapter.AdapterListener() {
             @Override
             public void onListClick(int pos, Contact item) {
@@ -116,6 +120,22 @@ public class GroupActivity extends AppCompatActivity {
             }
         });
 
+        mRefreshContainer = (SwipeRefreshLayout) findViewById(R.id.group_container);
+        mRefreshContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refresh();
+
+            }
+        });
+        mRefreshContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
+
+        refresh();
+
     }
     private class FavoriteCallBack implements Callback<ResponseBody>{
         Contact contact;
@@ -147,10 +167,12 @@ public class GroupActivity extends AppCompatActivity {
         }
     }
     public void refresh(){
+
         final SnackBarHelper helper = new SnackBarHelper(mMainView,this);
         mApiService.getGroupContactList(mUserUuid,mGid).enqueue(new Callback<List<Contact>>() {
             @Override
             public void onResponse(Call<List<Contact>> call, Response<List<Contact>> response) {
+                mRefreshContainer.setRefreshing(false);
                 if(response.isSuccess()){
                     mAdapter = new ContactAdapter(response.body(),GroupActivity.this,mToken,mUserUuid,mImgLoader,mMainView);
                     mListView.setAdapter(mAdapter);
@@ -162,6 +184,7 @@ public class GroupActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<Contact>> call, Throwable t) {
+                mRefreshContainer.setRefreshing(false);
                 helper.showSnackBar(SnackBarHelper.NETWORK_ERR);
             }
         });
@@ -182,6 +205,18 @@ public class GroupActivity extends AppCompatActivity {
         public void onFailure(Call<ResponseBody> call, Throwable t) {
             mProgressDialog.dismiss();
             helper.showSnackBar(SnackBarHelper.NETWORK_ERR);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode==RESULT_OK){
+            refresh();
+            if(requestCode==INTENT_EDIT_GROUP){
+                getSupportActionBar().setTitle(data.getStringExtra(GroupAddActivity.RETURN_NAME));
+            }
+            mRefreshContainer.setRefreshing(true);
+            helper.showSnackBar(200);
         }
     }
 }

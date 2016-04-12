@@ -342,4 +342,13 @@ public class Contact implements Serializable, Comparable<Contact>{
 
         return userName.compareTo(another.getUserName());
     }
+    @Override
+    public boolean equals(Object o) {
+        if(o instanceof Contact){
+            Contact another = (Contact) o;
+            return another.getId() == this.getId();
+
+        }
+        return false;
+    }
 }
