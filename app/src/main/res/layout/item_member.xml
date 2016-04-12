@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="76dp"
+    android:paddingBottom="8dp"
+    android:weightSum="1"
+    android:background="?attr/selectableItemBackground"
+    android:id="@+id/memberi_lo_item">
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:padding="0dp"
+        android:id="@+id/memberi_cb_check"
+        android:checked="false"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:clickable="false"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/memberi_img_avatar"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_margin="6dp"
+        android:src="@drawable/ic_person_white_48dp"
+        app:civ_fill_color="@color/primary_light"
+        app:civ_border_width="1dp"
+        app:civ_border_color="@color/divider"
+        android:layout_alignTop="@+id/linearLayout2"
+        android:layout_toRightOf="@+id/memberi_cb_check" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerVertical="true"
+        android:id="@+id/linearLayout2"
+        android:layout_margin="6dp"
+        android:layout_toLeftOf="@+id/memberi_img_favorite"
+        android:layout_toRightOf="@+id/memberi_img_avatar"
+        android:layout_toEndOf="@+id/memberi_img_avatar">
+        <TextView
+            android:id="@+id/memberi_tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/wait"
+            style="@style/Base.TextAppearance.AppCompat.Subhead"
+            android:maxLines="1" />
+        <TextView
+            android:id="@+id/memberi_tv_company"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/wait"
+            style="@style/Base.TextAppearance.AppCompat.Caption"
+            android:maxLines="1" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/wait"
+            android:id="@+id/memberi_tv_status"
+            style="@style/TextAppearance.AppCompat.Caption"
+            android:maxLines="1" />
+    </LinearLayout>
+    <ImageView
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginRight="16dp"
+        android:padding="6dp"
+        android:id="@+id/memberi_img_favorite"
+        android:src="@drawable/ic_favorite_white_36dp"
+        android:contentDescription="favorite"
+        android:background="?attr/selectableItemBackground"
+        android:layout_alignTop="@+id/linearLayout2"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+
+
+
+</RelativeLayout>

@@ -20,6 +20,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
 
     public interface OnClickListener {
         public void onClick(View view, Group group);
+        public void onLongClick(View view, Group group);
     }
 
     public GroupAdapter(List<Group> list, OnClickListener clickListener) {
@@ -30,7 +31,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_qrcode, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_group, parent, false);
         ViewHolder holder = new ViewHolder(itemView);
         return holder;
     }
@@ -39,15 +40,25 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Group group = groupList.get(position);
         holder.setContent(group);
-        if (!holder.isListenerSet()) {
-            holder.setItemListener(new View.OnClickListener() {
+        if(!holder.isListenerSet()){
+            holder.setListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mClickListener.onClick(v, group);
+
+                    mClickListener.onClick(v,group);
+                }
+            },new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    mClickListener.onLongClick(v,group);
+                    return true;
                 }
             });
+        }else{
+            holder.setListener(null,null);
 
         }
+
 
     }
 
@@ -60,7 +71,9 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         public TextView mTitleText;
         public TextView mCountText;
         public View mItem;
-        public View.OnClickListener onClickListener;
+        public View.OnClickListener mClickListener;
+        public View.OnLongClickListener mLongClickListener;
+
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -68,19 +81,24 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
             mCountText = (TextView) itemView.findViewById(R.id.groupi_tv_count);
             mItem = itemView.findViewById(R.id.groupi_lo_item);
         }
-
-        public boolean isListenerSet() {
-            return onClickListener != null;
+        public boolean isListenerSet(){
+            return  mClickListener != null && mLongClickListener != null;
         }
+        public void setListener(View.OnClickListener click, View.OnLongClickListener longClick){
+            if(click!=null){
+                mClickListener = click;
+            }
+            if(longClick!=null){
+                mLongClickListener = longClick;
+            }
+            mItem.setOnClickListener(mClickListener);
+            mItem.setOnLongClickListener(mLongClickListener);
 
-        public void setItemListener(View.OnClickListener listener) {
-            onClickListener = listener;
-            mItem.setOnClickListener(onClickListener);
         }
 
         public void setContent(Group group) {
-            mTitleText.setText(group.getName());
-            mCountText.setText(group.getContacts().size());
+            mTitleText.setText(group.getGroupName());
+            mCountText.setText("共有 "+Integer.toString(group.getContactCount())+" 位聯絡人");
 
         }
     }

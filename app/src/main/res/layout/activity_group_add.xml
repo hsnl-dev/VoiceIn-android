@@ -31,11 +31,11 @@
         android:text="@string/add_contact_desc"
         android:id="@+id/group_add_tv_contact_title"
         style="@style/TextAppearance.AppCompat.Subhead" />
-    <android.support.design.widget.CoordinatorLayout
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/group_add_rl_contact_list">
 
-    </android.support.design.widget.CoordinatorLayout>
+    </android.support.v7.widget.RecyclerView>
 
 </LinearLayout>

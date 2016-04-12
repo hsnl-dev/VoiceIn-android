@@ -3,7 +3,7 @@ package tw.kits.voicein.model;
 
 import java.io.Serializable;
 
-public class Contact implements Serializable{
+public class Contact implements Serializable, Comparable<Contact>{
 
     private String id;
     private String userName;
@@ -335,5 +335,11 @@ public class Contact implements Serializable{
 
     public void setLike(Boolean like) {
         this.isLike = like;
+    }
+
+    @Override
+    public int compareTo(Contact another) {
+
+        return userName.compareTo(another.getUserName());
     }
 }

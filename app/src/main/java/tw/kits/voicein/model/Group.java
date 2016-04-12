@@ -8,15 +8,15 @@ import java.util.List;
 public class Group {
     private String groupId;
     private String groupName;
-    private int groupMemberCount;
+    private int contactCount;
 
 
-    public int getGroupMemberCount() {
-        return groupMemberCount;
+    public int getContactCount() {
+        return contactCount;
     }
 
-    public void setGroupMemberCount(int groupMemberCount) {
-        this.groupMemberCount = groupMemberCount;
+    public void setContactCount(int contactCount) {
+        this.contactCount = contactCount;
     }
 
     public String getGroupId() {
