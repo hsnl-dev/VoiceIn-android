@@ -71,6 +71,9 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
 
         mLayout = layout;
     }
+    public List<Contact> getContacts(){
+        return this.mContacts;
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

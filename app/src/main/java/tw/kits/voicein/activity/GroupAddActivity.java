@@ -24,46 +24,65 @@ import tw.kits.voicein.G8penApplication;
 import tw.kits.voicein.R;
 import tw.kits.voicein.adapter.MemberAdapter;
 import tw.kits.voicein.model.Contact;
+import tw.kits.voicein.model.Group;
+import tw.kits.voicein.model.GroupChangeEntity;
 import tw.kits.voicein.model.GroupInfoEntity;
 import tw.kits.voicein.util.SnackBarHelper;
 import tw.kits.voicein.util.VoiceInService;
 
 public class GroupAddActivity extends AppCompatActivity {
     EditText mNameText;
+    public static final String ARG_GROUP = "group";
+    public static final String ARG_LIST = "list";
+    List<Contact> mContacts;
+    Group mGroup;
     View mMainView;
     RecyclerView mMemberListView;
     VoiceInService mAPIService;
     String mUserUuid;
     MemberAdapter mAdapter;
-
+    SnackBarHelper mSnackBarHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_add);
+
+        mGroup = (Group)getIntent().getSerializableExtra(ARG_GROUP);
+        mContacts = (List<Contact>) getIntent().getSerializableExtra(ARG_LIST);
         mNameText = (EditText) findViewById(R.id.group_add_et_group_name);
         mAPIService = ((G8penApplication)getApplication()).getAPIService();
         mUserUuid = ((G8penApplication)getApplication()).getUserUuid();
         mMainView = findViewById(R.id.group_add_ll_main);
         mMemberListView = (RecyclerView) findViewById(R.id.group_add_rl_contact_list);
         mMemberListView.setLayoutManager(new LinearLayoutManager(this));
-        final SnackBarHelper snackBarHelper = new SnackBarHelper(mMainView,this);
+        mSnackBarHelper = new SnackBarHelper(mMainView,this);
         mAPIService.getContacts(mUserUuid).enqueue(new Callback<List<Contact>>() {
             @Override
             public void onResponse(Call<List<Contact>> call, Response<List<Contact>> response) {
                 if(response.isSuccess()){
-
                     mAdapter = new MemberAdapter(response.body(),GroupAddActivity.this);
+                    if(mGroup!=null){
+                        mAdapter.setInitState(mContacts);
+                    }
+
                     mMemberListView.setAdapter(mAdapter);
                 }else{
-                    snackBarHelper.showSnackBar(response.code());
+                    mSnackBarHelper.showSnackBar(response.code());
                 }
             }
 
             @Override
             public void onFailure(Call<List<Contact>> call, Throwable t) {
-                snackBarHelper.showSnackBar(SnackBarHelper.NETWORK_ERR);
+                mSnackBarHelper.showSnackBar(SnackBarHelper.NETWORK_ERR);
             }
         });
+        if(mGroup!=null){
+            mNameText.setText(mGroup.getGroupName());
+            getSupportActionBar().setTitle(R.string.edit_group_bar);
+        }else{
+            getSupportActionBar().setTitle(R.string.add_group_bar);
+        }
+        getSupportActionBar().setHomeButtonEnabled(true);
 
     }
 
@@ -88,20 +107,17 @@ public class GroupAddActivity extends AppCompatActivity {
     }
 
     public void uploadGroup(){
-        GroupInfoEntity form = new GroupInfoEntity();
+
         if(TextUtils.isEmpty(mNameText.getText())){
             mNameText.setError(getString(R.string.ilegal_input));
             return;
         }
-        form.setGroupName(mNameText.getText().toString());
-        form.setContacts(mAdapter.getSelectedContactId());
 
 
-        final SnackBarHelper snackBarHelper = new SnackBarHelper(mMainView,this);
-        mAPIService.createGroup(mUserUuid, form).enqueue(new Callback<ResponseBody>() {
+        Callback<ResponseBody> callback = new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if(response.isSuccess()){
+                if (response.isSuccess()) {
 
                     Intent intent = new Intent();
                     intent.putExtra("provider", "");
@@ -109,18 +125,29 @@ public class GroupAddActivity extends AppCompatActivity {
                     Log.i("TAG", "Contact set OK");
                     GroupAddActivity.this.setResult(Activity.RESULT_OK);
                     finish();
-                }else{
-                    snackBarHelper.showSnackBar(response.code());
+                } else {
+                    mSnackBarHelper.showSnackBar(response.code());
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                snackBarHelper.showSnackBar(SnackBarHelper.NETWORK_ERR);
+                mSnackBarHelper.showSnackBar(SnackBarHelper.NETWORK_ERR);
 
             }
-        });
+        };
 
+
+        if(mGroup!=null){
+            GroupChangeEntity form = new GroupChangeEntity();
+            form.setContacts(mAdapter.getSelectedContactId());
+            mAPIService.changeGroup(mUserUuid, mGroup.getGroupId(),form,mNameText.getText().toString()).enqueue(callback);
+        }else {
+            GroupInfoEntity form = new GroupInfoEntity();
+            form.setGroupName(mNameText.getText().toString());
+            form.setContacts(mAdapter.getSelectedContactId());
+            mAPIService.createGroup(mUserUuid, form).enqueue(callback);
+        }
     }
 
 }

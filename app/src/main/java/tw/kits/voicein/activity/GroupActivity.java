@@ -25,16 +25,19 @@ import tw.kits.voicein.adapter.ContactAdapter;
 import tw.kits.voicein.fragment.ProgressFragment;
 import tw.kits.voicein.model.CallForm;
 import tw.kits.voicein.model.Contact;
+import tw.kits.voicein.model.ContactList;
 import tw.kits.voicein.model.Group;
+import tw.kits.voicein.model.GroupList;
 import tw.kits.voicein.util.ColoredSnackBar;
 import tw.kits.voicein.util.SnackBarHelper;
 import tw.kits.voicein.util.VoiceInService;
 
 public class GroupActivity extends AppCompatActivity {
-    public static final String ARG_GID = "group_id";
-    public static final String ARG_NAME = "group_name";
-    public static final String TAG = GroupActivity.class.getName();
+    public static final String ARG_GROUP = "group";
+ public static final String TAG = GroupActivity.class.getName();
     public static final int INTENT_EDIT_CONTACT = 8000;
+    public static final int INTENT_EDIT_GROUP = 9000;
+
     FloatingActionButton editFab;
 
     RecyclerView mListView;
@@ -48,6 +51,7 @@ public class GroupActivity extends AppCompatActivity {
     ContactAdapter mAdapter;
     ProgressFragment mProgressDialog;
     SnackBarHelper helper;
+    Group mGroup;
     ContactAdapter.AdapterListener mlistListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +61,9 @@ public class GroupActivity extends AppCompatActivity {
         mToken = ((G8penApplication) getApplication()).getToken();
         mUserUuid = ((G8penApplication) getApplication()).getUserUuid();
         mImgLoader = ((G8penApplication) getApplication()).getImgLoader(this);
-        mGid = getIntent().getStringExtra(ARG_GID);
-        mGName = getIntent().getStringExtra(ARG_NAME);
+        mGroup = (Group)getIntent().getSerializableExtra(ARG_GROUP);
+        mGid = mGroup.getGroupId();
+        mGName = mGroup.getGroupName();
         editFab = (FloatingActionButton) findViewById(R.id.group_fab_edit);
         mListView = (RecyclerView) findViewById(R.id.group_rv_list);
         mMainView = findViewById(R.id.group_cl_main);
@@ -99,7 +104,17 @@ public class GroupActivity extends AppCompatActivity {
             }
 
         };
-
+        editFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(GroupActivity.this,GroupAddActivity.class);
+                ContactList contactList = new ContactList();
+                contactList.setContactList(mAdapter.getContacts());
+                i.putExtra(GroupAddActivity.ARG_GROUP, mGroup);
+                i.putExtra(GroupAddActivity.ARG_LIST, contactList);
+                startActivityForResult(i, INTENT_EDIT_GROUP);
+            }
+        });
 
     }
     private class FavoriteCallBack implements Callback<ResponseBody>{

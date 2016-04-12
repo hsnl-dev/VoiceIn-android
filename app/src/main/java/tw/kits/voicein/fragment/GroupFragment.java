@@ -122,8 +122,7 @@ public class GroupFragment extends Fragment implements GroupAdapter.OnClickListe
     }
     public void startGroup(Group group){
         Intent i = new Intent(getContext(), GroupActivity.class);
-        i.putExtra(GroupActivity.ARG_GID,group.getGroupId());
-        i.putExtra(GroupActivity.ARG_NAME,group.getGroupName());
+        i.putExtra(GroupActivity.ARG_GROUP,group);
         startActivity(i);
     }
 

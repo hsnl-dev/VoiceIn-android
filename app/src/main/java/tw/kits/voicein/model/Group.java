@@ -1,11 +1,12 @@
 package tw.kits.voicein.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Henry on 2016/4/11.
  */
-public class Group {
+public class Group implements Serializable{
     private String groupId;
     private String groupName;
     private int contactCount;

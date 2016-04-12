@@ -106,23 +106,17 @@
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MainActivity" />
+                android:value=".activity.MyCardActivity" />
         </activity>
         <activity
             android:name=".activity.GroupAddActivity"
             android:label="@string/add_group_bar"
-            android:parentActivityName=".activity.MyCardActivity"
             android:theme="@style/AppTheme.DarkActionBar">
-
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MainActivity" />
         </activity>
         <activity
             android:name=".activity.GroupActivity"
             android:label="@string/app_bar_default_group"
-            android:parentActivityName=".activity.MyCardActivity"
+            android:parentActivityName=".activity.MainActivity"
             android:theme="@style/AppTheme.DarkActionBar">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->

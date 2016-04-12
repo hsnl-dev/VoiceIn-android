@@ -20,6 +20,7 @@ import tw.kits.voicein.model.Contact;
 import tw.kits.voicein.model.ContactAddEntity;
 import tw.kits.voicein.model.CustomerQRcodeForm;
 import tw.kits.voicein.model.Group;
+import tw.kits.voicein.model.GroupChangeEntity;
 import tw.kits.voicein.model.GroupInfoEntity;
 import tw.kits.voicein.model.GroupList;
 import tw.kits.voicein.model.Provider;
@@ -104,6 +105,9 @@ public interface VoiceInService {
 
     @POST("api/v1/accounts/{userUuid}/groups")
     Call<ResponseBody> createGroup(@Path("userUuid") String uuid, @Body GroupInfoEntity groupInfoEntity);
+
+    @PUT("api/v1/accounts/{userUuid}/groups/{gid}/contacts")
+    Call<ResponseBody> changeGroup(@Path("userUuid") String uuid, @Path("gid") String gid, @Body GroupChangeEntity groupInfoEntity, @Query("groupName") String groupName);
 
     @DELETE("api/v1/accounts/{accountUuid}/groups/{groupUuid}")
     Call<ResponseBody> delGroup(@Path("accountUuid") String uuid, @Path("groupUuid") String gid);

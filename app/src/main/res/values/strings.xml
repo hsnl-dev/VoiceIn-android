@@ -75,6 +75,7 @@
     <string name="group_name_hint">輸入群組名稱</string>
     <string name="group_name_desc">群組名稱</string>
     <string name="add_group_bar">新增群組</string>
+    <string name="edit_group_bar">修改群組</string>
     <string name="app_bar_default_group">群組</string>
 
 </resources>
