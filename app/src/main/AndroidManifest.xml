@@ -4,9 +4,10 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+
     <application
-        android:allowBackup="true"
         android:name=".G8penApplication"
+        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true">
@@ -25,8 +26,8 @@
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
             android:name=".activity.MainActivity"
-            android:theme="@style/AppTheme"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".activity.VerifyActivity"
             android:theme="@style/AppTheme.DarkActionBar"
@@ -56,8 +57,8 @@
         <activity
             android:name=".activity.MyCardActivity"
             android:label="@string/card_title"
-            android:theme="@style/AppTheme.DarkActionBar"
             android:launchMode="singleTop"
+            android:theme="@style/AppTheme.DarkActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activity.ProfileEditActivity"
@@ -76,14 +77,15 @@
             android:name="io.fabric.ApiKey"
             android:value="8d6fcf959b72032bfee78651f4fc262795793af7" />
 
-        <activity android:name=".activity.QrcodeCreateActivity"
-            android:theme="@style/AppTheme.DarkActionBar"
+        <activity
+            android:name=".activity.QrcodeCreateActivity"
             android:label="@string/custom_qrcode_add_title"
-            />
-        <activity android:name=".activity.SearchActivity"
-            android:theme="@style/AppTheme.DarkActionBar"
+            android:theme="@style/AppTheme.DarkActionBar" />
+        <activity
+            android:name=".activity.SearchActivity"
             android:label="@string/search_title"
-            android:parentActivityName=".activity.MainActivity">
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppTheme.DarkActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -97,14 +99,16 @@
         </activity>
         <activity
             android:name=".activity.QRCodeActivity"
-            android:theme="@style/AppTheme.DarkActionBar"
+            android:label="@string/customer_qrcode"
             android:parentActivityName=".activity.MyCardActivity"
-            android:label="@string/customer_qrcode">
+            android:theme="@style/AppTheme.DarkActionBar">
+
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MainActivity" />
         </activity>
+        <activity android:name=".activity.GroupAddActivity"></activity>
     </application>
 
 </manifest>

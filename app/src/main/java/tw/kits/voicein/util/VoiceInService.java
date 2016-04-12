@@ -19,6 +19,7 @@ import tw.kits.voicein.model.CallForm;
 import tw.kits.voicein.model.Contact;
 import tw.kits.voicein.model.ContactAddEntity;
 import tw.kits.voicein.model.CustomerQRcodeForm;
+import tw.kits.voicein.model.Group;
 import tw.kits.voicein.model.Provider;
 import tw.kits.voicein.model.QRcode;
 import tw.kits.voicein.model.QRcodeContainer;
@@ -92,5 +93,9 @@ public interface VoiceInService {
 
     @DELETE("api/v1/accounts/{accountUuid}/customQrcodes/{qrCodeUuid}")
     Call<ResponseBody> delCustomQrcodes(@Path("accountUuid") String uuid, @Path("qrCodeUuid") String qrCodeUuid);
+
+    @GET("api/v1/accounts/{userUuid}/groups")
+
+    Call<List<Group>> getAccountGroupList(@Path("userUuid") String uuid);
 }
 

@@ -71,5 +71,8 @@
     <string name="no_name">未設定用戶名稱</string>
     <string name="no_company">未設定公司</string>
     <string name="call_action">撥打電話給聯絡人</string>
+    <string name="add_contact_desc">選擇聯絡人</string>
+    <string name="group_name_hint">輸入群組名稱</string>
+    <string name="group_name_desc">群組名稱</string>
 
 </resources>
