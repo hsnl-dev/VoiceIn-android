@@ -79,9 +79,9 @@
     <string name="app_bar_default_group">群組</string>
     <string name="app_intro_appbar">功能簡介</string>
     <string name="app_intro_080_title">名片不只是名片</string>
-    <string name="app_intro_080_body">QRCode 名片結合高品質電話服務 ，讓您快速建立專屬於您免費服務專線，使用內建 QR Code 掃瞄器 掃描，即可快速新增聯絡人</string>
+    <string name="app_intro_080_body">QRCode 名片結合高品質電話服務 ，讓您快速建立您的免費服務專線，使用VoiceIn內建 QR Code 掃瞄器 掃描，即可快速新增聯絡人</string>
     <string name="app_intro_icon_title">免app通話機制</string>
-    <string name="app_intro_icon_body">收到您 QR Code 名片的朋友，使用第三方 QR Code 掃瞄器 即可於手機主畫面建立通話捷徑，不需要安裝 app，朋友點擊該捷徑，即可利用您提供的個人免付費電話聯絡您</string>
+    <string name="app_intro_icon_body">收到您的 QR Code 名片的朋友，即可使用第三方 QR Code 掃描器，在主畫面新增捷徑。不需安裝 app，只需開啟該捷徑，即可利用您所提供的免費電話聯絡您</string>
     <string name="app_intro_contact_title">聯絡人管理</string>
     <string name="app_intro_contact_body">提供常用聯絡人、聯絡人分類，與搜尋聯絡人... 等貼心小功能，找尋聯絡人不再手忙腳亂</string>
     <string name="app_intro_time_title">可通話時段管理</string>

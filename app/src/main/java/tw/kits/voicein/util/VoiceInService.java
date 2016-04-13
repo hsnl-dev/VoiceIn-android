@@ -37,10 +37,10 @@ import tw.kits.voicein.model.VerifyForm;
  */
 public interface VoiceInService {
     @POST("api/v1/accounts/validations/")
-    Call<UserLoginRes> getRealCode(@Body HashMap<String, String> user);
+    Call<UserLoginRes> getvalidationCode(@Body HashMap<String, String> user);
 
     @POST("api/v1/sandboxs/accounts/validations/")
-    Call<UserLoginRes> getvalidationCode(@Body HashMap<String, String> user);
+    Call<UserLoginRes> getRealCode(@Body HashMap<String, String> user);
 
     @POST("api/v1/accounts/tokens/")
     Call<Token> getToken(@Body VerifyForm verifyInfo);

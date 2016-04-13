@@ -8,6 +8,7 @@ import com.github.paolorotolo.appintro.AppIntro;
 import com.github.paolorotolo.appintro.AppIntroFragment;
 
 import tw.kits.voicein.R;
+import tw.kits.voicein.fragment.AppFeatureFragment;
 
 /**
  * Created by Henry on 2016/4/12.
@@ -27,10 +28,11 @@ public class IntroActivity extends AppIntro {
 
         // Instead of fragments, you can also use our default slide
         // Just set a title, description, background and image. AppIntro will do the rest.
-        addSlide(AppIntroFragment.newInstance(getString(R.string.app_intro_080_title), getString(R.string.app_intro_080_body), R.drawable.feature1,Color.parseColor("#009688")));
-        addSlide(AppIntroFragment.newInstance(getString(R.string.app_intro_icon_title), getString(R.string.app_intro_icon_body), R.drawable.feature2,Color.parseColor("#00ACC1")));
-        addSlide(AppIntroFragment.newInstance(getString(R.string.app_intro_contact_title), getString(R.string.app_intro_contact_body), R.drawable.feature3,Color.parseColor("#7CB342")));
-        addSlide(AppIntroFragment.newInstance(getString(R.string.app_intro_time_title), getString(R.string.app_intro_time_body), R.drawable.feature4,Color.parseColor("#FFA000")));
+
+        addSlide(AppFeatureFragment.newInstance(getString(R.string.app_intro_080_title), getString(R.string.app_intro_080_body), R.drawable.feature1,Color.parseColor("#009688")));
+        addSlide(AppFeatureFragment.newInstance(getString(R.string.app_intro_icon_title), getString(R.string.app_intro_icon_body), R.drawable.feature2,Color.parseColor("#0097A7")));
+        addSlide(AppFeatureFragment.newInstance(getString(R.string.app_intro_contact_title), getString(R.string.app_intro_contact_body), R.drawable.feature3,Color.parseColor("#689F38")));
+        addSlide(AppFeatureFragment.newInstance(getString(R.string.app_intro_time_title), getString(R.string.app_intro_time_body), R.drawable.feature4,Color.parseColor("#F39E1C")));
 
         // OPTIONAL METHODS
         // Override bar/separator color.
@@ -43,7 +45,7 @@ public class IntroActivity extends AppIntro {
         setDoneText("開始使用");
         setProgressButtonEnabled(true);
 
-        setFlowAnimation();
+        setFadeAnimation();
 
         // Turn vibration on and set intensity.
         // NOTE: you will probably need to ask VIBRATE permisssion in Manifest.
