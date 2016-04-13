@@ -19,6 +19,10 @@ import tw.kits.voicein.model.CallForm;
 import tw.kits.voicein.model.Contact;
 import tw.kits.voicein.model.ContactAddEntity;
 import tw.kits.voicein.model.CustomerQRcodeForm;
+import tw.kits.voicein.model.Group;
+import tw.kits.voicein.model.GroupChangeEntity;
+import tw.kits.voicein.model.GroupInfoEntity;
+import tw.kits.voicein.model.GroupList;
 import tw.kits.voicein.model.Provider;
 import tw.kits.voicein.model.QRcode;
 import tw.kits.voicein.model.QRcodeContainer;
@@ -33,10 +37,10 @@ import tw.kits.voicein.model.VerifyForm;
  */
 public interface VoiceInService {
     @POST("api/v1/accounts/validations/")
-    Call<UserLoginRes> getRealCode(@Body HashMap<String, String> user);
+    Call<UserLoginRes> getvalidationCode(@Body HashMap<String, String> user);
 
     @POST("api/v1/sandboxs/accounts/validations/")
-    Call<UserLoginRes> getvalidationCode(@Body HashMap<String, String> user);
+    Call<UserLoginRes> getRealCode(@Body HashMap<String, String> user);
 
     @POST("api/v1/accounts/tokens/")
     Call<Token> getToken(@Body VerifyForm verifyInfo);
@@ -92,5 +96,21 @@ public interface VoiceInService {
 
     @DELETE("api/v1/accounts/{accountUuid}/customQrcodes/{qrCodeUuid}")
     Call<ResponseBody> delCustomQrcodes(@Path("accountUuid") String uuid, @Path("qrCodeUuid") String qrCodeUuid);
+
+    @GET("api/v1/accounts/{userUuid}/groups")
+    Call<GroupList> getAccountGroupList(@Path("userUuid") String uuid);
+
+    @GET("api/v1/accounts/{userUuid}/groups/{groupId}/contacts")
+    Call<List<Contact>> getGroupContactList(@Path("userUuid") String uuid,@Path("groupId") String gid);
+
+    @POST("api/v1/accounts/{userUuid}/groups")
+    Call<ResponseBody> createGroup(@Path("userUuid") String uuid, @Body GroupInfoEntity groupInfoEntity);
+
+    @PUT("api/v1/accounts/{userUuid}/groups/{gid}/contacts")
+    Call<ResponseBody> changeGroup(@Path("userUuid") String uuid, @Path("gid") String gid, @Body GroupChangeEntity groupInfoEntity, @Query("groupName") String groupName);
+
+    @DELETE("api/v1/accounts/{accountUuid}/groups/{groupUuid}")
+    Call<ResponseBody> delGroup(@Path("accountUuid") String uuid, @Path("groupUuid") String gid);
+
 }
 

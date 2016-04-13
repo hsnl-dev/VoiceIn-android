@@ -33,10 +33,10 @@ import tw.kits.voicein.util.ServiceConstant;
  */
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHolder> {
     List<Contact> mContacts;
-    Fragment mFragment;
-    CoordinatorLayout mLayout;
+    View mLayout;
     String mToken;
     String mUserUuid;
+    Context mContext;
     AdapterListener listListener;
     Picasso mImgLoader;
     private static final String TAG = ContactAdapter.class.getName();
@@ -57,8 +57,22 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
         mUserUuid = ((G8penApplication)fragment.getActivity().getApplication()).getUserUuid();
         mImgLoader = ((G8penApplication)fragment.getActivity().getApplication()).getImgLoader(fragment.getContext());
         mContacts = contacts;
-        mFragment = fragment;
+
+        mContext = fragment.getContext();
         mLayout = layout;
+    }
+    public ContactAdapter(List<Contact> contacts, Context context,String token, String uuid, Picasso imgloader,
+                          View layout) {
+        mToken = token;
+        mUserUuid = uuid;
+        mImgLoader = imgloader;
+        mContacts = contacts;
+        mContext = context;
+
+        mLayout = layout;
+    }
+    public List<Contact> getContacts(){
+        return this.mContacts;
     }
 
     @Override
@@ -80,14 +94,14 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
             holder.mName.setText(contact.getUserName());
 
         }else{
-            holder.mName.setText(mFragment.getString(R.string.no_name));
+            holder.mName.setText(mContext.getString(R.string.no_name));
         }
         if(contact.getCompany()!=null && !"".equals(contact.getCompany())){
             holder.mCompany.setText(contact.getCompany());
 
         }else{
 
-            holder.mCompany.setText(mFragment.getString(R.string.no_company));
+            holder.mCompany.setText(mContext.getString(R.string.no_company));
 
         }
 
@@ -107,9 +121,9 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
         });
 
         if(contact.getLike()){
-            holder.mImgFavorite.setColorFilter(ContextCompat.getColor(mFragment.getContext(),R.color.colorAccent));
+            holder.mImgFavorite.setColorFilter(ContextCompat.getColor(mContext,R.color.colorAccent));
         }else{
-            holder.mImgFavorite.setColorFilter(ContextCompat.getColor(mFragment.getContext(),R.color.divider));
+            holder.mImgFavorite.setColorFilter(ContextCompat.getColor(mContext,R.color.divider));
         }
         holder.mImgFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,9 +157,9 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        Drawable rejectIcon = ContextCompat.getDrawable(mFragment.getContext()
+        Drawable rejectIcon = ContextCompat.getDrawable(mContext
                 , R.drawable.ic_phone_locked_grey_600_36dp);
-        Drawable phoneIcon = ContextCompat.getDrawable(mFragment.getContext()
+        Drawable phoneIcon = ContextCompat.getDrawable(mContext
                 , R.drawable.ic_call_blue_grey_900_36dp);
 
         public TextView mName;
@@ -166,22 +180,22 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
             });
             switch (contact.getChargeType()){
                 case ChargeTypeConstant.FREE:
-                    mStatus.setText(mFragment.getString(R.string.free_charge));
+                    mStatus.setText(mContext.getString(R.string.free_charge));
                     break;
                 case ChargeTypeConstant.ICON:
-                    mStatus.setText(mFragment.getString(R.string.icon_charge));
+                    mStatus.setText(mContext.getString(R.string.icon_charge));
                     break;
                 case ChargeTypeConstant.CHARGE:
-                    mStatus.setText(mFragment.getString(R.string.must_charge));
+                    mStatus.setText(mContext.getString(R.string.must_charge));
                     break;
                 default:
-                    mStatus.setText(mFragment.getString(R.string.must_charge));
+                    mStatus.setText(mContext.getString(R.string.must_charge));
                     break;
             }
         }
         public void bindNegative(final AdapterListener listListener, final int position, final Contact contact){
             mImgCall.setImageDrawable(rejectIcon);
-            mStatus.setText(mFragment.getString(R.string.forbidden_call));
+            mStatus.setText(mContext.getString(R.string.forbidden_call));
             mImgCall.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

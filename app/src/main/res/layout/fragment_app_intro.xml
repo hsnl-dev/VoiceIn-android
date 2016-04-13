@@ -1,0 +1,41 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="@dimen/activity_horizontal_margin"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:layout_height="match_parent"
+    tools:context=".fragment.AppFeatureFragment"
+    android:id="@+id/app_intro_v_main">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:id="@+id/app_intro_tv_title"
+        android:textColor="@android:color/white"
+        style="@style/TextAppearance.AppCompat.Headline" />
+
+    <TextView
+        android:layout_width="255dp"
+        android:layout_marginTop="6dp"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:gravity="center"
+        android:id="@+id/app_intro_tv_body"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@android:color/white"
+
+        style="@style/TextAppearance.AppCompat.Subhead" />
+
+    <ImageView
+        android:layout_marginTop="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="373dp"
+        android:id="@+id/app_intro_img"
+         />
+</LinearLayout>
