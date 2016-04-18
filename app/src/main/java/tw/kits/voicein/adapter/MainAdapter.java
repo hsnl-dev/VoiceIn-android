@@ -43,6 +43,8 @@ public class MainAdapter extends FragmentPagerAdapter {
     public MainAdapter(FragmentManager manager, Context context){
         super(manager);
         fragments = new ArrayList<>();
+
+
         fragments.add(new ContactFragment());
         fragments.add(new FavoriteFragment());
         fragments.add(new RecordFragment());

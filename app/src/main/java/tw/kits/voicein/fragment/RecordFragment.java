@@ -12,14 +12,15 @@ import android.view.ViewGroup;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import tw.kits.voicein.G8penApplication;
 import tw.kits.voicein.R;
-import tw.kits.voicein.adapter.GroupAdapter;
 import tw.kits.voicein.adapter.RecordAdapter;
-import tw.kits.voicein.model.GroupList;
+import tw.kits.voicein.model.Record;
 import tw.kits.voicein.model.RecordList;
 import tw.kits.voicein.util.DividerItemDecoration;
 import tw.kits.voicein.util.SnackBarHelper;
@@ -35,7 +36,6 @@ public class RecordFragment extends Fragment {
     RecordAdapter mRecordAdapter;
     SwipeRefreshLayout mSwipeContainer;
     SnackBarHelper mSnackBarHelper;
-    static  final  int  ADD_GROUP = 689;
     public RecordFragment() {
         // Required empty public constructor
     }
@@ -47,16 +47,16 @@ public class RecordFragment extends Fragment {
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment_record, container, false);
-        mApiService = ((G8penApplication)getActivity().getApplication()).getAPIService();
+        mApiService = ((G8penApplication) getActivity().getApplication()).getAPIService();
 
-        mImgLoader = ((G8penApplication)getActivity().getApplication()).getImgLoader(this.getContext());
+        mImgLoader = ((G8penApplication) getActivity().getApplication()).getImgLoader(this.getContext());
         mMainView = view.findViewById(R.id.record_frag_cl_main);
-        mUserUuid =  ((G8penApplication)getActivity().getApplication()).getUserUuid();
-        mRview = (RecyclerView)view.findViewById(R.id.record_frag_rv_main);
+        mUserUuid = ((G8penApplication) getActivity().getApplication()).getUserUuid();
+        mRview = (RecyclerView) view.findViewById(R.id.record_frag_rv_main);
 
         mRview.setLayoutManager(new LinearLayoutManager(getContext()));
 //        mFab = (FloatingActionButton)view.findViewById(R.id.group_frag_fab_add);
-        mSwipeContainer = (SwipeRefreshLayout)view.findViewById(R.id.record_frag_sp_container);
+        mSwipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.record_frag_sp_container);
         mSwipeContainer.setRefreshing(true);
         refresh();
 //        mFab.setOnClickListener(new View.OnClickListener() {
@@ -80,22 +80,25 @@ public class RecordFragment extends Fragment {
         RecyclerView.ItemDecoration itemDecoration = new
                 DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST);
         mRview.addItemDecoration(itemDecoration);
-
-        mSnackBarHelper = new SnackBarHelper(mMainView,this.getContext());
+        mRecordAdapter = new RecordAdapter(new ArrayList<Record>(), mImgLoader, RecordFragment.this.getContext());
+        mRview.setAdapter(mRecordAdapter);
+        mSnackBarHelper = new SnackBarHelper(mMainView, this.getContext());
         return view;
     }
-    public void  refresh(){
+
+    public void refresh() {
 
 
-        mApiService.getRecords(mUserUuid,null).enqueue(new Callback<RecordList>() {
+        mApiService.getRecords(mUserUuid, null).enqueue(new Callback<RecordList>() {
             @Override
             public void onResponse(Call<RecordList> call, Response<RecordList> response) {
                 mSwipeContainer.setRefreshing(false);
-                if(response.isSuccess()){
-                    mRecordAdapter = new RecordAdapter(response.body().getRecords(),mImgLoader,RecordFragment.this.getContext());
-                    mRview.setAdapter(mRecordAdapter);
+                if (response.isSuccess()) {
+                    mRecordAdapter.clear();
+                    mRecordAdapter.addList(response.body().getRecords());
+                    mRecordAdapter.notifyDataSetChanged();
 
-                }else{
+                } else {
                     mSnackBarHelper.showSnackBar(response.code());
 
 
@@ -110,9 +113,6 @@ public class RecordFragment extends Fragment {
         });
 
     }
-
-
-
 
 
 }

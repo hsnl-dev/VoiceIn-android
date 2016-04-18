@@ -28,6 +28,12 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         this.mClickListener = clickListener;
 
     }
+    public void clear(){
+        groupList.clear();
+    }
+    public void addList(List<Group> group){
+        groupList.addAll(group);
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

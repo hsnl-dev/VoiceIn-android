@@ -49,6 +49,7 @@ public class Record {
     @SerializedName("contactId")
     @Expose
     private String contactId;
+    private Long reqTime;
 
     /**
      * @return The id
@@ -246,4 +247,11 @@ public class Record {
         this.contactId = contactId;
     }
 
+    public Long getReqTime() {
+        return reqTime;
+    }
+
+    public void setReqTime(Long reqTime) {
+        this.reqTime = reqTime;
+    }
 }

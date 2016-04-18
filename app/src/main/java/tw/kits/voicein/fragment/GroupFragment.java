@@ -59,12 +59,12 @@ public class GroupFragment extends Fragment implements GroupAdapter.OnClickListe
         mApiService = ((G8penApplication)getActivity().getApplication()).getAPIService();
         mMainView = view.findViewById(R.id.group_frag_cl_main);
         mUserUuid =  ((G8penApplication)getActivity().getApplication()).getUserUuid();
-        mRview = (RecyclerView)view.findViewById(R.id.group_frag_rv_main);
+        mRview = (RecyclerView)view.findViewById(R.id.group_frag_rv_items);
         mRview.setLayoutManager(new LinearLayoutManager(getContext()));
-        mFab = (FloatingActionButton)view.findViewById(R.id.group_frag_fab_add);
+        mFab = (FloatingActionButton)view.findViewById(R.id.group_frag_fab_plus);
         mSwipeContainer = (SwipeRefreshLayout)view.findViewById(R.id.group_frag_sp_container);
-        mSwipeContainer.setRefreshing(true);
-        refresh();
+
+
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,12 +72,7 @@ public class GroupFragment extends Fragment implements GroupAdapter.OnClickListe
                 startActivityForResult(i,ADD_GROUP);
             }
         });
-        mSwipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                refresh();
-            }
-        });
+
 
         mSwipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light,
@@ -88,6 +83,15 @@ public class GroupFragment extends Fragment implements GroupAdapter.OnClickListe
         mRview.addItemDecoration(itemDecoration);
 
         mSnackBarHelper = new SnackBarHelper(mMainView,this.getContext());
+        mSwipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refresh();
+            }
+        });
+        mGroupAdapter = new GroupAdapter(new ArrayList<Group>(),GroupFragment.this);
+        mRview.setAdapter(mGroupAdapter);
+        refresh();
         return view;
     }
     public void  refresh(){
@@ -98,8 +102,9 @@ public class GroupFragment extends Fragment implements GroupAdapter.OnClickListe
             public void onResponse(Call<GroupList> call, Response<GroupList> response) {
                 mSwipeContainer.setRefreshing(false);
                 if(response.isSuccess()){
-                    mGroupAdapter = new GroupAdapter(response.body().getGroups(),GroupFragment.this);
-                    mRview.setAdapter(mGroupAdapter);
+                    mGroupAdapter.clear();
+                    mGroupAdapter.addList(response.body().getGroups());
+                    mGroupAdapter.notifyDataSetChanged();
 
                 }else{
                     mSnackBarHelper.showSnackBar(response.code());

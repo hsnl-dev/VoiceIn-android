@@ -90,11 +90,14 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
 
 
         Context context = holder.mCircleImageView.getContext();
-        Picasso picasso = mImgLoader;
-        picasso.load(ServiceConstant.getAvatarById(contact.getProfilePhotoId(), ServiceConstant.PIC_SIZE_MID))
-                .noFade()
-                .placeholder(R.drawable.ic_person_white_48dp)
-                .into(holder.mCircleImageView);
+        if(contact.getProfilePhotoId()!=null) {
+            Picasso picasso = mImgLoader;
+            picasso.load(ServiceConstant.getAvatarById(contact.getProfilePhotoId(), ServiceConstant.PIC_SIZE_MID))
+                    .noFade()
+                    .placeholder(R.drawable.ic_person_white_48dp)
+                    .into(holder.mCircleImageView);
+        }
+
         holder.mItemLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
