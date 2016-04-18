@@ -26,6 +26,8 @@ import tw.kits.voicein.model.GroupList;
 import tw.kits.voicein.model.Provider;
 import tw.kits.voicein.model.QRcode;
 import tw.kits.voicein.model.QRcodeContainer;
+import tw.kits.voicein.model.Record;
+import tw.kits.voicein.model.RecordList;
 import tw.kits.voicein.model.Token;
 import tw.kits.voicein.model.UserInfo;
 import tw.kits.voicein.model.UserLoginRes;
@@ -111,6 +113,9 @@ public interface VoiceInService {
 
     @DELETE("api/v1/accounts/{accountUuid}/groups/{groupUuid}")
     Call<ResponseBody> delGroup(@Path("accountUuid") String uuid, @Path("groupUuid") String gid);
+
+    @GET("/api/v1/accounts/{accountUuid}/history")
+    Call<RecordList> getRecords(@Path("accountUuid") String uuid, @Query("timeStamp") Long timestamp);
 
 }
 

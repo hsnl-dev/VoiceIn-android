@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="76dp"
+    android:paddingBottom="8dp"
+    android:weightSum="1"
+    android:background="?attr/selectableItemBackground"
+    android:id="@+id/recordi_lo_item">
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/recordi_img_avatar"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ic_person_white_48dp"
+        app:civ_fill_color="@color/primary_light"
+        app:civ_border_width="1dp"
+        app:civ_border_color="@color/divider"
+        android:layout_marginLeft="16dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="72dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:id="@+id/linearLayout2"
+        android:layout_toStartOf="@+id/recordi_img_call"
+        android:layout_toLeftOf="@+id/recordi_img_call">
+        <TextView
+            android:id="@+id/recordi_tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/wait"
+            style="@style/Base.TextAppearance.AppCompat.Subhead"
+            android:maxLines="1" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/ic_call_made_blue_grey_700_18dp"
+                android:id="@+id/recordi_img_status" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="撥出"
+                android:id="@+id/recordi_tv_status"
+                style="@style/TextAppearance.AppCompat.Caption"
+                android:maxLines="1" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/recordi_tv_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Base.TextAppearance.AppCompat.Caption"
+            android:maxLines="1"
+            android:layout_alignParentBottom="true"
+            android:layout_alignLeft="@+id/linearLayout2"
+            android:layout_alignStart="@+id/linearLayout2" />
+
+    </LinearLayout>
+
+
+    <ImageView
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:id="@+id/recordi_img_call"
+        android:src="@drawable/ic_phone_primary_36dp"
+        android:layout_marginRight="16dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:contentDescription="Call"
+        android:background="?attr/selectableItemBackground"
+        android:padding="6dp" />
+
+</RelativeLayout>
