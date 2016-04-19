@@ -18,6 +18,7 @@ import tw.kits.voicein.R;
 import tw.kits.voicein.fragment.ContactFragment;
 import tw.kits.voicein.fragment.FavoriteFragment;
 import tw.kits.voicein.fragment.GroupFragment;
+import tw.kits.voicein.fragment.RecordFragment;
 import tw.kits.voicein.fragment.UnderDevelopFragment;
 
 /**
@@ -42,9 +43,11 @@ public class MainAdapter extends FragmentPagerAdapter {
     public MainAdapter(FragmentManager manager, Context context){
         super(manager);
         fragments = new ArrayList<>();
+
+
         fragments.add(new ContactFragment());
         fragments.add(new FavoriteFragment());
-        fragments.add(new UnderDevelopFragment());
+        fragments.add(new RecordFragment());
         fragments.add(new GroupFragment());
         this.context = context;
     }

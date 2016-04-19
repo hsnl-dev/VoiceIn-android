@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -136,7 +137,6 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
 
-
         refreshContact();
         return view;
     }
@@ -168,7 +168,7 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
 
                         } else {
                             Log.e(TAG, "Fial");
-                            Snackbar snack = Snackbar.make(mRefreshContainer, getResources().getString(R.string.user_auth_err), Snackbar.LENGTH_LONG);
+                            Snackbar snack = Snackbar.make(mMainLayout, getResources().getString(R.string.user_auth_err), Snackbar.LENGTH_LONG);
                             snack.show();
                         }
                     }
@@ -177,8 +177,8 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
                     public void onFailure(Call<List<Contact>> call, Throwable t) {
                         mRefreshContainer.setRefreshing(false);
                         Log.e(TAG, t.toString());
-                        Snackbar snack = Snackbar.make(mRefreshContainer, getResources().getString(R.string.network_err), Snackbar.LENGTH_LONG);
-                        ColoredSnackBar.primary(snack).show();
+                        Snackbar.make(mMainLayout, getResources().getString(R.string.network_err), Snackbar.LENGTH_INDEFINITE).show();
+
                     }
                 });
     }

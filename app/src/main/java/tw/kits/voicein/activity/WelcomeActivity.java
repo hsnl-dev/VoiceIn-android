@@ -5,20 +5,42 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 
 import io.fabric.sdk.android.Fabric;
 import tw.kits.voicein.G8penApplication;
 import tw.kits.voicein.R;
+import tw.kits.voicein.RegistrationIntentService;
 
 public class WelcomeActivity extends AppCompatActivity {
     private final String TAG = WelcomeActivity.class.getName();
+
+    private boolean checkPlayServices() {
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (apiAvailability.isUserResolvableError(resultCode)) {
+                apiAvailability.getErrorDialog(this, resultCode, 60000)
+                        .show();
+            } else {
+                Log.i(TAG, "This device is not supported.");
+                finish();
+            }
+            return false;
+        }
+        return true;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_welcome);
+
         new TimerAsync().execute(1000);
     }
     private class TimerAsync extends AsyncTask<Integer, Void, Void>{
@@ -40,6 +62,11 @@ public class WelcomeActivity extends AppCompatActivity {
                 startActivity(i);
 
             }else{
+                if (checkPlayServices()) {
+                    // Start IntentService to register this application with GCM.
+                    Intent intent = new Intent(WelcomeActivity.this, RegistrationIntentService.class);
+                    startService(intent);
+                }
                 Intent i = new Intent(WelcomeActivity.this, MainActivity.class);
                 startActivity(i);
             }
