@@ -19,6 +19,7 @@ import tw.kits.voicein.model.CallForm;
 import tw.kits.voicein.model.Contact;
 import tw.kits.voicein.model.ContactAddEntity;
 import tw.kits.voicein.model.CustomerQRcodeForm;
+import tw.kits.voicein.model.DeviceInfoEntity;
 import tw.kits.voicein.model.Group;
 import tw.kits.voicein.model.GroupChangeEntity;
 import tw.kits.voicein.model.GroupInfoEntity;
@@ -116,6 +117,9 @@ public interface VoiceInService {
 
     @GET("/api/v1/accounts/{accountUuid}/history")
     Call<RecordList> getRecords(@Path("accountUuid") String uuid, @Query("timeStamp") Long timestamp);
+
+    @PUT("api/v1/accounts/{accountUuid}/device")
+    Call<ResponseBody> updateDeviceId(@Path("accountUuid") String uuid, @Body DeviceInfoEntity deviceInfoEntity);
 
 }
 

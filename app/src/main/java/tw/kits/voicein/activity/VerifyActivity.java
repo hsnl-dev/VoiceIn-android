@@ -18,6 +18,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import tw.kits.voicein.G8penApplication;
 import tw.kits.voicein.R;
+import tw.kits.voicein.RegistrationIntentService;
 import tw.kits.voicein.fragment.ProgressFragment;
 import tw.kits.voicein.model.Token;
 import tw.kits.voicein.model.UserInfo;
@@ -153,7 +154,11 @@ public class VerifyActivity extends AppCompatActivity {
                 VerifyActivity.this.token = response.body().getToken();
                 mApplication.refreshAccessInfo(token, mUserUuid, mPhoneNumber);
                 mApiService = mApplication.getAPIService();
+
                 mApiService.getUser(VerifyActivity.this.mUserUuid).enqueue(userInfoCallBack);
+
+                Intent intent = new Intent(VerifyActivity.this, RegistrationIntentService.class);
+                startService(intent);
 
             } else {
                 //fail
