@@ -39,19 +39,19 @@ import tw.kits.voicein.model.VerifyForm;
  * Created by Henry on 2016/3/3.
  */
 public interface VoiceInService {
-    @POST("api/v1/accounts/validations/")
+    @POST("api/v2/accounts/validations/")
     Call<UserLoginRes> getvalidationCode(@Body HashMap<String, String> user);
 
-    @POST("api/v1/sandboxs/accounts/validations/")
+    @POST("api/v2/sandboxs/accounts/validations/")
     Call<UserLoginRes> getRealCode(@Body HashMap<String, String> user);
 
-    @POST("api/v1/accounts/tokens/")
+    @POST("api/v2/accounts/tokens/")
     Call<Token> getToken(@Body VerifyForm verifyInfo);
 
-    @PUT("api/v1/accounts/{userUuid}")
+    @PUT("api/v2/accounts/{userUuid}")
     Call<ResponseBody> updateProfile(@Body UserUpdateForm profile, @Path("userUuid") String userUuid);
 
-    @GET("api/v1/accounts/{userUuid}")
+    @GET("api/v2/accounts/{userUuid}")
     Call<UserInfo> getUser(@Path("userUuid") String userUuid);
 
     @GET("api/v2/accounts/{userUuid}/contacts")
@@ -61,16 +61,16 @@ public interface VoiceInService {
     Call<List<Contact>> getFavoriteContacts(@Path("userUuid") String userUuid);
 
     @Multipart
-    @POST("api/v1/accounts/{userUuid}/avatar")
+    @POST("api/v2/accounts/{userUuid}/avatar")
     Call<ResponseBody> uploadAvatar(@Path("userUuid") String userUuid, @Part("photo") RequestBody file);
 
-    @POST("api/v1/accounts/{userUuid}/qrcode")
+    @POST("api/v2/accounts/{userUuid}/qrcode")
     Call<ResponseBody> setQRcode(@Path("userUuid") String userUuid);
 
-    @GET("api/v1/providers/{qrcodeId}")
+    @GET("api/v2/providers/{qrcodeId}")
     Call<Provider> getProvider(@Path("qrcodeId") String qrcodeId);
 
-    @POST("api/v1/accounts/{userUuid}/contacts/{qrCodeUuid}")
+    @POST("api/v2/accounts/{userUuid}/contacts/{qrCodeUuid}")
     Call<ResponseBody> addContactByQrcode(@Path("userUuid") String userUuid, @Path("qrCodeUuid") String qrCodeuid, @Body ContactAddEntity entity);
 
 
@@ -91,34 +91,34 @@ public interface VoiceInService {
     @POST("api/v2/accounts/{userUuid}/calls/")
     Call<ResponseBody> createCall(@Path("userUuid") String userUuid, @Body CallForm form);
 
-    @POST("api/v1/accounts/{accountUuid}/customQrcodes/")
+    @POST("api/v2/accounts/{accountUuid}/customQrcodes/")
     Call<ResponseBody> createcustomQrcodes(@Path("accountUuid") String uuid, @Body CustomerQRcodeForm form);
 
-    @GET("api/v1/accounts/{accountUuid}/customQrcodes/")
+    @GET("api/v2/accounts/{accountUuid}/customQrcodes/")
     Call<QRcodeContainer> getCustomQrcodes(@Path("accountUuid") String uuid);
 
-    @DELETE("api/v1/accounts/{accountUuid}/customQrcodes/{qrCodeUuid}")
+    @DELETE("api/v2/accounts/{accountUuid}/customQrcodes/{qrCodeUuid}")
     Call<ResponseBody> delCustomQrcodes(@Path("accountUuid") String uuid, @Path("qrCodeUuid") String qrCodeUuid);
 
-    @GET("api/v1/accounts/{userUuid}/groups")
+    @GET("api/v2/accounts/{userUuid}/groups")
     Call<GroupList> getAccountGroupList(@Path("userUuid") String uuid);
 
-    @GET("api/v1/accounts/{userUuid}/groups/{groupId}/contacts")
+    @GET("api/v2/accounts/{userUuid}/groups/{groupId}/contacts")
     Call<List<Contact>> getGroupContactList(@Path("userUuid") String uuid,@Path("groupId") String gid);
 
-    @POST("api/v1/accounts/{userUuid}/groups")
+    @POST("api/v2/accounts/{userUuid}/groups")
     Call<ResponseBody> createGroup(@Path("userUuid") String uuid, @Body GroupInfoEntity groupInfoEntity);
 
-    @PUT("api/v1/accounts/{userUuid}/groups/{gid}/contacts")
+    @PUT("api/v2/accounts/{userUuid}/groups/{gid}/contacts")
     Call<ResponseBody> changeGroup(@Path("userUuid") String uuid, @Path("gid") String gid, @Body GroupChangeEntity groupInfoEntity, @Query("groupName") String groupName);
 
-    @DELETE("api/v1/accounts/{accountUuid}/groups/{groupUuid}")
+    @DELETE("api/v2/accounts/{accountUuid}/groups/{groupUuid}")
     Call<ResponseBody> delGroup(@Path("accountUuid") String uuid, @Path("groupUuid") String gid);
 
-    @GET("/api/v1/accounts/{accountUuid}/history")
+    @GET("/api/v2/accounts/{accountUuid}/history")
     Call<RecordList> getRecords(@Path("accountUuid") String uuid, @Query("timeStamp") Long timestamp);
 
-    @PUT("api/v1/accounts/{accountUuid}/device")
+    @PUT("api/v2/accounts/{accountUuid}/device")
     Call<ResponseBody> updateDeviceId(@Path("accountUuid") String uuid, @Body DeviceInfoEntity deviceInfoEntity);
 
 }

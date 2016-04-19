@@ -12,6 +12,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.google.android.gms.gcm.GcmListenerService;
 
@@ -23,11 +24,10 @@ public class GcmMessageHandler extends GcmListenerService {
     @Override
     public void onMessageReceived(String from, Bundle data) {
         String message = data.getString("message");
+        Log.e("message", "onMessageReceived() returned: " + message);
         if(message.startsWith("#call#"))
-            createNotification(from, message);
-        else{
+            createNotification(from, message.replace("#call#",""));
 
-        }
     }
 
     // Creates notification based on title and body received
@@ -38,7 +38,7 @@ public class GcmMessageHandler extends GcmListenerService {
         showDialog(title, body);
     }
 
-    public void showDialog(String title, String message) {
+    public void showDialog(String title, final String message) {
 
 
 
@@ -58,7 +58,8 @@ public class GcmMessageHandler extends GcmListenerService {
                     params.setTitle("Load Average");
                     final WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
                     final View view = ((LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE)).inflate(R.layout.alert_layout,null);
-
+                    TextView text = (TextView) view.findViewById(R.id.alert_tv_status);
+                    text.setText(message);
                     view.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {

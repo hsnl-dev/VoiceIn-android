@@ -49,7 +49,7 @@ public class RegistrationIntentService extends IntentService {
         String userUuid = ((G8penApplication)getApplication()).getUserUuid();
         DeviceInfoEntity infoEntity = new DeviceInfoEntity();
         infoEntity.setDeviceOS("android");
-        infoEntity.setDeviceId(token);
+        infoEntity.setDeviceKey(token);
         ((G8penApplication)getApplication()).getAPIService().updateDeviceId(userUuid,infoEntity).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

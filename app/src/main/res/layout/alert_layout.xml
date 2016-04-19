@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="姓名"
+            android:text="Voice 來電"
             android:layout_marginBottom="8dp"
             android:id="@+id/alert_tv_name"
             android:textColor="@color/primaryText"
@@ -28,6 +28,16 @@
             android:id="@+id/alert_tv_status"
             android:textColor="@color/primaryText"
             style="@style/TextAppearance.AppCompat.Body1" />
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Caption"
+            android:layout_marginTop="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="點擊此處，關閉來電顯示"
+            android:id="@+id/textView9"
+            android:textColor="@color/primaryText"
+            android:layout_gravity="right" />
     </LinearLayout>
 
 </LinearLayout>
