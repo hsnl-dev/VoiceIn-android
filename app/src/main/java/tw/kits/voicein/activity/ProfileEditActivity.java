@@ -49,6 +49,8 @@ public class ProfileEditActivity extends AppCompatActivity {
     private EditText company;
     private EditText location;
     private EditText introduction;
+    private EditText email;
+    private EditText jobTitle;
     private TextView phone;
     private TextView availableStime;
     private TextView availableEtime;
@@ -66,6 +68,8 @@ public class ProfileEditActivity extends AppCompatActivity {
         service =((G8penApplication)getApplication()).getAPIService();
         mImgLoader = ((G8penApplication)getApplication()).getImgLoader(this);
         name = (EditText) findViewById(R.id.profile_edit_et_name);
+        email = (EditText) findViewById(R.id.profile_edit_et_mail);
+        jobTitle = (EditText) findViewById(R.id.profile_edit_et_jt);
         company = (EditText) findViewById(R.id.profile_edit_et_com);
         location = (EditText) findViewById(R.id.profile_edit_et_loc);
         introduction = (EditText) findViewById(R.id.profile_edit_et_intro);
@@ -148,7 +152,8 @@ public class ProfileEditActivity extends AppCompatActivity {
         location.setText(user.getLocation());
         company.setText(user.getCompany());
         introduction.setText(user.getProfile());
-
+        email.setText(user.getEmail());
+        jobTitle.setText(user.getJobTitle());
         phone.setText(user.getPhoneNumber());
         availableStime.setText(user.getAvailableStartTime());
         availableEtime.setText(user.getAvailableEndTime());
@@ -253,7 +258,9 @@ public class ProfileEditActivity extends AppCompatActivity {
         form.setLocation(location.getText().toString());
         form.setProfile(introduction.getText().toString());
         form.setUserName(name.getText().toString());
-        form.setPhoneNumber(phone.getText().toString());
+        form.setPhoneNumber("+886"+phone.getText().toString());
+        form.setJobTitle(jobTitle.getText().toString());
+        form.setEmail(email.getText().toString());
         return form;
     }
 

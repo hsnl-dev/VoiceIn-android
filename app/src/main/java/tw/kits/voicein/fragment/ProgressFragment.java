@@ -22,7 +22,7 @@ public class ProgressFragment extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        ProgressDialog dialog = new ProgressDialog(getActivity(), getTheme());
+        ProgressDialog dialog = new ProgressDialog(getActivity());
         dialog.setTitle(getString(R.string.wait));
         dialog.setMessage(getString(R.string.wait_notice));
         dialog.setIndeterminate(true);

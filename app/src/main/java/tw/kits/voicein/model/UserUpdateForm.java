@@ -5,6 +5,8 @@ public class UserUpdateForm {
 
     private String userName;
     private String phoneNumber;
+    private String jobTitle;
+    private String email;
     private String profile;
     private String location;
     private String company;
@@ -101,5 +103,21 @@ public class UserUpdateForm {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getJobTitle() {
+        return jobTitle;
+    }
+
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle = jobTitle;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

@@ -1,176 +1,233 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:id="@+id/contact_add_lo_main"
-    tools:context="layout.ContactEditFragment"
-
-    android:orientation="vertical"
-    android:weightSum="1">
-
-
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="212dp"
-        android:background="@drawable/personal_profile_background"
-        android:padding="@dimen/activity_horizontal_margin"
-        >
-        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/my_card_img_avatar"
-            android:layout_width="96dp"
-            android:layout_height="96dp"
-            android:src="@drawable/ic_user_placeholder"
-            app:civ_fill_color="@color/accent"
-            app:civ_border_width="2dp"
-            app:civ_border_color="@android:color/white"
-            android:layout_gravity="center_horizontal"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+        android:id="@+id/contact_add_lo_main"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/primary_light"
+        android:orientation="vertical"
+        android:scrollbarStyle="insideInset"
+        android:weightSum="1">
 
-        <LinearLayout
-            android:orientation="vertical"
+        <android.support.v7.widget.CardView
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:id="@+id/my_card_cv_custom_sec"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingLeft="@dimen/activity_horizontal_margin">
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            >
 
-            <LinearLayout
-                android:orientation="vertical"
+
+            <RelativeLayout
+                android:id="@+id/my_card_rl_custom_sec"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/my_card_ly_name"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp">
+                android:orientation="horizontal"
+                android:background="?attr/selectableItemBackground"
+                android:padding="@dimen/activity_horizontal_margin">
+
+                <ImageView
+                    android:id="@+id/my_card_img_custom_sec"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginRight="16dp"
+                    android:src="@drawable/ic_qrcode_white_48dp"
+                    android:tint="?attr/colorPrimary" />
 
                 <TextView
+                    android:id="@+id/my_card_tv_custom_sec_title"
+                    style="@style/Base.TextAppearance.AppCompat.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/my_card_img_custom_sec"
+                    android:layout_toRightOf="@+id/my_card_img_custom_sec"
+                    android:text="@string/custom_qrcode_intro" />
+
+                <TextView
+                    android:id="@+id/my_card_tv_custom_sec_body"
                     style="@style/TextAppearance.AppCompat.Caption"
                     android:layout_width="wrap_content"
-
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/user_name"
-                    android:id="@+id/my_card_tv_namecap"
-                    android:allowUndo="true" />
+                    android:layout_alignLeft="@+id/my_card_tv_custom_sec_title"
+                    android:layout_alignStart="@+id/my_card_tv_custom_sec_title"
+                    android:layout_below="@+id/my_card_tv_custom_sec_title"
+                    android:text="@string/custom_qrcode_desc" />
 
-                <TextView
+                <ImageView
+                    android:id="@+id/imageView3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:id="@+id/my_card_tv_name" />
-                <View
-                    android:layout_width="fill_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/divider" />
-            </LinearLayout>
+                    android:layout_above="@+id/my_card_tv_custom_sec_body"
+                    android:layout_alignEnd="@+id/my_card_tv_custom_sec_body"
+                    android:layout_alignRight="@+id/my_card_tv_custom_sec_body"
+                    android:src="@drawable/ic_keyboard_arrow_right_grey_600_24dp" />
+
+
+            </RelativeLayout>
+
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/my_card_cv_profile_sec"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp">
+
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/my_card_ly_loc"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp">
+                android:orientation="vertical">
 
-                <TextView
-                    style="@style/TextAppearance.AppCompat.Caption"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
+                    android:background="@color/colorPrimaryDark"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    >
 
+                    <ImageView
+                        android:id="@+id/my_card_img_qrcode"
+                        android:layout_width="128dp"
+                        android:layout_height="128dp"
+                        android:src="@drawable/preload"
+                        android:layout_gravity="center_horizontal" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/location"
-                    android:id="@+id/my_card_tv_loccap"
-                    android:allowUndo="true" />
+                    android:padding="@dimen/activity_vertical_margin">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+
+                        android:id="@+id/my_card_img_avatar"
+                        android:layout_width="96dp"
+                        android:layout_height="96dp"
+                        android:src="@drawable/ic_user_placeholder"
+                        app:civ_border_color="@android:color/white"
+                        app:civ_border_width="2dp"
+                        app:civ_fill_color="@color/accent"
+
+                        />
+
+
+
+                    <LinearLayout
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingLeft="@dimen/activity_horizontal_margin">
+
+                        <TextView
+                            android:id="@+id/my_card_tv_name"
+                            style="@style/TextAppearance.AppCompat.Title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="張文榮"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                        <TextView
+                            android:id="@+id/my_card_tv_job_title"
+                            style="@style/TextAppearance.AppCompat.Body1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="研究生" />
+
+                        <TextView
+                            android:id="@+id/my_card_tv_com"
+                            style="@style/TextAppearance.AppCompat.Body1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="高速網路實驗室" />
+
+                        <TextView
+                            android:id="@+id/my_card_tv_loc"
+                            style="@style/TextAppearance.AppCompat.Caption"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="台灣，新竹市" />
+
+                        <TextView
+                            android:id="@+id/my_card_tv_email"
+                            style="@style/TextAppearance.AppCompat.Caption"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="Email: qoo392@hotmail.com" />
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:id="@+id/my_card_tv_loc" />
+                    android:gravity="right">
+
+                    <Button
+                        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/action_share"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:id="@+id/my_card_btn_share" />
+
+
+                </LinearLayout>
                 <View
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/divider" />
-            </LinearLayout>
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/my_card_ly_com"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
-                android:background="#1e8d6e63">
+                    android:background="@color/divider"/>
+                <LinearLayout
 
-                <TextView
-                    style="@style/TextAppearance.AppCompat.Caption"
-                    android:textColor="@android:color/white"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/company"
-                    android:id="@+id/my_card_tv_comcap"
-                    android:allowUndo="true"
-                    android:alpha="1" />
+                    android:showDividers="middle|beginning|end"
 
-                <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:id="@+id/my_card_tv_com" />
-                <View
-                    android:layout_width="fill_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/divider" />
+                    android:orientation="vertical"
+                    android:padding="@dimen/activity_horizontal_margin">
+
+
+                    <TextView
+                        style="@style/TextAppearance.AppCompat.Title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/profile"
+                        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+
+                    <ScrollView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/my_card_tv_profile"
+                            style="@style/TextAppearance.AppCompat.Body1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/wait" />
+                    </ScrollView>
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
+
+
+        </android.support.v7.widget.CardView>
 
 
     </LinearLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="@dimen/activity_horizontal_margin">
-        <ImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/my_card_img_qrcode"
-            android:layout_width="128dp"
-            android:layout_height="128dp"
-            android:src="@drawable/ic_face_white_24dp"
+</ScrollView>
 
-            android:layout_gravity="bottom"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
-
-        <TextView
-            style="@style/TextAppearance.AppCompat.Caption"
-            android:textColor="@android:color/white"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="@string/profile"
-            android:id="@+id/textView5"
-            android:allowUndo="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
-        <ScrollView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/scrollView"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/textView5"
-            android:layout_toLeftOf="@+id/my_card_img_qrcode"
-            android:layout_toStartOf="@+id/my_card_img_qrcode"
-            android:layout_alignParentBottom="true" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/wait"
-                android:id="@+id/my_card_tv_profile" />
-        </ScrollView>
-
-
-    </RelativeLayout>
-</LinearLayout>
