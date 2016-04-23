@@ -116,7 +116,7 @@ public class MyCardActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<UserInfo> call, Throwable t) {
-
+                progressFragment.dismiss();
             }
         });
 

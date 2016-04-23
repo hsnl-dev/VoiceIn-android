@@ -1,9 +1,7 @@
 package tw.kits.voicein.activity;
 
 import android.content.Intent;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,10 +26,8 @@ import tw.kits.voicein.model.CallForm;
 import tw.kits.voicein.model.Contact;
 import tw.kits.voicein.model.ContactList;
 import tw.kits.voicein.model.Group;
-import tw.kits.voicein.model.GroupList;
-import tw.kits.voicein.util.ColoredSnackBar;
 import tw.kits.voicein.util.DividerItemDecoration;
-import tw.kits.voicein.util.SnackBarHelper;
+import tw.kits.voicein.util.SnackBarUtil;
 import tw.kits.voicein.util.VoiceInService;
 
 public class GroupActivity extends AppCompatActivity {
@@ -51,7 +47,7 @@ public class GroupActivity extends AppCompatActivity {
     String mToken;
     ContactAdapter mAdapter;
     ProgressFragment mProgressDialog;
-    SnackBarHelper helper;
+    SnackBarUtil helper;
     Group mGroup;
     ContactAdapter.AdapterListener mlistListener;
     SwipeRefreshLayout mRefreshContainer;
@@ -71,7 +67,7 @@ public class GroupActivity extends AppCompatActivity {
         mMainView = findViewById(R.id.group_cl_main);
         mListView.setLayoutManager(new LinearLayoutManager(this));
         mProgressDialog = new ProgressFragment();
-        helper = new SnackBarHelper(mMainView, this);
+        helper = new SnackBarUtil(mMainView, this);
         helper.setErrorMessage(403, getString(R.string.forbidden_call_hint));
         getSupportActionBar().setTitle(mGName);
         RecyclerView.ItemDecoration itemDecoration = new
@@ -163,12 +159,12 @@ public class GroupActivity extends AppCompatActivity {
         @Override
         public void onFailure(Call<ResponseBody> call, Throwable t) {
             mProgressDialog.dismiss();
-            helper.showSnackBar(SnackBarHelper.NETWORK_ERR);
+            helper.showSnackBar(SnackBarUtil.NETWORK_ERR);
         }
     }
     public void refresh(){
 
-        final SnackBarHelper helper = new SnackBarHelper(mMainView,this);
+        final SnackBarUtil helper = new SnackBarUtil(mMainView,this);
         mApiService.getGroupContactList(mUserUuid,mGid).enqueue(new Callback<List<Contact>>() {
             @Override
             public void onResponse(Call<List<Contact>> call, Response<List<Contact>> response) {
@@ -185,7 +181,7 @@ public class GroupActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<List<Contact>> call, Throwable t) {
                 mRefreshContainer.setRefreshing(false);
-                helper.showSnackBar(SnackBarHelper.NETWORK_ERR);
+                helper.showSnackBar(SnackBarUtil.NETWORK_ERR);
             }
         });
 
@@ -204,7 +200,7 @@ public class GroupActivity extends AppCompatActivity {
         @Override
         public void onFailure(Call<ResponseBody> call, Throwable t) {
             mProgressDialog.dismiss();
-            helper.showSnackBar(SnackBarHelper.NETWORK_ERR);
+            helper.showSnackBar(SnackBarUtil.NETWORK_ERR);
         }
     }
 

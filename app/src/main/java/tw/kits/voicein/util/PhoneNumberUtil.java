@@ -3,7 +3,7 @@ package tw.kits.voicein.util;
 /**
  * Created by Henry on 2016/3/27.
  */
-public class PhoneNumberHelper {
+public class PhoneNumberUtil {
     private static final String TAIWAN_NATION_CODE = "+886";
     public static boolean isValid(String phoneNumber){
         if(phoneNumber.startsWith("0") && phoneNumber.length()==10){

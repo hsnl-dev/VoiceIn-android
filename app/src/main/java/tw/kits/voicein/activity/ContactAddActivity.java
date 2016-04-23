@@ -24,7 +24,7 @@ import tw.kits.voicein.G8penApplication;
 import tw.kits.voicein.R;
 import tw.kits.voicein.model.ContactAddEntity;
 import tw.kits.voicein.model.Provider;
-import tw.kits.voicein.util.ColoredSnackBar;
+import tw.kits.voicein.util.ColoredSnackBarUtil;
 import tw.kits.voicein.util.ServiceConstant;
 import tw.kits.voicein.util.VoiceInService;
 
@@ -87,15 +87,15 @@ public class ContactAddActivity extends AppCompatActivity {
 
                         case 404:
                             bar = Snackbar.make(mLayout, getResources().getString(R.string.user_not_found), Snackbar.LENGTH_SHORT);
-                            ColoredSnackBar.primary(bar).show();
+                            ColoredSnackBarUtil.primary(bar).show();
                             break;
                         case 401:
                             bar = Snackbar.make(mLayout, getResources().getString(R.string.user_not_auth), Snackbar.LENGTH_SHORT);
-                            ColoredSnackBar.primary(bar).show();
+                            ColoredSnackBarUtil.primary(bar).show();
                             break;
                         default:
                             bar = Snackbar.make(mLayout, getResources().getString(R.string.server_err), Snackbar.LENGTH_SHORT);
-                            ColoredSnackBar.primary(bar).show();
+                            ColoredSnackBarUtil.primary(bar).show();
 
                     }
 
@@ -107,7 +107,7 @@ public class ContactAddActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Provider> call, Throwable t) {
                 Snackbar bar = Snackbar.make(mLayout, getResources().getString(R.string.network_err), Snackbar.LENGTH_SHORT);
-                ColoredSnackBar.primary(bar).show();
+                ColoredSnackBarUtil.primary(bar).show();
             }
         });
 
@@ -162,17 +162,17 @@ public class ContactAddActivity extends AppCompatActivity {
                                 Log.w(TAG, response.code() + "");
                                 switch (response.code()) {
                                     case 304:
-                                        ColoredSnackBar
+                                        ColoredSnackBarUtil
                                                 .primary(Snackbar.make(layout, R.string.user_have_added, Snackbar.LENGTH_INDEFINITE))
                                                 .show();
                                         break;
                                     case 401:
-                                        ColoredSnackBar
+                                        ColoredSnackBarUtil
                                                 .primary(Snackbar.make(layout, R.string.user_not_auth, Snackbar.LENGTH_INDEFINITE))
                                                 .show();
                                         break;
                                     default:
-                                        ColoredSnackBar
+                                        ColoredSnackBarUtil
                                                 .primary(Snackbar.make(layout, R.string.server_err, Snackbar.LENGTH_INDEFINITE))
                                                 .show();
 
@@ -184,7 +184,7 @@ public class ContactAddActivity extends AppCompatActivity {
 
                         @Override
                         public void onFailure(Call<ResponseBody> call, Throwable t) {
-                            ColoredSnackBar
+                            ColoredSnackBarUtil
                                     .primary(Snackbar.make(layout, R.string.network_err, Snackbar.LENGTH_INDEFINITE))
                                     .show();
                             Log.w(TAG, t.toString());

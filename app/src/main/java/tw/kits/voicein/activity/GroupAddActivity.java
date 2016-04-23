@@ -1,6 +1,5 @@
 package tw.kits.voicein.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -8,15 +7,11 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -32,7 +27,7 @@ import tw.kits.voicein.model.ContactList;
 import tw.kits.voicein.model.Group;
 import tw.kits.voicein.model.GroupChangeEntity;
 import tw.kits.voicein.model.GroupInfoEntity;
-import tw.kits.voicein.util.SnackBarHelper;
+import tw.kits.voicein.util.SnackBarUtil;
 import tw.kits.voicein.util.VoiceInService;
 
 public class GroupAddActivity extends AppCompatActivity {
@@ -47,7 +42,7 @@ public class GroupAddActivity extends AppCompatActivity {
     VoiceInService mAPIService;
     String mUserUuid;
     MemberAdapter mAdapter;
-    SnackBarHelper mSnackBarHelper;
+    SnackBarUtil mSnackBarHelper;
     ProgressFragment mProgressFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +58,7 @@ public class GroupAddActivity extends AppCompatActivity {
         mMainView = findViewById(R.id.group_add_ll_main);
         mMemberListView = (RecyclerView) findViewById(R.id.group_add_rl_contact_list);
         mMemberListView.setLayoutManager(new LinearLayoutManager(this));
-        mSnackBarHelper = new SnackBarHelper(mMainView,this);
+        mSnackBarHelper = new SnackBarUtil(mMainView,this);
 
 
         mAPIService.getContacts(mUserUuid).enqueue(new Callback<List<Contact>>() {
@@ -87,7 +82,7 @@ public class GroupAddActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<List<Contact>> call, Throwable t) {
                 mProgressFragment.dismiss();
-                mSnackBarHelper.showSnackBar(SnackBarHelper.NETWORK_ERR);
+                mSnackBarHelper.showSnackBar(SnackBarUtil.NETWORK_ERR);
             }
         });
         if(mGroup!=null){
@@ -146,7 +141,7 @@ public class GroupAddActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                mSnackBarHelper.showSnackBar(SnackBarHelper.NETWORK_ERR);
+                mSnackBarHelper.showSnackBar(SnackBarUtil.NETWORK_ERR);
 
             }
         };

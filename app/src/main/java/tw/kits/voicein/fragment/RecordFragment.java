@@ -23,7 +23,7 @@ import tw.kits.voicein.adapter.RecordAdapter;
 import tw.kits.voicein.model.Record;
 import tw.kits.voicein.model.RecordList;
 import tw.kits.voicein.util.DividerItemDecoration;
-import tw.kits.voicein.util.SnackBarHelper;
+import tw.kits.voicein.util.SnackBarUtil;
 import tw.kits.voicein.util.VoiceInService;
 
 public class RecordFragment extends Fragment {
@@ -35,7 +35,7 @@ public class RecordFragment extends Fragment {
     Picasso mImgLoader;
     RecordAdapter mRecordAdapter;
     SwipeRefreshLayout mSwipeContainer;
-    SnackBarHelper mSnackBarHelper;
+    SnackBarUtil mSnackBarHelper;
     public RecordFragment() {
         // Required empty public constructor
     }
@@ -82,7 +82,7 @@ public class RecordFragment extends Fragment {
         mRview.addItemDecoration(itemDecoration);
         mRecordAdapter = new RecordAdapter(new ArrayList<Record>(), mImgLoader, RecordFragment.this.getContext());
         mRview.setAdapter(mRecordAdapter);
-        mSnackBarHelper = new SnackBarHelper(mMainView, this.getContext());
+        mSnackBarHelper = new SnackBarUtil(mMainView, this.getContext());
         return view;
     }
 
@@ -108,7 +108,7 @@ public class RecordFragment extends Fragment {
             @Override
             public void onFailure(Call<RecordList> call, Throwable t) {
                 mSwipeContainer.setRefreshing(false);
-                mSnackBarHelper.showSnackBar(SnackBarHelper.NETWORK_ERR);
+                mSnackBarHelper.showSnackBar(SnackBarUtil.NETWORK_ERR);
             }
         });
 

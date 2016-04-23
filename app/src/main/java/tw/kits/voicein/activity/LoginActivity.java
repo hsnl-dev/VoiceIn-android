@@ -20,8 +20,8 @@ import tw.kits.voicein.G8penApplication;
 import tw.kits.voicein.R;
 import tw.kits.voicein.fragment.ProgressFragment;
 import tw.kits.voicein.model.UserLoginRes;
-import tw.kits.voicein.util.ColoredSnackBar;
-import tw.kits.voicein.util.PhoneNumberHelper;
+import tw.kits.voicein.util.ColoredSnackBarUtil;
+import tw.kits.voicein.util.PhoneNumberUtil;
 import tw.kits.voicein.util.VoiceInService;
 
 public class LoginActivity extends AppCompatActivity {
@@ -70,14 +70,14 @@ public class LoginActivity extends AppCompatActivity {
     private class ConfirmClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            if(!PhoneNumberHelper.isValid(phoneNum.getText().toString())){
+            if(!PhoneNumberUtil.isValid(phoneNum.getText().toString())){
                 phoneNum.setError(getString(R.string.ilegal_input));
                 return;
             }
             mDialog.show(getSupportFragmentManager(),WAIT_TAG);
             HashMap<String, String> res = new HashMap<>();
 
-            final String standardNum =PhoneNumberHelper.getStandardNumber(phoneNum.getText().toString());
+            final String standardNum = PhoneNumberUtil.getStandardNumber(phoneNum.getText().toString());
             res.put("phoneNumber", standardNum);
             Call<UserLoginRes> call = mService.getvalidationCode(res);
             call.enqueue(new Callback<UserLoginRes>() {
@@ -106,7 +106,7 @@ public class LoginActivity extends AppCompatActivity {
                 public void onFailure(Call<UserLoginRes> call, Throwable t) {
                     mDialog.dismiss();
                     Log.e(TAG, t.toString());
-                    ColoredSnackBar
+                    ColoredSnackBarUtil
                             .primary(Snackbar.make(mlayout, mContext.getString(R.string.network_err), Snackbar.LENGTH_LONG))
                             .show();
                 }

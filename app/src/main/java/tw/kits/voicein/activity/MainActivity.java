@@ -85,13 +85,28 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.main_menu, menu);
         mMenu = menu;
+        View v = mMenu.findItem(R.id.main_menu_inbox).getActionView();
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e(TAG, "onOptionsItemSelected: " );
+                Intent event = new Intent(MainActivity.this, EventActivity.class);
+                startActivity(event);
+            }
+        });
 
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Log.e(TAG, "onOptionsItemSelected: " );
         switch (item.getItemId()) {
+            case R.id.main_menu_inbox:
+                Log.e(TAG, "onOptionsItemSelected: " );
+                Intent event = new Intent(this, EventActivity.class);
+                startActivity(event);
+                break;
             case R.id.main_menu_card:
                 Intent i = new Intent(this,MyCardActivity.class);
                 startActivity(i);

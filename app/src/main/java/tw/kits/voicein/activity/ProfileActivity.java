@@ -29,8 +29,8 @@ import tw.kits.voicein.R;
 import tw.kits.voicein.fragment.ProgressFragment;
 import tw.kits.voicein.model.UserInfo;
 import tw.kits.voicein.model.UserUpdateForm;
-import tw.kits.voicein.util.AvatarEditHelper;
-import tw.kits.voicein.util.ColoredSnackBar;
+import tw.kits.voicein.util.AvatarEditUtil;
+import tw.kits.voicein.util.ColoredSnackBarUtil;
 import tw.kits.voicein.util.ServiceConstant;
 import tw.kits.voicein.util.VoiceInService;
 
@@ -53,7 +53,7 @@ public class ProfileActivity extends AppCompatActivity {
     private UserInfo mUser;
     private VoiceInService mApiService;
     private ProgressFragment mProgressDialog;
-    private AvatarEditHelper helper;
+    private AvatarEditUtil helper;
     private String mToken;
     private String mUserUuid;
 
@@ -71,7 +71,7 @@ public class ProfileActivity extends AppCompatActivity {
         mLocText = (EditText) findViewById(R.id.profile_et_loc);
         mNameText = (EditText) findViewById(R.id.profile_et_name);
         mProgressDialog = new ProgressFragment();
-        helper = new AvatarEditHelper(this);
+        helper = new AvatarEditUtil(this);
 
         mToken = ((G8penApplication)getApplication()).getToken();
         mUserUuid = ((G8penApplication)getApplication()).getUserUuid();
@@ -135,10 +135,10 @@ public class ProfileActivity extends AppCompatActivity {
                 } else if (response.code() == 404) {
                     mProgressDialog.dismiss();
 
-                    ColoredSnackBar.primary(Snackbar.make(mLayout, getResources().getString(R.string.user_not_found), Snackbar.LENGTH_SHORT)).show();
+                    ColoredSnackBarUtil.primary(Snackbar.make(mLayout, getResources().getString(R.string.user_not_found), Snackbar.LENGTH_SHORT)).show();
                 } else {
                     mProgressDialog.dismiss();
-                    ColoredSnackBar.primary(Snackbar.make(mLayout, getResources().getString(R.string.server_err), Snackbar.LENGTH_SHORT)).show();
+                    ColoredSnackBarUtil.primary(Snackbar.make(mLayout, getResources().getString(R.string.server_err), Snackbar.LENGTH_SHORT)).show();
                 }
 
             }
@@ -146,7 +146,7 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 mProgressDialog.dismiss();
-                ColoredSnackBar.primary(Snackbar.make(mLayout, getResources().getString(R.string.server_err), Snackbar.LENGTH_SHORT)).show();
+                ColoredSnackBarUtil.primary(Snackbar.make(mLayout, getResources().getString(R.string.server_err), Snackbar.LENGTH_SHORT)).show();
             }
 
         };
@@ -167,7 +167,7 @@ public class ProfileActivity extends AppCompatActivity {
                     } else {
                         mProgressDialog.dismiss();
                         //// TODO: 2016/3/9  handle more suituation
-                        ColoredSnackBar
+                        ColoredSnackBarUtil
                                 .primary(Snackbar.make(mLayout, getResources().getString(R.string.server_err), Snackbar.LENGTH_SHORT))
                                 .show();
                     }
@@ -198,7 +198,7 @@ public class ProfileActivity extends AppCompatActivity {
                     } else {
                         Log.e(TAG, Integer.toString(response.code()));
                         //// TODO: 2016/3/7 error more
-                        ColoredSnackBar
+                        ColoredSnackBarUtil
                                 .primary(Snackbar.make(mLayout, getResources().getString(R.string.server_err), Snackbar.LENGTH_SHORT))
                                 .show();
                     }
@@ -210,7 +210,7 @@ public class ProfileActivity extends AppCompatActivity {
                     t.printStackTrace();
                     Log.e(TAG, t.toString());
                     //TODO handle error
-                    ColoredSnackBar
+                    ColoredSnackBarUtil
                             .primary(Snackbar.make(mLayout, getResources().getString(R.string.server_err), Snackbar.LENGTH_SHORT))
                             .show();
                 }

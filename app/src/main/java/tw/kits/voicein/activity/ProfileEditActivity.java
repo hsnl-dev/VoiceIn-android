@@ -32,8 +32,8 @@ import tw.kits.voicein.R;
 import tw.kits.voicein.fragment.TimePickerDialogFragment;
 import tw.kits.voicein.model.UserInfo;
 import tw.kits.voicein.model.UserUpdateForm;
-import tw.kits.voicein.util.AvatarEditHelper;
-import tw.kits.voicein.util.ColoredSnackBar;
+import tw.kits.voicein.util.AvatarEditUtil;
+import tw.kits.voicein.util.ColoredSnackBarUtil;
 import tw.kits.voicein.util.ServiceConstant;
 import tw.kits.voicein.util.TimeHandler;
 import tw.kits.voicein.util.TimeParser;
@@ -41,7 +41,7 @@ import tw.kits.voicein.util.VoiceInService;
 
 public class ProfileEditActivity extends AppCompatActivity {
     public static final int PROFILE_RETURN_SUCCESS = 0x1;
-    AvatarEditHelper helper;
+    AvatarEditUtil helper;
     private String token;
     private String userUuid;
     private VoiceInService service;
@@ -79,7 +79,7 @@ public class ProfileEditActivity extends AppCompatActivity {
         layout = (LinearLayout) findViewById(R.id.profile_edit_layout);
         avatar = (CircleImageView) findViewById(R.id.profile_edit_img_avatar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        helper = new AvatarEditHelper(this);
+        helper = new AvatarEditUtil(this);
         progressDialog = ProgressDialog.show(
                 this,
                 getString(R.string.wait),
@@ -102,8 +102,8 @@ public class ProfileEditActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<UserInfo> call, Throwable t) {
                 progressDialog.dismiss();
-                ColoredSnackBar.primary(
-                        Snackbar.make(layout, R.string.user_not_auth, Snackbar.LENGTH_INDEFINITE)
+                ColoredSnackBarUtil.primary(
+                        Snackbar.make(layout, R.string.network_err, Snackbar.LENGTH_INDEFINITE)
                 ).show();
             }
         });
@@ -185,13 +185,13 @@ public class ProfileEditActivity extends AppCompatActivity {
                     } catch (IOException e) {
                         e.printStackTrace();
                         progressDialog.dismiss();
-                        ColoredSnackBar.primary(
+                        ColoredSnackBarUtil.primary(
                                 Snackbar.make(layout, R.string.network_err, Snackbar.LENGTH_INDEFINITE)
                         ).show();
                     }
                 } else {
                     progressDialog.dismiss();
-                    ColoredSnackBar.primary(
+                    ColoredSnackBarUtil.primary(
                             Snackbar.make(layout, R.string.user_not_auth, Snackbar.LENGTH_INDEFINITE)
                     ).show();
                 }
@@ -200,7 +200,7 @@ public class ProfileEditActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 progressDialog.dismiss();
-                ColoredSnackBar.primary(
+                ColoredSnackBarUtil.primary(
                         Snackbar.make(layout, R.string.network_err, Snackbar.LENGTH_INDEFINITE)
                 ).show();
             }
@@ -220,7 +220,7 @@ public class ProfileEditActivity extends AppCompatActivity {
                     setResult(PROFILE_RETURN_SUCCESS);
                     NavUtils.navigateUpFromSameTask(ProfileEditActivity.this);
                 } else{
-                    ColoredSnackBar.primary(
+                    ColoredSnackBarUtil.primary(
                             Snackbar.make(layout, R.string.user_not_auth, Snackbar.LENGTH_INDEFINITE)
                     ).show();
                 }
@@ -229,7 +229,7 @@ public class ProfileEditActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 progressDialog.dismiss();
-                ColoredSnackBar.primary(
+                ColoredSnackBarUtil.primary(
                         Snackbar.make(layout, R.string.network_err, Snackbar.LENGTH_INDEFINITE)
                 ).show();
             }
@@ -243,7 +243,7 @@ public class ProfileEditActivity extends AppCompatActivity {
             TimeParser start = new TimeParser(availableStime.getText().toString());
             if(start.compareTo(end)>=0){
                 availableEtime.setError(getString(R.string.ilegal_input));
-                ColoredSnackBar.primary(
+                ColoredSnackBarUtil.primary(
                         Snackbar.make(layout, R.string.ilegal_input, Snackbar.LENGTH_LONG)
                 ).show();
                 return null;

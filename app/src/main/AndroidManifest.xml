@@ -56,7 +56,8 @@
         <!-- gcm -->
         <activity
             android:name=".activity.WelcomeActivity"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -154,7 +155,7 @@
         <activity
             android:name=".activity.GroupAddActivity"
             android:label="@string/add_group_bar"
-            android:theme="@style/AppTheme.DarkActionBar"></activity>
+            android:theme="@style/AppTheme.DarkActionBar" />
         <activity
             android:name=".activity.IntroActivity"
             android:label="@string/app_intro_appbar"
@@ -170,8 +171,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MainActivity" />
         </activity>
-        <activity android:name=".activity.AlertActivity"
-            android:theme="@style/Theme.AppCompat.Dialog"/>
+        <activity
+            android:name=".activity.EventActivity"
+            android:parentActivityName=".activity.MainActivity"
+            android:label="@string/inbox_title"
+            android:theme="@style/AppTheme.DarkActionBar">
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
