@@ -1,5 +1,8 @@
 package tw.kits.voicein;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,6 +11,7 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.NotificationCompat;
 import android.support.v7.view.ContextThemeWrapper;
 import android.util.Log;
 import android.view.Gravity;
@@ -17,6 +21,8 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.google.android.gms.gcm.GcmListenerService;
+
+import tw.kits.voicein.activity.MainActivity;
 
 
 public class GcmMessageHandler extends GcmListenerService {
@@ -36,6 +42,22 @@ public class GcmMessageHandler extends GcmListenerService {
                 intent.setPackage(GcmMessageHandler.class.getPackage().getName());
                 intent.putExtra("message",message);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+                NotificationCompat.Builder builder =
+                        new NotificationCompat.Builder(this);
+                final int flags = PendingIntent.FLAG_CANCEL_CURRENT;
+                Intent intent1 = new Intent(this, MainActivity.class);
+                final PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0x1, intent1, flags); // 取得PendingIntent
+
+                builder.setSmallIcon(R.mipmap.ic_launcher)
+                        .setWhen(System.currentTimeMillis())
+                        .setContentTitle(getString(R.string.app_name))
+                        .setContentText(message)
+                        .setContentIntent(pendingIntent);
+
+
+                NotificationManager notificationManager = (NotificationManager)
+                        getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.notify(0x001,builder.build());
             }
         }
 
