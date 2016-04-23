@@ -2,9 +2,11 @@ package tw.kits.voicein;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.os.Looper;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.view.ContextThemeWrapper;
 import android.util.Log;
@@ -19,14 +21,24 @@ import com.google.android.gms.gcm.GcmListenerService;
 
 public class GcmMessageHandler extends GcmListenerService {
     public static final int MESSAGE_NOTIFICATION_ID = 435345;
-
+    public static final String NEW_CONTACT_NOTIFY = "new_contact";
 
     @Override
     public void onMessageReceived(String from, Bundle data) {
         String message = data.getString("message");
         Log.e("message", "onMessageReceived() returned: " + message);
-        if(message.startsWith("#call#"))
-            createNotification(from, message.replace("#call#",""));
+        if(message!=null){
+            if(message.startsWith("#call#"))
+                createNotification(from, message.replace("#call#",""));
+            else{
+                Intent intent = new Intent();
+                intent.setAction(NEW_CONTACT_NOTIFY);
+                intent.setPackage(GcmMessageHandler.class.getPackage().getName());
+                intent.putExtra("message",message);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+            }
+        }
+
 
     }
 

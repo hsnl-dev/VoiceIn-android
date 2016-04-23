@@ -132,31 +132,31 @@ public class G8penApplication extends Application{
     public String getToken() {
         return mToken;
     }
-}
-class VoiceInterceptor implements Interceptor {
-    String vToken;
+    class VoiceInterceptor implements Interceptor {
+        String vToken;
 
-    VoiceInterceptor(String token) {
-        super();
-        vToken = token;
-    }
-
-    @Override
-    public Response intercept(Chain chain) throws IOException {
-        Request req;
-        if (vToken != null) {
-            req = chain.request().newBuilder()
-                    .addHeader("apiKey", ServiceConstant.API_KEY)
-                    .addHeader("token", this.vToken)
-                    .addHeader("Cache-Control", "public,max-age=300")
-                    .removeHeader("Pragma")
-                    .build();
-        } else {
-            req = chain.request().newBuilder()
-                    .addHeader("apiKey", ServiceConstant.API_KEY)
-                    .build();
+        VoiceInterceptor(String token) {
+            super();
+            vToken = token;
         }
-        return chain.proceed(req);
-    }
 
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            Request req;
+            if (vToken != null) {
+                req = chain.request().newBuilder()
+                        .addHeader("apiKey", ServiceConstant.API_KEY)
+                        .addHeader("token", this.vToken)
+                        .addHeader("Cache-Control", "public,max-age=300")
+                        .removeHeader("Pragma")
+                        .build();
+            } else {
+                req = chain.request().newBuilder()
+                        .addHeader("apiKey", ServiceConstant.API_KEY)
+                        .build();
+            }
+            return chain.proceed(req);
+        }
+
+    }
 }
