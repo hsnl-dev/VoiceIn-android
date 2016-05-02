@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="76dp"
+    android:paddingBottom="8dp"
+    android:weightSum="1"
+    android:background="?attr/selectableItemBackground"
+    android:id="@+id/favoritei_lo_item">
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/favoritei_img_avatar"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ic_person_white_48dp"
+        app:civ_fill_color="@color/primary_light"
+        app:civ_border_width="1dp"
+        app:civ_border_color="@color/divider"
+        android:layout_marginLeft="16dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="72dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:id="@+id/linearLayout2">
+        <TextView
+            android:id="@+id/eventi_tv_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="小明 加你為好友"
+            style="@style/TextAppearance.AppCompat.Subhead" />
+        <TextView
+            android:id="@+id/eventi_tv_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="3分鐘前"
+            style="@style/Base.TextAppearance.AppCompat.Caption" />
+
+    </LinearLayout>
+
+</RelativeLayout>

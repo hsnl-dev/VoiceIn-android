@@ -21,7 +21,7 @@ import tw.kits.voicein.G8penApplication;
 import tw.kits.voicein.R;
 import tw.kits.voicein.fragment.ProgressFragment;
 import tw.kits.voicein.model.CustomerQRcodeForm;
-import tw.kits.voicein.util.ColoredSnackBar;
+import tw.kits.voicein.util.ColoredSnackBarUtil;
 import tw.kits.voicein.util.VoiceInService;
 
 public class QrcodeCreateActivity extends AppCompatActivity implements View.OnClickListener {
@@ -82,7 +82,7 @@ public class QrcodeCreateActivity extends AppCompatActivity implements View.OnCl
                                     setResult(RESULT_OK);
                                     finish();
                                 } else {
-                                    ColoredSnackBar
+                                    ColoredSnackBarUtil
                                             .primary(Snackbar.make(mMainLayout, R.string.server_err, Snackbar.LENGTH_LONG))
                                             .show();
                                 }
@@ -91,7 +91,7 @@ public class QrcodeCreateActivity extends AppCompatActivity implements View.OnCl
                             @Override
                             public void onFailure(Call<ResponseBody> call, Throwable t) {
                                 mFragment.dismiss();
-                                ColoredSnackBar
+                                ColoredSnackBarUtil
                                         .primary(Snackbar.make(mMainLayout, R.string.network_err, Snackbar.LENGTH_LONG))
                                         .show();
                             }
@@ -112,7 +112,7 @@ public class QrcodeCreateActivity extends AppCompatActivity implements View.OnCl
                         null);
 
                 if (cursor.getCount()==0){
-                    ColoredSnackBar.primary(Snackbar.make(mMainLayout, "無電話資訊", Snackbar.LENGTH_LONG)).show();
+                    ColoredSnackBarUtil.primary(Snackbar.make(mMainLayout, "無電話資訊", Snackbar.LENGTH_LONG)).show();
                     cursor.close();
                     return;
                 }

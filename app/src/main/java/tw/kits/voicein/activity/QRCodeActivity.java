@@ -31,7 +31,7 @@ import tw.kits.voicein.adapter.QrcodeAdapter;
 import tw.kits.voicein.fragment.ProgressFragment;
 import tw.kits.voicein.model.QRcode;
 import tw.kits.voicein.model.QRcodeContainer;
-import tw.kits.voicein.util.ColoredSnackBar;
+import tw.kits.voicein.util.ColoredSnackBarUtil;
 import tw.kits.voicein.util.VoiceInService;
 
 public class QRCodeActivity extends AppCompatActivity implements View.OnClickListener {
@@ -112,7 +112,7 @@ public class QRCodeActivity extends AppCompatActivity implements View.OnClickLis
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
                         if (response.isSuccess()) {
-                            ColoredSnackBar.primary(
+                            ColoredSnackBarUtil.primary(
                                     Snackbar.make(mMainView, getString(R.string.success), Snackbar.LENGTH_LONG))
                                     .show();
                             mAdapter.removeItem(pos);
@@ -120,7 +120,7 @@ public class QRCodeActivity extends AppCompatActivity implements View.OnClickLis
                             mfragment.dismiss();
                         } else {
                             mfragment.dismiss();
-                            ColoredSnackBar.primary(
+                            ColoredSnackBarUtil.primary(
                                     Snackbar.make(mMainView, getString(R.string.server_err), Snackbar.LENGTH_LONG))
                                     .show();
                         }
@@ -129,7 +129,7 @@ public class QRCodeActivity extends AppCompatActivity implements View.OnClickLis
                     @Override
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
                         mfragment.dismiss();
-                        ColoredSnackBar.primary(
+                        ColoredSnackBarUtil.primary(
                                 Snackbar.make(mMainView, getString(R.string.network_err), Snackbar.LENGTH_LONG))
                                 .show();
                     }
@@ -218,7 +218,7 @@ public class QRCodeActivity extends AppCompatActivity implements View.OnClickLis
             Log.e(TAG, "OK");
             switch (requestCode) {
                 case INTENT_ADD:
-                    ColoredSnackBar.primary(Snackbar.make(mMainView, getString(R.string.success), Snackbar.LENGTH_SHORT)).show();
+                    ColoredSnackBarUtil.primary(Snackbar.make(mMainView, getString(R.string.success), Snackbar.LENGTH_SHORT)).show();
                     refreshList();
                     break;
 

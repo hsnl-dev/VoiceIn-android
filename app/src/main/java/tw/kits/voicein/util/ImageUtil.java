@@ -19,14 +19,14 @@ import okhttp3.logging.HttpLoggingInterceptor;
 /**
  * Created by Henry on 2016/3/28.
  */
-public class ImageHelper {
+public class ImageUtil {
     private final int MAX_AGE=300;
     private final int CACHE_SIZE = 10 * 1024 * 1024; // 10 MiB
     private Interceptor cacheInterceptor;
     private Cache cache;
     private OkHttp3Downloader downloader;
     private final  HttpLoggingInterceptor LOGGER = new HttpLoggingInterceptor();
-    public ImageHelper(Context context,String token) {
+    public ImageUtil(Context context, String token) {
         File httpCacheDirectory = new File(context.getCacheDir(), "pics");
         if(!httpCacheDirectory.exists())
             httpCacheDirectory.mkdir();

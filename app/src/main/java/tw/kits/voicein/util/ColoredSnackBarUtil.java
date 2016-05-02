@@ -8,7 +8,7 @@ import android.widget.TextView;
 /**
  * Created by Henry on 2016/3/8.
  */
-public class ColoredSnackBar {
+public class ColoredSnackBarUtil {
 
     private static final int red = 0xfff44336;
     private static final int green = 0xff4caf50;

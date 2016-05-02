@@ -20,6 +20,8 @@ import tw.kits.voicein.model.Contact;
 import tw.kits.voicein.model.ContactAddEntity;
 import tw.kits.voicein.model.CustomerQRcodeForm;
 import tw.kits.voicein.model.DeviceInfoEntity;
+import tw.kits.voicein.model.EventEntity;
+import tw.kits.voicein.model.EventEntityList;
 import tw.kits.voicein.model.Group;
 import tw.kits.voicein.model.GroupChangeEntity;
 import tw.kits.voicein.model.GroupInfoEntity;
@@ -120,6 +122,10 @@ public interface VoiceInService {
 
     @PUT("api/v2/accounts/{accountUuid}/device")
     Call<ResponseBody> updateDeviceId(@Path("accountUuid") String uuid, @Body DeviceInfoEntity deviceInfoEntity);
+
+    @GET("api/v2/accounts/{accountUuid}/notifications")
+    Call<EventEntityList> getInboxEvent(@Path("accountUuid") String uuid);
+
 
 }
 

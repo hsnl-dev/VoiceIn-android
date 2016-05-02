@@ -15,7 +15,7 @@ import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import tw.kits.voicein.util.ImageHelper;
+import tw.kits.voicein.util.ImageUtil;
 import tw.kits.voicein.util.ServiceConstant;
 import tw.kits.voicein.util.VoiceInService;
 
@@ -32,7 +32,7 @@ public class G8penApplication extends Application{
     private String mToken;
     private VoiceInService mService;
     private HttpLoggingInterceptor mLogger = new HttpLoggingInterceptor();
-    private ImageHelper mImageHelper;
+    private ImageUtil mImageUtil;
 
     @Override
     public void onCreate() {
@@ -42,9 +42,9 @@ public class G8penApplication extends Application{
         setService();
     }
     public Picasso getImgLoader(Context context){
-        if(mImageHelper==null)
-            mImageHelper = new ImageHelper(this, mToken);
-        return mImageHelper.getDownloader(context);
+        if(mImageUtil ==null)
+            mImageUtil = new ImageUtil(this, mToken);
+        return mImageUtil.getDownloader(context);
     }
     public void refreshAccessInfo(String token,String userUuid, String phoneNum){
         this.mUserUuid = userUuid;
@@ -52,7 +52,7 @@ public class G8penApplication extends Application{
         this.mToken = token;
         saveLoginPref(token, userUuid, phoneNum);
         setService();
-        mImageHelper=null;
+        mImageUtil =null;
 
     }
 
@@ -132,31 +132,31 @@ public class G8penApplication extends Application{
     public String getToken() {
         return mToken;
     }
-}
-class VoiceInterceptor implements Interceptor {
-    String vToken;
+    class VoiceInterceptor implements Interceptor {
+        String vToken;
 
-    VoiceInterceptor(String token) {
-        super();
-        vToken = token;
-    }
-
-    @Override
-    public Response intercept(Chain chain) throws IOException {
-        Request req;
-        if (vToken != null) {
-            req = chain.request().newBuilder()
-                    .addHeader("apiKey", ServiceConstant.API_KEY)
-                    .addHeader("token", this.vToken)
-                    .addHeader("Cache-Control", "public,max-age=300")
-                    .removeHeader("Pragma")
-                    .build();
-        } else {
-            req = chain.request().newBuilder()
-                    .addHeader("apiKey", ServiceConstant.API_KEY)
-                    .build();
+        VoiceInterceptor(String token) {
+            super();
+            vToken = token;
         }
-        return chain.proceed(req);
-    }
 
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            Request req;
+            if (vToken != null) {
+                req = chain.request().newBuilder()
+                        .addHeader("apiKey", ServiceConstant.API_KEY)
+                        .addHeader("token", this.vToken)
+                        .addHeader("Cache-Control", "public,max-age=300")
+                        .removeHeader("Pragma")
+                        .build();
+            } else {
+                req = chain.request().newBuilder()
+                        .addHeader("apiKey", ServiceConstant.API_KEY)
+                        .build();
+            }
+            return chain.proceed(req);
+        }
+
+    }
 }

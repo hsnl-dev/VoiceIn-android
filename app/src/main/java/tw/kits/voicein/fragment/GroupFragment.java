@@ -1,13 +1,10 @@
 package tw.kits.voicein.fragment;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -32,7 +28,7 @@ import tw.kits.voicein.adapter.GroupAdapter;
 import tw.kits.voicein.model.Group;
 import tw.kits.voicein.model.GroupList;
 import tw.kits.voicein.util.DividerItemDecoration;
-import tw.kits.voicein.util.SnackBarHelper;
+import tw.kits.voicein.util.SnackBarUtil;
 import tw.kits.voicein.util.VoiceInService;
 
 public class GroupFragment extends Fragment implements GroupAdapter.OnClickListener {
@@ -43,7 +39,7 @@ public class GroupFragment extends Fragment implements GroupAdapter.OnClickListe
     FloatingActionButton mFab;
     GroupAdapter mGroupAdapter;
     SwipeRefreshLayout mSwipeContainer;
-    SnackBarHelper mSnackBarHelper;
+    SnackBarUtil mSnackBarHelper;
     static  final  int  ADD_GROUP = 689;
     public GroupFragment() {
         // Required empty public constructor
@@ -82,7 +78,7 @@ public class GroupFragment extends Fragment implements GroupAdapter.OnClickListe
                 DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST);
         mRview.addItemDecoration(itemDecoration);
 
-        mSnackBarHelper = new SnackBarHelper(mMainView,this.getContext());
+        mSnackBarHelper = new SnackBarUtil(mMainView,this.getContext());
         mSwipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -116,7 +112,7 @@ public class GroupFragment extends Fragment implements GroupAdapter.OnClickListe
             @Override
             public void onFailure(Call<GroupList> call, Throwable t) {
                 mSwipeContainer.setRefreshing(false);
-                mSnackBarHelper.showSnackBar(SnackBarHelper.NETWORK_ERR);
+                mSnackBarHelper.showSnackBar(SnackBarUtil.NETWORK_ERR);
             }
         });
 
@@ -169,7 +165,7 @@ public class GroupFragment extends Fragment implements GroupAdapter.OnClickListe
     }
     public void delGroup(String gid){
         final ProgressFragment progressFragment = new ProgressFragment();
-        final SnackBarHelper sh = new SnackBarHelper(mMainView,this.getContext());
+        final SnackBarUtil sh = new SnackBarUtil(mMainView,this.getContext());
         progressFragment.show(getFragmentManager(),"wait");
         mApiService.delGroup(mUserUuid,gid).enqueue(new Callback<ResponseBody>() {
             @Override
@@ -186,7 +182,7 @@ public class GroupFragment extends Fragment implements GroupAdapter.OnClickListe
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 progressFragment.dismiss();
-                sh.showSnackBar(SnackBarHelper.NETWORK_ERR);
+                sh.showSnackBar(SnackBarUtil.NETWORK_ERR);
             }
         });
 

@@ -24,7 +24,7 @@ import tw.kits.voicein.model.Token;
 import tw.kits.voicein.model.UserInfo;
 import tw.kits.voicein.model.UserLoginRes;
 import tw.kits.voicein.model.VerifyForm;
-import tw.kits.voicein.util.ColoredSnackBar;
+import tw.kits.voicein.util.ColoredSnackBarUtil;
 import tw.kits.voicein.util.VoiceInService;
 
 public class VerifyActivity extends AppCompatActivity {
@@ -88,7 +88,7 @@ public class VerifyActivity extends AppCompatActivity {
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
-                                ColoredSnackBar
+                                ColoredSnackBarUtil
                                         .primary(Snackbar.make(mLayout, getString(R.string.user_auth_err), Snackbar.LENGTH_LONG))
                                         .show();
 
@@ -98,7 +98,7 @@ public class VerifyActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(Call<UserLoginRes> call, Throwable t) {
                             Log.e(TAG, t.toString());
-                            ColoredSnackBar
+                            ColoredSnackBarUtil
                                     .primary(Snackbar.make(mLayout, getString(R.string.network_err), Snackbar.LENGTH_LONG))
                                     .show();
 
@@ -163,7 +163,7 @@ public class VerifyActivity extends AppCompatActivity {
             } else {
                 //fail
                 mDialog.dismiss();
-                ColoredSnackBar
+                ColoredSnackBarUtil
                         .primary(Snackbar.make(mLayout, getString(R.string.user_auth_err), Snackbar.LENGTH_LONG))
                         .show();
             }
@@ -173,7 +173,7 @@ public class VerifyActivity extends AppCompatActivity {
         public void onFailure(Call<Token> call, Throwable t) {
             //fail
             mDialog.dismiss();
-            ColoredSnackBar
+            ColoredSnackBarUtil
                     .primary(Snackbar.make(mLayout, getString(R.string.network_err), Snackbar.LENGTH_LONG))
                     .show();
         }
@@ -189,7 +189,7 @@ public class VerifyActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             } else {
-                ColoredSnackBar
+                ColoredSnackBarUtil
                         .primary(Snackbar.make(mLayout, getString(R.string.network_err), Snackbar.LENGTH_LONG))
                         .show();
             }
@@ -200,7 +200,7 @@ public class VerifyActivity extends AppCompatActivity {
             mDialog.dismiss();
             Log.w(TAG, t.toString());
             t.printStackTrace();
-            ColoredSnackBar
+            ColoredSnackBarUtil
                     .primary(Snackbar.make(mLayout, getString(R.string.network_err), Snackbar.LENGTH_LONG))
                     .show();
         }

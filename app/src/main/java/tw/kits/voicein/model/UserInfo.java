@@ -7,6 +7,8 @@ public class UserInfo implements Serializable {
 
 
     private String userName;
+    private String jobTitle;
+    private String email;
     private String phoneNumber;
     private String profilePhotoId;
     private String profile;
@@ -134,5 +136,21 @@ public class UserInfo implements Serializable {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getJobTitle() {
+        return jobTitle;
+    }
+
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle = jobTitle;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

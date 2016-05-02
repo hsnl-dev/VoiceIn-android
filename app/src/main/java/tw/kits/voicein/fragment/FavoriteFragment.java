@@ -31,11 +31,10 @@ import tw.kits.voicein.G8penApplication;
 import tw.kits.voicein.R;
 import tw.kits.voicein.activity.ContactAddActivity;
 import tw.kits.voicein.activity.ContactEditActivity;
-import tw.kits.voicein.adapter.ContactAdapter;
 import tw.kits.voicein.adapter.FavoriteAdapter;
 import tw.kits.voicein.model.CallForm;
 import tw.kits.voicein.model.Contact;
-import tw.kits.voicein.util.ColoredSnackBar;
+import tw.kits.voicein.util.ColoredSnackBarUtil;
 import tw.kits.voicein.util.DividerItemDecoration;
 import tw.kits.voicein.util.VoiceInService;
 
@@ -99,7 +98,7 @@ public class FavoriteFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onNoPhoneClick(int pos, Contact item) {
-                    ColoredSnackBar.primary(
+                    ColoredSnackBarUtil.primary(
                             Snackbar.make(mMainLayout, getString(R.string.forbidden_call_hint), Snackbar.LENGTH_SHORT)
                     ).show();
             }
@@ -172,7 +171,7 @@ public class FavoriteFragment extends Fragment implements View.OnClickListener {
                         mRefreshContainer.setRefreshing(false);
                         Log.e(TAG, t.toString());
                         Snackbar snack = Snackbar.make(mRefreshContainer, getResources().getString(R.string.network_err), Snackbar.LENGTH_LONG);
-                        ColoredSnackBar.primary(snack).show();
+                        ColoredSnackBarUtil.primary(snack).show();
                     }
                 });
     }
@@ -191,13 +190,13 @@ public class FavoriteFragment extends Fragment implements View.OnClickListener {
                 switch (requestCode) {
                     case INTENT_ADD_CONTACT:
                         Log.i(TAG, "Success");
-                        ColoredSnackBar.primary(Snackbar.make(mMainLayout, getString(R.string.success), Snackbar.LENGTH_LONG)).show();
+                        ColoredSnackBarUtil.primary(Snackbar.make(mMainLayout, getString(R.string.success), Snackbar.LENGTH_LONG)).show();
                         mRefreshContainer.setRefreshing(true);
                         refreshContact();
                         break;
                     case INTENT_EDIT_CONTACT:
                         Log.i(TAG, "Success");
-                        ColoredSnackBar.primary(Snackbar.make(mMainLayout, getString(R.string.success), Snackbar.LENGTH_LONG)).show();
+                        ColoredSnackBarUtil.primary(Snackbar.make(mMainLayout, getString(R.string.success), Snackbar.LENGTH_LONG)).show();
                         mRefreshContainer.setRefreshing(true);
                         refreshContact();
                         break;
@@ -217,17 +216,17 @@ public class FavoriteFragment extends Fragment implements View.OnClickListener {
             }else{
                 switch (response.code()){
                     case 403:
-                        ColoredSnackBar.primary(
+                        ColoredSnackBarUtil.primary(
                                 Snackbar.make(mMainLayout, getString(R.string.forbidden_call_hint), Snackbar.LENGTH_SHORT)
                         ).show();
                         break;
                     case 401:
-                        ColoredSnackBar.primary(
+                        ColoredSnackBarUtil.primary(
                                 Snackbar.make(mMainLayout, getString(R.string.user_not_auth), Snackbar.LENGTH_SHORT)
                         ).show();
                         break;
                     default:
-                        ColoredSnackBar.primary(
+                        ColoredSnackBarUtil.primary(
                                 Snackbar.make(mMainLayout, getString(R.string.server_err), Snackbar.LENGTH_SHORT)
                         ).show();
 
@@ -238,7 +237,7 @@ public class FavoriteFragment extends Fragment implements View.OnClickListener {
         @Override
         public void onFailure(Call<ResponseBody> call, Throwable t) {
             mProgressDialog.dismiss();
-            ColoredSnackBar.primary(
+            ColoredSnackBarUtil.primary(
                     Snackbar.make(mMainLayout, getString(R.string.network_err), Snackbar.LENGTH_SHORT)
             ).show();
         }

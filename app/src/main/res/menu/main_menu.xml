@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/main_menu_search"
-        android:icon="@drawable/ic_search_white_24dp"
-        android:title="尋找"
-        app:showAsAction="always"
-        />
+
     <item
         android:id="@+id/main_menu_card"
         android:title="@string/card_title"
@@ -16,8 +11,14 @@
         android:id="@+id/main_menu_inbox"
         android:title="@string/inbox_title"
         android:icon="@drawable/ic_inbox_white_24dp"
+        app:actionLayout="@layout/action_bar_notify"
         app:showAsAction="ifRoom"/>
-
+    <item
+        android:id="@+id/main_menu_search"
+        android:icon="@drawable/ic_search_white_24dp"
+        android:title="尋找"
+        app:showAsAction="ifRoom"
+        />
     <item
         android:id="@+id/main_menu_setting"
         android:title="@string/setting_title"

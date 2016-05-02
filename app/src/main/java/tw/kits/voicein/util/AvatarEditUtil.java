@@ -14,12 +14,12 @@ import java.io.IOException;
 /**
  * Created by Henry on 2016/3/14.
  */
-public class AvatarEditHelper {
+public class AvatarEditUtil {
     private final int INTENT_PICK = 7000;
     private final int INTENT_CROP = 8000;
     Activity activity;
 
-    public AvatarEditHelper(Activity activity) {
+    public AvatarEditUtil(Activity activity) {
         this.activity = activity;
     }
 

@@ -76,7 +76,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/user_name" />
 
-                <EditText
+                <android.support.v7.widget.AppCompatEditText
                     android:id="@+id/profile_edit_et_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
@@ -130,6 +130,48 @@
                     android:id="@+id/profile_edit_et_com"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:orientation="vertical" >
+
+                <TextView
+                    style="@style/TextAppearance.AppCompat.Caption"
+                    android:id="@+id/profile_edit_tv_jt_cap"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="職稱" />
+
+                <EditText
+                    android:id="@+id/profile_edit_et_jt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:orientation="vertical" >
+
+                <TextView
+                    style="@style/TextAppearance.AppCompat.Caption"
+                    android:id="@+id/profile_edit_tv_mailcap"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="E-mail" />
+
+                <EditText
+                    android:id="@+id/profile_edit_et_mail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.AppCompat.EditText" />
             </LinearLayout>
 
             <RelativeLayout
@@ -151,11 +193,11 @@
                     android:id="@+id/profile_edit_tv_as"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@+id/profile_edit_tv_ascap"
                     android:text="123"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_below="@+id/profile_edit_tv_ascap"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
 
             </RelativeLayout>
 
@@ -177,11 +219,11 @@
                     android:id="@+id/profile_edit_tv_ae"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@+id/textView6"
                     android:text="123"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_below="@+id/textView6"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
             </RelativeLayout>
 
             <LinearLayout

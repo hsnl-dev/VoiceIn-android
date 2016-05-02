@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
@@ -34,7 +33,7 @@ import tw.kits.voicein.fragment.ProgressFragment;
 import tw.kits.voicein.fragment.TimePickerDialogFragment;
 import tw.kits.voicein.model.CallForm;
 import tw.kits.voicein.model.Contact;
-import tw.kits.voicein.util.ColoredSnackBar;
+import tw.kits.voicein.util.ColoredSnackBarUtil;
 import tw.kits.voicein.util.ServiceConstant;
 import tw.kits.voicein.util.TimeHandler;
 import tw.kits.voicein.util.VoiceInService;
@@ -188,7 +187,7 @@ public class ContactEditActivity extends AppCompatActivity {
             mCallButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ColoredSnackBar
+                    ColoredSnackBarUtil
                             .primary(Snackbar.make(mLayout, R.string.forbidden_call_hint, Snackbar.LENGTH_INDEFINITE))
                             .show();
                 }
@@ -227,19 +226,19 @@ public class ContactEditActivity extends AppCompatActivity {
                             switch (response.code()) {
                                 case 304:
                                     Log.e(TAG, "mLayout=" + (mLayout == null));
-                                    ColoredSnackBar
+                                    ColoredSnackBarUtil
                                             .primary(Snackbar.make(mLayout, R.string.user_have_added, Snackbar.LENGTH_INDEFINITE))
                                             .show();
                                     break;
                                 case 404:
                                     Log.e(TAG, "mLayout=" + (mLayout == null));
-                                    ColoredSnackBar
+                                    ColoredSnackBarUtil
                                             .primary(Snackbar.make(mLayout, R.string.user_not_found, Snackbar.LENGTH_INDEFINITE))
                                             .show();
                                     break;
                                 default:
                                     Log.e(TAG, "mLayout=" + (mLayout == null));
-                                    ColoredSnackBar
+                                    ColoredSnackBarUtil
                                             .primary(Snackbar.make(mLayout, R.string.server_err, Snackbar.LENGTH_INDEFINITE))
                                             .show();
                             }
@@ -249,7 +248,7 @@ public class ContactEditActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
                         progressDialog.dismiss();
-                        ColoredSnackBar
+                        ColoredSnackBarUtil
                                 .primary(Snackbar.make(mLayout, R.string.server_err, Snackbar.LENGTH_INDEFINITE))
                                 .show();
                     }
@@ -279,17 +278,17 @@ public class ContactEditActivity extends AppCompatActivity {
                 } else {
                     switch (response.code()) {
                         case 403:
-                            ColoredSnackBar.primary(
+                            ColoredSnackBarUtil.primary(
                                     Snackbar.make(mLayout, getString(R.string.forbidden_call_hint), Snackbar.LENGTH_SHORT)
                             ).show();
                             break;
                         case 401:
-                            ColoredSnackBar.primary(
+                            ColoredSnackBarUtil.primary(
                                     Snackbar.make(mLayout, getString(R.string.user_not_auth), Snackbar.LENGTH_SHORT)
                             ).show();
                             break;
                         default:
-                            ColoredSnackBar.primary(
+                            ColoredSnackBarUtil.primary(
                                     Snackbar.make(mLayout, getString(R.string.server_err), Snackbar.LENGTH_SHORT)
                             ).show();
 
@@ -300,7 +299,7 @@ public class ContactEditActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 progressDialog.dismiss();
-                ColoredSnackBar.primary(
+                ColoredSnackBarUtil.primary(
                         Snackbar.make(mLayout, getString(R.string.network_err), Snackbar.LENGTH_SHORT)
                 ).show();
             }
@@ -319,7 +318,7 @@ public class ContactEditActivity extends AppCompatActivity {
                     refreshLike();
 
                 } else {
-                    ColoredSnackBar
+                    ColoredSnackBarUtil
                             .primary(Snackbar.make(mLayout, R.string.user_not_found, Snackbar.LENGTH_LONG))
                             .show();
                 }
@@ -327,7 +326,7 @@ public class ContactEditActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                ColoredSnackBar
+                ColoredSnackBarUtil
                         .primary(Snackbar.make(mLayout, R.string.server_err, Snackbar.LENGTH_LONG))
                         .show();
             }
@@ -348,17 +347,17 @@ public class ContactEditActivity extends AppCompatActivity {
                 } else {
                     switch (response.code()) {
                         case 304:
-                            ColoredSnackBar
+                            ColoredSnackBarUtil
                                     .primary(Snackbar.make(mLayout, R.string.user_have_added, Snackbar.LENGTH_INDEFINITE))
                                     .show();
                             break;
                         case 404:
-                            ColoredSnackBar
+                            ColoredSnackBarUtil
                                     .primary(Snackbar.make(mLayout, R.string.user_not_found, Snackbar.LENGTH_INDEFINITE))
                                     .show();
                             break;
                         default:
-                            ColoredSnackBar
+                            ColoredSnackBarUtil
                                     .primary(Snackbar.make(mLayout, R.string.server_err, Snackbar.LENGTH_INDEFINITE))
                                     .show();
 
@@ -369,7 +368,7 @@ public class ContactEditActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 progressDialog.dismiss();
-                ColoredSnackBar
+                ColoredSnackBarUtil
                         .primary(Snackbar.make(mLayout, R.string.server_err, Snackbar.LENGTH_INDEFINITE))
                         .show();
             }

@@ -24,7 +24,7 @@ import tw.kits.voicein.adapter.SearchResultAdapter;
 import tw.kits.voicein.fragment.ProgressFragment;
 import tw.kits.voicein.model.CallForm;
 import tw.kits.voicein.model.Contact;
-import tw.kits.voicein.util.ColoredSnackBar;
+import tw.kits.voicein.util.ColoredSnackBarUtil;
 import tw.kits.voicein.util.VoiceInService;
 
 public class SearchActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
@@ -90,7 +90,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
 
             @Override
             public void onNoPhoneClick(int pos, Contact item) {
-                ColoredSnackBar.primary(
+                ColoredSnackBarUtil.primary(
                         Snackbar.make(mLayout, getString(R.string.forbidden_call_hint), Snackbar.LENGTH_SHORT)
                 ).show();
             }
@@ -135,17 +135,17 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
             }else{
                 switch (response.code()){
                     case 403:
-                        ColoredSnackBar.primary(
+                        ColoredSnackBarUtil.primary(
                                 Snackbar.make(mLayout, getString(R.string.forbidden_call_hint), Snackbar.LENGTH_SHORT)
                         ).show();
                         break;
                     case 401:
-                        ColoredSnackBar.primary(
+                        ColoredSnackBarUtil.primary(
                                 Snackbar.make(mLayout, getString(R.string.user_not_auth), Snackbar.LENGTH_SHORT)
                         ).show();
                         break;
                     default:
-                        ColoredSnackBar.primary(
+                        ColoredSnackBarUtil.primary(
                                 Snackbar.make(mLayout, getString(R.string.server_err), Snackbar.LENGTH_SHORT)
                         ).show();
 
@@ -156,7 +156,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
         @Override
         public void onFailure(Call<ResponseBody> call, Throwable t) {
             mProgressDialog.dismiss();
-            ColoredSnackBar.primary(
+            ColoredSnackBarUtil.primary(
                     Snackbar.make(mLayout, getString(R.string.network_err), Snackbar.LENGTH_SHORT)
             ).show();
         }
