@@ -34,6 +34,7 @@ import tw.kits.voicein.model.UserInfo;
 import tw.kits.voicein.model.UserUpdateForm;
 import tw.kits.voicein.util.AvatarEditUtil;
 import tw.kits.voicein.util.ColoredSnackBarUtil;
+import tw.kits.voicein.util.PhoneNumberUtil;
 import tw.kits.voicein.util.ServiceConstant;
 import tw.kits.voicein.util.TimeHandler;
 import tw.kits.voicein.util.TimeParser;
@@ -258,6 +259,7 @@ public class ProfileEditActivity extends AppCompatActivity {
         mUser.setLocation(location.getText().toString());
         mUser.setProfile(introduction.getText().toString());
         mUser.setUserName(name.getText().toString());
+        mUser.setPhoneNumber(PhoneNumberUtil.getStandardNumber(mUser.getPhoneNumber()));
        return true;
     }
 

@@ -101,8 +101,15 @@
             android:name=".activity.MyCardActivity"
             android:label="@string/card_title"
             android:launchMode="singleTop"
+
             android:theme="@style/AppTheme.DarkActionBar"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan" >
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.MainActivity" />
+        </activity>
         <activity
             android:name=".activity.ProfileEditActivity"
             android:label="@string/profile_setting"

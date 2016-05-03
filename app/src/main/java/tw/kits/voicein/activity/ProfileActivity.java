@@ -31,6 +31,7 @@ import tw.kits.voicein.model.UserInfo;
 import tw.kits.voicein.model.UserUpdateForm;
 import tw.kits.voicein.util.AvatarEditUtil;
 import tw.kits.voicein.util.ColoredSnackBarUtil;
+import tw.kits.voicein.util.PhoneNumberUtil;
 import tw.kits.voicein.util.ServiceConstant;
 import tw.kits.voicein.util.VoiceInService;
 
@@ -112,6 +113,7 @@ public class ProfileActivity extends AppCompatActivity {
         mUser.setProfile(intro);
         mUser.setAvailableStartTime("00:00");
         mUser.setAvailableEndTime("23:59");
+        mUser.setPhoneNumber(PhoneNumberUtil.getStandardNumber(mUser.getPhoneNumber()));
 
         //start
         mProgressDialog.show(getSupportFragmentManager(), WAIT_TAG);
@@ -164,7 +166,6 @@ public class ProfileActivity extends AppCompatActivity {
                         genQRcodeWhenNotExisted();
                     } else {
                         mProgressDialog.dismiss();
-                        //// TODO: 2016/3/9  handle more suituation
                         ColoredSnackBarUtil
                                 .primary(Snackbar.make(mLayout, getResources().getString(R.string.server_err), Snackbar.LENGTH_SHORT))
                                 .show();
@@ -195,7 +196,7 @@ public class ProfileActivity extends AppCompatActivity {
                         finish();
                     } else {
                         Log.e(TAG, Integer.toString(response.code()));
-                        //// TODO: 2016/3/7 error more
+
                         ColoredSnackBarUtil
                                 .primary(Snackbar.make(mLayout, getResources().getString(R.string.server_err), Snackbar.LENGTH_SHORT))
                                 .show();
@@ -207,7 +208,6 @@ public class ProfileActivity extends AppCompatActivity {
                     mProgressDialog.dismiss();
                     t.printStackTrace();
                     Log.e(TAG, t.toString());
-                    //TODO handle error
                     ColoredSnackBarUtil
                             .primary(Snackbar.make(mLayout, getResources().getString(R.string.server_err), Snackbar.LENGTH_SHORT))
                             .show();

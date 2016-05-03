@@ -88,6 +88,8 @@
     <string name="app_intro_time_body">您還可以針對每一個聯絡人，設定可通話時間與勿擾模式，工作與休閒全掌握在您手中</string>
     <string name="action_start">開始使用</string>
     <string name="custom_qrcode_intro">傳送客戶專屬QRcode</string>
-    <string name="custom_qrcode_desc">為您的客戶產生一個QRCode，客戶不用再輸入資料，只需掃描QRcode，產生ICON即可享有免費電話服務</string>
+    <string name="custom_qrcode_desc">為您的客戶產生一個QRCode，客戶不用再輸入資料，只需掃描QRCode，產生ICON即可享有免費電話服務</string>
+    <string name="default_qrcode_desc_for_customer">您好：這是我的QRCode 名片，該QRCode 能為您提供免費電信電話，使用方式如下：\n1.使用Android、iOS手機掃描QRCode。\n2.利用QRCode reader 掃描QRCode。 \n3.在iOS 利用Safari、在Android 利用Chrome 開啟QRCode裡的連結。\n4.依照網頁指示在手機主畫面上建立捷徑，點擊捷徑即可開始使用免費電話。\n5.電話會先撥至您的手機，請先接起電話，等待對方接通。\n* 若您無法掃描QRCode請直接點選連結 &lt;a href=&quot;%1$s&quot;&gt;%1$s&lt;/a&gt;
+    </string>
 
 </resources>
