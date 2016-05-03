@@ -51,7 +51,7 @@ public interface VoiceInService {
     Call<Token> getToken(@Body VerifyForm verifyInfo);
 
     @PUT("api/v2/accounts/{userUuid}")
-    Call<ResponseBody> updateProfile(@Body UserUpdateForm profile, @Path("userUuid") String userUuid);
+    Call<ResponseBody> updateProfile(@Body UserInfo profile, @Path("userUuid") String userUuid);
 
     @GET("api/v2/accounts/{userUuid}")
     Call<UserInfo> getUser(@Path("userUuid") String userUuid);

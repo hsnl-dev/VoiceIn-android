@@ -6,9 +6,9 @@ package tw.kits.voicein.util;
 public class PhoneNumberUtil {
     private static final String TAIWAN_NATION_CODE = "+886";
     public static boolean isValid(String phoneNumber){
-        if(phoneNumber.startsWith("0") && phoneNumber.length()==10){
+        if(phoneNumber.startsWith("09") && phoneNumber.length()==10){
             return true;
-        }else if(!phoneNumber.startsWith("0") && phoneNumber.length()==9){
+        }else if(phoneNumber.startsWith("9") && phoneNumber.length()==9){
             return true;
         }
         return false;

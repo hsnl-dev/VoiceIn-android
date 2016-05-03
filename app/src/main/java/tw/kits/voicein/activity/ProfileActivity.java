@@ -106,14 +106,12 @@ public class ProfileActivity extends AppCompatActivity {
         String comp = mComText.getText().toString();
         String loc = mLocText.getText().toString();
         String intro = mIntroText.getText().toString();
-        UserUpdateForm usrProfile = new UserUpdateForm();
-        usrProfile.setUserName(name);
-        usrProfile.setCompany(comp);
-        usrProfile.setLocation(loc);
-        usrProfile.setProfile(intro);
-        usrProfile.setAvailableStartTime("00:00");
-        usrProfile.setAvailableEndTime("23:59");
-        usrProfile.setPhoneNumber(getIntent().getStringExtra(ARG_PHONE));
+        mUser.setUserName(name);
+        mUser.setCompany(comp);
+        mUser.setLocation(loc);
+        mUser.setProfile(intro);
+        mUser.setAvailableStartTime("00:00");
+        mUser.setAvailableEndTime("23:59");
 
         //start
         mProgressDialog.show(getSupportFragmentManager(), WAIT_TAG);
@@ -150,7 +148,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
 
         };
-        mApiService.updateProfile(usrProfile, mUserUuid).enqueue(cb);
+        mApiService.updateProfile(mUser, mUserUuid).enqueue(cb);
 
     }
 

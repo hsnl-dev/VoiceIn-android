@@ -9,20 +9,31 @@
     tools:context="tw.kits.voicein.activity.ProfileActivity">
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="160dp"
+        android:layout_height="180dp"
         android:gravity="center_horizontal|center_vertical"
-        android:background="@drawable/personal_profile_background">
+        android:background="@color/primary_light"
+        android:padding="6dp">
 
         <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/profile_img_avatar"
-            android:layout_width="128dp"
-            android:layout_height="128dp"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
             android:src="@drawable/ic_user_placeholder"
 
             app:civ_border_width="0dp"
-            />
+            android:layout_gravity="center_horizontal" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/avatar_upload_hint"
+            android:id="@+id/profile_btn_upload"
+            android:layout_margin="6dp"
+            android:layout_gravity="center_horizontal"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:textColor="@color/colorPrimaryDark" />
     </LinearLayout>
 
     <LinearLayout
@@ -36,16 +47,6 @@
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/profile_img_avatar">
 
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/avatar_upload_hint"
-            android:id="@+id/profile_btn_upload"
-            android:layout_below="@+id/contact_edit_img_avatar"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="6dp"
-            android:layout_gravity="center_horizontal" />
 
         <EditText
             android:id="@+id/profile_et_name"
@@ -103,7 +104,9 @@
             android:layout_height="wrap_content"
             android:text="@string/confirm"
             android:id="@+id/profile_btn_confirm"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            android:textColor="@color/colorPrimaryDark" />
     </LinearLayout>
 
 </LinearLayout>

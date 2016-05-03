@@ -59,6 +59,7 @@ public class ProfileEditActivity extends AppCompatActivity {
     private Bitmap uploadAvatar;
     ProgressDialog progressDialog;
     private Picasso mImgLoader;
+    private UserInfo mUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,7 +95,8 @@ public class ProfileEditActivity extends AppCompatActivity {
                             .placeholder(R.drawable.ic_user_placeholder)
                             .error(R.drawable.ic_user_placeholder)
                             .into(avatar);
-                    renderUser(response.body());
+                    mUser = response.body();
+                    renderUser(mUser);
 
                 }
             }
@@ -165,12 +167,11 @@ public class ProfileEditActivity extends AppCompatActivity {
                 getString(R.string.wait),
                 getString(R.string.wait_notice),
                 true);
-        UserUpdateForm form = getForm();
-        if(form==null){
+        if(!setUser()){
             progressDialog.dismiss();
             return;
         }
-        service.updateProfile(getForm(), userUuid).enqueue(new Callback<ResponseBody>() {
+        service.updateProfile(mUser, userUuid).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccess()) {
@@ -236,8 +237,7 @@ public class ProfileEditActivity extends AppCompatActivity {
         });
 
     }
-    private UserUpdateForm getForm() {
-        UserUpdateForm form = new UserUpdateForm();
+    private boolean setUser() {
         try {
             TimeParser end = new TimeParser(availableEtime.getText().toString());
             TimeParser start = new TimeParser(availableStime.getText().toString());
@@ -246,22 +246,19 @@ public class ProfileEditActivity extends AppCompatActivity {
                 ColoredSnackBarUtil.primary(
                         Snackbar.make(layout, R.string.ilegal_input, Snackbar.LENGTH_LONG)
                 ).show();
-                return null;
+                return false;
             }
 
         } catch (IOException e) {
-            return null;
+            return false;
         }
-        form.setAvailableStartTime(availableStime.getText().toString());
-        form.setAvailableEndTime(availableEtime.getText().toString());
-        form.setCompany(company.getText().toString());
-        form.setLocation(location.getText().toString());
-        form.setProfile(introduction.getText().toString());
-        form.setUserName(name.getText().toString());
-        form.setPhoneNumber("+886"+phone.getText().toString());
-        form.setJobTitle(jobTitle.getText().toString());
-        form.setEmail(email.getText().toString());
-        return form;
+        mUser.setAvailableStartTime(availableStime.getText().toString());
+        mUser.setAvailableEndTime(availableEtime.getText().toString());
+        mUser.setCompany(company.getText().toString());
+        mUser.setLocation(location.getText().toString());
+        mUser.setProfile(introduction.getText().toString());
+        mUser.setUserName(name.getText().toString());
+       return true;
     }
 
     @Override

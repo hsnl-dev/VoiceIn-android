@@ -6,128 +6,38 @@ import java.io.Serializable;
 public class UserInfo implements Serializable {
 
 
+    private String uuid;
     private String userName;
+    private String phoneNumber;
+    private String location;
+    private String profile;
+    private String company;
     private String jobTitle;
     private String email;
-    private String phoneNumber;
     private String profilePhotoId;
-    private String profile;
-    private String location;
-    private String company;
     private String qrCodeUuid;
     private String availableStartTime;
     private String availableEndTime;
+    private String password;
+    private String deviceOS;
+    private String deviceKey;
+    private float credit;
 
-    /**
-     * @return The userName
-     */
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
     public String getUserName() {
         return userName;
     }
 
-    /**
-     * @param userName The userName
-     */
     public void setUserName(String userName) {
         this.userName = userName;
-    }
-
-    /**
-     * @return The profilePhotoId
-     */
-    public String getProfilePhotoId() {
-        return profilePhotoId;
-    }
-
-    /**
-     * @param profilePhotoId The profilePhotoId
-     */
-    public void setProfilePhotoId(String profilePhotoId) {
-        this.profilePhotoId = profilePhotoId;
-    }
-
-    /**
-     * @return The profile
-     */
-    public String getProfile() {
-        return profile;
-    }
-
-    /**
-     * @param profile The profile
-     */
-    public void setProfile(String profile) {
-        this.profile = profile;
-    }
-
-    /**
-     * @return The location
-     */
-    public String getLocation() {
-        return location;
-    }
-
-    /**
-     * @param location The location
-     */
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    /**
-     * @return The company
-     */
-    public String getCompany() {
-        return company;
-    }
-
-    /**
-     * @param company The company
-     */
-    public void setCompany(String company) {
-        this.company = company;
-    }
-
-    /**
-     * @return The qrCodeUuid
-     */
-    public String getQrCodeUuid() {
-        return qrCodeUuid;
-    }
-
-    /**
-     * @param qrCodeUuid The qrCodeUuid
-     */
-    public void setQrCodeUuid(String qrCodeUuid) {
-        this.qrCodeUuid = qrCodeUuid;
-    }
-
-    /**
-     * @return The availableStartTime
-     */
-    public String getAvailableStartTime() {
-        return availableStartTime;
-    }
-
-    /**
-     * @param availableStartTime The availableStartTime
-     */
-    public void setAvailableStartTime(String availableStartTime) {
-        this.availableStartTime = availableStartTime;
-    }
-
-    /**
-     * @return The availableEndTime
-     */
-    public String getAvailableEndTime() {
-        return availableEndTime;
-    }
-
-    /**
-     * @param availableEndTime The availableEndTime
-     */
-    public void setAvailableEndTime(String availableEndTime) {
-        this.availableEndTime = availableEndTime;
     }
 
     public String getPhoneNumber() {
@@ -136,6 +46,30 @@ public class UserInfo implements Serializable {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getProfile() {
+        return profile;
+    }
+
+    public void setProfile(String profile) {
+        this.profile = profile;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
     }
 
     public String getJobTitle() {
@@ -152,5 +86,69 @@ public class UserInfo implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getProfilePhotoId() {
+        return profilePhotoId;
+    }
+
+    public void setProfilePhotoId(String profilePhotoId) {
+        this.profilePhotoId = profilePhotoId;
+    }
+
+    public String getQrCodeUuid() {
+        return qrCodeUuid;
+    }
+
+    public void setQrCodeUuid(String qrCodeUuid) {
+        this.qrCodeUuid = qrCodeUuid;
+    }
+
+    public String getAvailableStartTime() {
+        return availableStartTime;
+    }
+
+    public void setAvailableStartTime(String availableStartTime) {
+        this.availableStartTime = availableStartTime;
+    }
+
+    public String getAvailableEndTime() {
+        return availableEndTime;
+    }
+
+    public void setAvailableEndTime(String availableEndTime) {
+        this.availableEndTime = availableEndTime;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getDeviceOS() {
+        return deviceOS;
+    }
+
+    public void setDeviceOS(String deviceOS) {
+        this.deviceOS = deviceOS;
+    }
+
+    public String getDeviceKey() {
+        return deviceKey;
+    }
+
+    public void setDeviceKey(String deviceKey) {
+        this.deviceKey = deviceKey;
+    }
+
+    public float getCredit() {
+        return credit;
+    }
+
+    public void setCredit(float credit) {
+        this.credit = credit;
     }
 }

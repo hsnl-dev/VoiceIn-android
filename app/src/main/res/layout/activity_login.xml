@@ -64,7 +64,8 @@
             android:layout_height="wrap_content"
             android:inputType="phone"
             android:id="@+id/login_et_phonenum"
-            android:hint="@string/enter_phonenumber_hint" />
+            android:hint="@string/enter_phonenumber_hint"
+            android:maxLength="10" />
     </LinearLayout>
 
     <Button
