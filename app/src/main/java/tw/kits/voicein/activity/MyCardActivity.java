@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -48,6 +49,7 @@ public class MyCardActivity extends AppCompatActivity {
     TextView mEmail;
     TextView mJobTitle;
     Button mShareBtn;
+    UserInfo mUsr;
     int mLoadCount = 0;
 
     @Override
@@ -92,13 +94,13 @@ public class MyCardActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
                 if (response.isSuccess()) {
-                    UserInfo usr = response.body();
-                    mEmail.setText(usr.getEmail());
-                    mJobTitle.setText(usr.getJobTitle());
-                    mCom.setText(usr.getCompany());
-                    mLoc.setText(usr.getLocation());
-                    mName.setText(usr.getUserName());
-                    mProfile.setText(usr.getProfile());
+                    mUsr  = response.body();
+                    mEmail.setText(mUsr.getEmail());
+                    mJobTitle.setText(mUsr.getJobTitle());
+                    mCom.setText(mUsr.getCompany());
+                    mLoc.setText(mUsr.getLocation());
+                    mName.setText(mUsr.getUserName());
+                    mProfile.setText(mUsr.getProfile());
                     Picasso downloader = ((G8penApplication)getApplication()).getImgLoader(MyCardActivity.this);
                     downloader.load(ServiceConstant.getAvatarUri(mUserUuid, ServiceConstant.PIC_SIZE_LARGE))
                             .placeholder(R.drawable.ic_user_placeholder)
@@ -129,7 +131,7 @@ public class MyCardActivity extends AppCompatActivity {
     public void handleShare(){
         Intent i = new Intent();
         i.setAction(Intent.ACTION_SEND);
-        i.setType("image/jpeg");
+        i.setType("image/*");
         mProfileLayout.setDrawingCacheEnabled(true);
 
         mProfileLayout.buildDrawingCache();
@@ -143,6 +145,8 @@ public class MyCardActivity extends AppCompatActivity {
             out = new FileOutputStream(file);
             mProfileLayout.getDrawingCache().compress(Bitmap.CompressFormat.JPEG, 80, out);
             i.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+            String qrcodeUrl = "https://voice-in.herokuapp.com/qrcode?id="+mUsr.getProfilePhotoId();
+            i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(String.format(getString(R.string.default_qrcode_desc_for_customer),qrcodeUrl)));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } finally {

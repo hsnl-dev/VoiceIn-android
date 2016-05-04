@@ -1,6 +1,6 @@
 package tw.kits.voicein.model;
 
-
+@Deprecated
 public class UserUpdateForm {
 
     private String userName;
