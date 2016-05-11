@@ -152,6 +152,9 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
     }
 
     private void refreshContact() {
+        if(mContactAdapter!=null){
+            mContactAdapter.invalidateAllImg();
+        }
         mApiService
                 .getContacts(mUserUuid)
                 .enqueue(new Callback<List<Contact>>() {

@@ -26,6 +26,7 @@ public class ImageUtil {
     private Cache cache;
     private OkHttp3Downloader downloader;
     private final  HttpLoggingInterceptor LOGGER = new HttpLoggingInterceptor();
+    private Picasso imgLoader;
     public ImageUtil(Context context, String token) {
         File httpCacheDirectory = new File(context.getCacheDir(), "pics");
         if(!httpCacheDirectory.exists())
@@ -41,9 +42,18 @@ public class ImageUtil {
 
         downloader = new OkHttp3Downloader(client);
 
+
     }
     public Picasso getDownloader(Context context){
-        return new Picasso.Builder(context).downloader(downloader).loggingEnabled(true).indicatorsEnabled(false).build();
+        if(imgLoader==null) {
+            synchronized (ImageUtil.class) {
+                if(imgLoader==null){
+                    imgLoader = new Picasso.Builder(context).downloader(downloader).loggingEnabled(true).indicatorsEnabled(false).build();
+                    Picasso.setSingletonInstance(imgLoader);
+                }
+            }
+        }
+        return imgLoader;
     }
     class ImgInterceptor implements Interceptor {
         String vToken;

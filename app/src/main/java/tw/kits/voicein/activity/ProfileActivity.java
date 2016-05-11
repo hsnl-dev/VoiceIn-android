@@ -57,6 +57,7 @@ public class ProfileActivity extends AppCompatActivity {
     private AvatarEditUtil helper;
     private String mToken;
     private String mUserUuid;
+    private Picasso pDownloader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +80,7 @@ public class ProfileActivity extends AppCompatActivity {
         mApiService = ((G8penApplication)getApplication()).getAPIService();
 
         //set default
-        Picasso pDownloader =  ((G8penApplication)getApplication()).getImgLoader(this);
+        pDownloader =  ((G8penApplication)getApplication()).getImgLoader(this);
         pDownloader.load(ServiceConstant.getAvatarUri(mUserUuid, ServiceConstant.PIC_SIZE_LARGE))
                 .placeholder(R.drawable.ic_user_placeholder)
                 .error(R.drawable.ic_user_placeholder)
@@ -156,6 +157,9 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void startUploadAvatar(@NonNull Bitmap uBitmap) {
         try {
+            pDownloader.invalidate(ServiceConstant.getAvatarUri(mUserUuid, ServiceConstant.PIC_SIZE_LARGE));
+            pDownloader.invalidate(ServiceConstant.getAvatarUri(mUserUuid, ServiceConstant.PIC_SIZE_MID));
+            pDownloader.invalidate(ServiceConstant.getAvatarUri(mUserUuid, ServiceConstant.PIC_SIZE_SMALL));
             File image = helper.prepareImg(uBitmap);
             RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), image);
             Call<ResponseBody> res = mApiService.uploadAvatar(mUserUuid, requestBody);

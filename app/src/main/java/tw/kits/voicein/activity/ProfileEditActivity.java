@@ -68,7 +68,7 @@ public class ProfileEditActivity extends AppCompatActivity {
         token = ((G8penApplication)getApplication()).getToken();
         userUuid =((G8penApplication)getApplication()).getUserUuid();
         service =((G8penApplication)getApplication()).getAPIService();
-        mImgLoader = ((G8penApplication)getApplication()).getImgLoader(this);
+        mImgLoader = Picasso.with(this);
         name = (EditText) findViewById(R.id.profile_edit_et_name);
         email = (EditText) findViewById(R.id.profile_edit_et_mail);
         jobTitle = (EditText) findViewById(R.id.profile_edit_et_jt);
@@ -209,7 +209,9 @@ public class ProfileEditActivity extends AppCompatActivity {
         });
     }
     private void startUploadAvatar() throws IOException {
-
+        mImgLoader.invalidate(ServiceConstant.getAvatarUri(userUuid, ServiceConstant.PIC_SIZE_LARGE));
+        mImgLoader.invalidate(ServiceConstant.getAvatarUri(userUuid, ServiceConstant.PIC_SIZE_MID));
+        mImgLoader.invalidate(ServiceConstant.getAvatarUri(userUuid, ServiceConstant.PIC_SIZE_SMALL));
         RequestBody body = RequestBody.create(
                 MediaType.parse("multipart/form-data"),
                 helper.prepareImg(uploadAvatar)

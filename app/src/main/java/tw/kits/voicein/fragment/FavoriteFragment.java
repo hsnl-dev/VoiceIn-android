@@ -146,6 +146,10 @@ public class FavoriteFragment extends Fragment implements View.OnClickListener {
     }
 
     private void refreshContact() {
+        if(mContactAdapter!=null){
+            mContactAdapter.invalidateAllImg();
+        }
+
         mApiService
                 .getFavoriteContacts(mUserUuid)
                 .enqueue(new Callback<List<Contact>>() {
