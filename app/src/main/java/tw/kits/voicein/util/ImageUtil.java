@@ -38,6 +38,7 @@ public class ImageUtil {
                 .addInterceptor(LOGGER)
                 .cache(cache)
                 .build();
+
         downloader = new OkHttp3Downloader(client);
 
     }
@@ -59,7 +60,6 @@ public class ImageUtil {
                 req = chain.request().newBuilder()
                         .addHeader("apiKey", ServiceConstant.API_KEY)
                         .addHeader("token", this.vToken)
-                        .addHeader("Cache-Control", "public,max-age=900")
                         .removeHeader("Pragma")
                         .build();
             } else {

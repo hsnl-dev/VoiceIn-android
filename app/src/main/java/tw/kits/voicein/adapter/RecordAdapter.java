@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
@@ -95,6 +96,9 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
             mImgLoader.load(ServiceConstant.getAvatarById(record.getAnotherAvatarId(), ServiceConstant.PIC_SIZE_MID))
                     .placeholder(R.drawable.ic_person_white_36dp)
                     .into(holder.avatarImg);
+        }else{
+            holder.avatarImg.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.ic_person_white_36dp));
+
         }
         holder.statusText.setText(status);
         String displayName;

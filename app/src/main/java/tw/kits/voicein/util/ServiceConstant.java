@@ -28,15 +28,15 @@ public class ServiceConstant {
     public final static String PIC_SIZE_SMALL = "small";
 
     public static String getQRcodeUri(String uuid) {
-        return String.format("%sapi/v1/accounts/%s/qrcode", API_BASE, uuid);
+        return String.format("%sapi/v2/accounts/%s/qrcode", API_BASE, uuid);
     }
     public static String getAvatarById(String avatarId, String size) {
-        return String.format("%sapi/v1/avatars/%s?size=%s", API_BASE, avatarId, size);
+        return String.format("%sapi/v2/avatars/%s?size=%s", API_BASE, avatarId, size);
     }
     public static String getQRcodeById(String uuid) {
-        return String.format("%sapi/v1/qrcodes/%s/image", API_BASE, uuid);
+        return String.format("%sapi/v2/qrcodes/%s/image", API_BASE, uuid);
     }
     public static String getAvatarUri(String uuid, String size) {
-        return String.format("%sapi/v1/accounts/%s/avatar?size=%s", API_BASE, uuid, size);
+        return String.format("%sapi/v2/accounts/%s/avatar?size=%s", API_BASE, uuid, size);
     }
 }
