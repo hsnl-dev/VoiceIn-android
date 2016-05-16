@@ -22,7 +22,6 @@ public class AvatarEditUtil {
     public AvatarEditUtil(Activity activity) {
         this.activity = activity;
     }
-
     @SuppressWarnings("ResourceType")
     private void doCrop(Intent data) {
         Uri imgUri = data.getData();

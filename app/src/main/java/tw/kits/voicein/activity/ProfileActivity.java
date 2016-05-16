@@ -26,6 +26,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import tw.kits.voicein.G8penApplication;
 import tw.kits.voicein.R;
+import tw.kits.voicein.fragment.PickerDialogFragment;
 import tw.kits.voicein.fragment.ProgressFragment;
 import tw.kits.voicein.model.UserInfo;
 import tw.kits.voicein.model.UserUpdateForm;
@@ -48,6 +49,7 @@ public class ProfileActivity extends AppCompatActivity {
     private EditText mIntroText;
     private EditText mLocText;
     private EditText mNameText;
+    private EditText mJobTitle;
     private View mLayout;
     private Button mConfirm;
     private Bitmap mBitmap; // May be null
@@ -58,6 +60,7 @@ public class ProfileActivity extends AppCompatActivity {
     private String mToken;
     private String mUserUuid;
     private Picasso pDownloader;
+    private EditText mEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +76,8 @@ public class ProfileActivity extends AppCompatActivity {
         mLocText = (EditText) findViewById(R.id.profile_et_loc);
         mNameText = (EditText) findViewById(R.id.profile_et_name);
         mProgressDialog = new ProgressFragment();
+        mJobTitle = (EditText)findViewById(R.id.profile_et_jt);
+        mEmail = (EditText)findViewById(R.id.profile_et_email);
         helper = new AvatarEditUtil(this);
 
         mToken = ((G8penApplication)getApplication()).getToken();
@@ -89,6 +94,8 @@ public class ProfileActivity extends AppCompatActivity {
         mIntroText.setText(mUser.getProfile());
         mNameText.setText(mUser.getUserName());
         mComText.setText(mUser.getCompany());
+        mJobTitle.setText(mUser.getJobTitle());
+        mEmail.setText(mUser.getEmail());
 
         mSelectAvatar.setOnClickListener(new SelectBtnListener());
         mConfirm = (Button) findViewById(R.id.profile_btn_confirm);
@@ -115,7 +122,8 @@ public class ProfileActivity extends AppCompatActivity {
         mUser.setAvailableStartTime("00:00");
         mUser.setAvailableEndTime("23:59");
         mUser.setPhoneNumber(PhoneNumberUtil.getStandardNumber(mUser.getPhoneNumber()));
-
+        mUser.setJobTitle(mJobTitle.getText().toString());
+        mUser.setEmail(mEmail.getText().toString());
         //start
         mProgressDialog.show(getSupportFragmentManager(), WAIT_TAG);
 
@@ -243,6 +251,9 @@ public class ProfileActivity extends AppCompatActivity {
     private class SelectBtnListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
+
+
+            PickerDialogFragment pickerDialogFragment = new PickerDialogFragment();
             helper.startEdit();
         }
     }

@@ -9,27 +9,15 @@
     android:id="@+id/favoritei_lo_item">
 
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/favoritei_img_avatar"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:src="@drawable/ic_person_white_48dp"
-        app:civ_fill_color="@color/primary_light"
-        app:civ_border_width="1dp"
-        app:civ_border_color="@color/divider"
-        android:layout_marginLeft="16dp"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginLeft="72dp"
-        android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:id="@+id/linearLayout2">
+        android:id="@+id/linearLayout2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="16dp">
         <TextView
             android:id="@+id/eventi_tv_desc"
             android:layout_width="match_parent"
