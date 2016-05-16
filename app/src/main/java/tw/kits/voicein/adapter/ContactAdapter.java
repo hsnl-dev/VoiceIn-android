@@ -82,7 +82,11 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
         ViewHolder viewHolder = new ViewHolder(contactView);
         return viewHolder;
     }
-
+    public void invalidateAllImg(){
+        for(Contact contact:mContacts){
+            mImgLoader.invalidate(ServiceConstant.getAvatarById(contact.getProfilePhotoId(), ServiceConstant.PIC_SIZE_MID));
+        }
+    }
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         final Contact contact = mContacts.get(position);

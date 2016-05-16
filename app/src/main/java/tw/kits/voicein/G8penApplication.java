@@ -44,7 +44,7 @@ public class G8penApplication extends Application{
     public Picasso getImgLoader(Context context){
         if(mImageUtil ==null)
             mImageUtil = new ImageUtil(this, mToken);
-        return mImageUtil.getDownloader(context);
+        return mImageUtil.getDownloader(this);
     }
     public void refreshAccessInfo(String token,String userUuid, String phoneNum){
         this.mUserUuid = userUuid;
