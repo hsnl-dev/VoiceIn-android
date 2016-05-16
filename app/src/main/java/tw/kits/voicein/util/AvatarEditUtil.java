@@ -50,15 +50,10 @@ public class AvatarEditUtil {
 
         Intent intent;
 
-        if (Build.VERSION.SDK_INT < 19) {
-            intent = new Intent();
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-            intent.setType("image/*");
-        } else {
-            intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-            intent.addCategory(Intent.CATEGORY_OPENABLE);
-            intent.setType("image/*");
-        }
+
+        intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intent.setType("image/*");
+
         activity.startActivityForResult(intent, INTENT_PICK);
     }
 
