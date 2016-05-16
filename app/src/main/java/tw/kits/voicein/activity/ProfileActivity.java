@@ -1,5 +1,6 @@
 package tw.kits.voicein.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -29,7 +30,6 @@ import tw.kits.voicein.R;
 import tw.kits.voicein.fragment.PickerDialogFragment;
 import tw.kits.voicein.fragment.ProgressFragment;
 import tw.kits.voicein.model.UserInfo;
-import tw.kits.voicein.model.UserUpdateForm;
 import tw.kits.voicein.util.AvatarEditUtil;
 import tw.kits.voicein.util.ColoredSnackBarUtil;
 import tw.kits.voicein.util.PhoneNumberUtil;
@@ -76,16 +76,16 @@ public class ProfileActivity extends AppCompatActivity {
         mLocText = (EditText) findViewById(R.id.profile_et_loc);
         mNameText = (EditText) findViewById(R.id.profile_et_name);
         mProgressDialog = new ProgressFragment();
-        mJobTitle = (EditText)findViewById(R.id.profile_et_jt);
-        mEmail = (EditText)findViewById(R.id.profile_et_email);
+        mJobTitle = (EditText) findViewById(R.id.profile_et_jt);
+        mEmail = (EditText) findViewById(R.id.profile_et_email);
         helper = new AvatarEditUtil(this);
 
-        mToken = ((G8penApplication)getApplication()).getToken();
-        mUserUuid = ((G8penApplication)getApplication()).getUserUuid();
-        mApiService = ((G8penApplication)getApplication()).getAPIService();
+        mToken = ((G8penApplication) getApplication()).getToken();
+        mUserUuid = ((G8penApplication) getApplication()).getUserUuid();
+        mApiService = ((G8penApplication) getApplication()).getAPIService();
 
         //set default
-        pDownloader =  ((G8penApplication)getApplication()).getImgLoader(this);
+        pDownloader = ((G8penApplication) getApplication()).getImgLoader(this);
         pDownloader.load(ServiceConstant.getAvatarUri(mUserUuid, ServiceConstant.PIC_SIZE_LARGE))
                 .placeholder(R.drawable.ic_user_placeholder)
                 .error(R.drawable.ic_user_placeholder)
@@ -104,11 +104,9 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
 
-
-
     private void submitInfo() {
         String name = mNameText.getText().toString();
-        if(TextUtils.isEmpty(name)){
+        if (TextUtils.isEmpty(name)) {
             mNameText.setError(getString(R.string.ilegal_input));
             return;
         }
@@ -249,12 +247,28 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private class SelectBtnListener implements View.OnClickListener {
-        @Override
+
         public void onClick(View v) {
-
-
-            PickerDialogFragment pickerDialogFragment = new PickerDialogFragment();
-            helper.startEdit();
+            PickerDialogFragment.OnSelectListener listener = new PickerDialogFragment.OnSelectListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int i) {
+                    switch (i) {
+                        case 0:
+                            helper.goChoosePic();
+                            break;
+                        case 1:
+                            helper.doTakePhoto();
+                            break;
+                        case 2:
+                            dialog.dismiss();
+                            break;
+                    }
+                }
+            };
+            String[] actions = {"從相簿中選取", "拍照", "取消"};
+            PickerDialogFragment fragment = PickerDialogFragment.newInstance(listener, actions);
+            fragment.show(getSupportFragmentManager(), "chooser");
         }
+
     }
 }

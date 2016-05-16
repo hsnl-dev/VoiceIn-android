@@ -4,34 +4,40 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.provider.Settings;
 import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Date;
 
 /**
  * Created by Henry on 2016/3/14.
  */
 public class AvatarEditUtil {
     private final int INTENT_PICK = 7000;
+    private final int INTENT_TAKE = 9000;
     private final int INTENT_CROP = 8000;
     Activity activity;
+    File file;
 
     public AvatarEditUtil(Activity activity) {
         this.activity = activity;
     }
     @SuppressWarnings("ResourceType")
-    private void doCrop(Intent data) {
-        Uri imgUri = data.getData();
+    private void doCrop(Uri imgUri) {
         Log.e("wewewq", imgUri.toString());
         Intent intent = new Intent("com.android.camera.action.CROP");
         intent.putExtra("outputX", 300);
         intent.putExtra("outputY", 300);
         intent.putExtra("aspectX", 1);
         intent.putExtra("aspectY", 1);
-        intent.setData(imgUri);
+        intent.setDataAndType(imgUri,"image/*");
         intent.putExtra("outputFormat", "JPEG");
         intent.putExtra("return-data", true);
         intent.putExtra("noFaceDetection", false);
@@ -39,31 +45,35 @@ public class AvatarEditUtil {
 
     }
 
-    public void startEdit() {
+    public void goChoosePic() {
+
 
         Intent intent;
 
-
-        intent = new Intent(Intent.ACTION_PICK,
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        intent.setType("image/*");
+        if (Build.VERSION.SDK_INT < 19) {
+            intent = new Intent();
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            intent.setType("image/*");
+        } else {
+            intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("image/*");
+        }
         activity.startActivityForResult(intent, INTENT_PICK);
-
-
-//        Intent intent;
-//
-//        if (Build.VERSION.SDK_INT < 19) {
-//            intent = new Intent();
-//            intent.setAction(Intent.ACTION_GET_CONTENT);
-//            intent.setType("image/*");
-//        } else {
-//            intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-//            intent.addCategory(Intent.CATEGORY_OPENABLE);
-//            intent.setType("image/*");
-//        }
-//        activity.startActivityForResult(intent, INTENT_PICK);
     }
 
+    public void doTakePhoto(){
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        File mFolder = new File(activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+                "photo");
+        mFolder.mkdirs();
+        file = new File(mFolder,
+                "my-photo"+new Date().getTime()+".jpg");
+        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,Uri.fromFile(file));
+        Log.e("GGGG", "doTakePhoto: ");
+        activity.startActivityForResult(takePictureIntent,INTENT_TAKE);
+    }
     /***
      * This is helper that help you to parse result from crop intent
      *
@@ -75,8 +85,11 @@ public class AvatarEditUtil {
     public Bitmap parseResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == activity.RESULT_OK) {
             switch (requestCode) {
+                case INTENT_TAKE:
+                    doCrop(Uri.fromFile(file));
+                    break;
                 case INTENT_PICK:
-                    doCrop(data);
+                    doCrop(data.getData());
                     break;
                 case INTENT_CROP:
                     Bundle bundle = data.getExtras();
