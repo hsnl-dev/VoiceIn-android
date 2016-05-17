@@ -40,6 +40,10 @@ import tw.kits.voicein.util.VoiceInService;
 
 public class ContactEditActivity extends AppCompatActivity {
     public static final String ARG_CONTACT = "Contact";
+    public static final String EXTRA_ACTION = "action";
+    public static final String EXTRA_CONTACT = "extraContact";
+    public static final int DELETE_ACTION = 1;
+    public static final int UPDATE_ACTION = 2;
     private static final String TAG = ContactEditActivity.class.getName();
 
     Contact mContact;
@@ -207,6 +211,13 @@ public class ContactEditActivity extends AppCompatActivity {
     private void updateContact() {
         progressDialog.show(getSupportFragmentManager(), "update_wait");
 
+        //set Contact first
+        mContact.setNickName(mNickName.getText().toString());
+        mContact.setIsEnable(!mDisturbSw.isChecked());
+        mContact.setAvailableStartTime(mAStartText.getText().toString());
+        mContact.setAvailableEndTime(mAEndText.getText().toString());
+        mContact.setIsHigherPriorityThanGlobal(mEnhanceSw.isChecked());
+
         mApiService.updateQRcodeInfo(
                 mContact.getId(),
                 mNickName.getText().toString(),
@@ -220,7 +231,10 @@ public class ContactEditActivity extends AppCompatActivity {
                         progressDialog.dismiss();
                         if (response.isSuccess()) {
                             Intent data = new Intent();
+                            data.putExtra(ContactEditActivity.EXTRA_ACTION,ContactEditActivity.UPDATE_ACTION);
+                            data.putExtra(ContactEditActivity.EXTRA_CONTACT,mContact);
                             setResult(RESULT_OK, data);
+
                             finish();
                         } else {
                             switch (response.code()) {
@@ -342,6 +356,8 @@ public class ContactEditActivity extends AppCompatActivity {
                 progressDialog.dismiss();
                 if (response.isSuccess()) {
                     Intent data = new Intent();
+                    data.putExtra(ContactEditActivity.EXTRA_ACTION,ContactEditActivity.DELETE_ACTION);
+                    data.putExtra(ContactEditActivity.EXTRA_CONTACT,mContact);
                     setResult(RESULT_OK, data);
                     finish();
                 } else {

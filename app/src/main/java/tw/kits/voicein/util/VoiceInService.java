@@ -42,10 +42,10 @@ import tw.kits.voicein.model.VerifyForm;
  */
 public interface VoiceInService {
     @POST("api/v2/accounts/validations/")
-    Call<UserLoginRes> getvalidationCode(@Body HashMap<String, String> user);
+    Call<UserLoginRes> getRealCode(@Body HashMap<String, String> user);
 
     @POST("api/v2/sandboxs/accounts/validations/")
-    Call<UserLoginRes> getRealCode(@Body HashMap<String, String> user);
+    Call<UserLoginRes> getvalidationCode(@Body HashMap<String, String> user);
 
     @POST("api/v2/accounts/tokens/")
     Call<Token> getToken(@Body VerifyForm verifyInfo);
@@ -58,6 +58,9 @@ public interface VoiceInService {
 
     @GET("api/v2/accounts/{userUuid}/contacts")
     Call<List<Contact>> getContacts(@Path("userUuid") String userUuid);
+
+    @GET("api/v2/accounts/{userUuid}/contacts?conditional=true")
+    Call<List<Contact>> getContactsConditional(@Path("userUuid") String userUuid);
 
     @GET("api/v2/accounts/{userUuid}/contacts?filter=like")
     Call<List<Contact>> getFavoriteContacts(@Path("userUuid") String userUuid);

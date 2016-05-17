@@ -1,6 +1,7 @@
 package tw.kits.voicein.util;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.LruCache;
@@ -20,6 +21,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
  * Created by Henry on 2016/3/28.
  */
 public class ImageUtil {
+    String TAG = ImageUtil.class.getSimpleName();
     private final int MAX_AGE=300;
     private final int CACHE_SIZE = 10 * 1024 * 1024; // 10 MiB
     private Interceptor cacheInterceptor;
@@ -49,7 +51,13 @@ public class ImageUtil {
             synchronized (ImageUtil.class) {
                 if(imgLoader==null){
                     imgLoader = new Picasso.Builder(context).downloader(downloader).loggingEnabled(true).indicatorsEnabled(false).build();
-                    Picasso.setSingletonInstance(imgLoader);
+                    try{
+                        Picasso.setSingletonInstance(imgLoader);
+                    }catch (IllegalStateException e){
+                        //do nothing
+                        Log.w(TAG, "getDownloader: " + e.getMessage() );
+                    }
+
                 }
             }
         }

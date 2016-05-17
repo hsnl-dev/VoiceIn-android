@@ -20,7 +20,7 @@
     <string name="user_name_hint">請輸入您的使用者名稱</string>
     <string name="location_hint">請輸入您的所在地</string>
     <string name="company_hint">請輸入您的服務單位</string>
-    <string name="intro_hint">請輸入您的簡介(選填)</string>
+    <string name="intro_hint">請輸入您的簡介</string>
     <string name="avatar_upload_hint">更新大頭貼</string>
     <string name="inbox_title">通知</string>
     <string name="card_title">我的名片</string>

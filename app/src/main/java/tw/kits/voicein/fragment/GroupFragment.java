@@ -1,6 +1,7 @@
 package tw.kits.voicein.fragment;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -132,12 +133,11 @@ public class GroupFragment extends Fragment implements GroupAdapter.OnClickListe
 
     @Override
     public void onLongClick(View view, final Group group) {
-        Log.e("TAG","sfuck");
         String[] actions = {"刪除群組","檢視群組","取消"};
-        PickerDialogFragment fragment = PickerDialogFragment.newInstance(new DialogInterface.OnClickListener() {
+        PickerDialogFragment.OnSelectListener onSelectListener = new PickerDialogFragment.OnSelectListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                switch (which){
+                switch (which) {
                     case 0:
                         delGroup(group.getGroupId());
                         break;
@@ -150,7 +150,8 @@ public class GroupFragment extends Fragment implements GroupAdapter.OnClickListe
 
                 }
             }
-        },actions);
+        };
+        PickerDialogFragment fragment = PickerDialogFragment.newInstance(onSelectListener,actions);
         fragment.show(getFragmentManager(),"show_options");
     }
 

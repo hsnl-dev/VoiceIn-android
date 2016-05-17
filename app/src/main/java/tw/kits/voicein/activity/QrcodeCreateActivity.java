@@ -1,12 +1,17 @@
 package tw.kits.voicein.activity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -28,6 +33,7 @@ public class QrcodeCreateActivity extends AppCompatActivity implements View.OnCl
 
     DialogFragment mFragment;
     int INTENT_PHONE_BOOK = 0x01;
+    int PEMISSON_PHONE_BOOK = 0x02;
     private EditText mName;
     private EditText mPhone;
     private EditText mCom;
@@ -55,13 +61,21 @@ public class QrcodeCreateActivity extends AppCompatActivity implements View.OnCl
         mUserUuid = ((G8penApplication)getApplication()).getUserUuid();
 
     }
+    public void readContactIntent(){
+        Intent i = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+        startActivityForResult(i, INTENT_PHONE_BOOK);
 
+    }
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.qrcode_create_btn_read:
-                Intent i = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-                startActivityForResult(i, INTENT_PHONE_BOOK);
+                if( PackageManager.PERMISSION_GRANTED != ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS)){
+                    ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.READ_CONTACTS},PEMISSON_PHONE_BOOK);
+                }else{
+                    readContactIntent();
+                }
+
                 break;
             case R.id.customer_qrcode_confirm:
                 CustomerQRcodeForm form = new CustomerQRcodeForm();
@@ -97,6 +111,17 @@ public class QrcodeCreateActivity extends AppCompatActivity implements View.OnCl
                             }
                         });
                 break;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode==PEMISSON_PHONE_BOOK){
+            if(grantResults.length==1){
+                if(grantResults[0]==PackageManager.PERMISSION_GRANTED){
+                    readContactIntent();
+                }
+            }
         }
     }
 

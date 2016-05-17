@@ -112,11 +112,16 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
 
 
         Context context = holder.mCircleImageView.getContext();
+        Picasso picasso = mImgLoader;
         if(contact.getProfilePhotoId()!=null) {
-            Picasso picasso = mImgLoader;
+
             picasso.load(ServiceConstant.getAvatarById(contact.getProfilePhotoId(), ServiceConstant.PIC_SIZE_MID))
                     .noFade()
                     .placeholder(R.drawable.ic_person_white_48dp)
+                    .into(holder.mCircleImageView);
+        }else{
+            picasso.load(R.drawable.ic_person_white_48dp)
+                    .noFade()
                     .into(holder.mCircleImageView);
         }
         holder.mItemLayout.setOnClickListener(new View.OnClickListener() {
@@ -137,6 +142,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
                 listListener.onFavoriteClick(position, contact);
             }
         });
+        Log.e(TAG, "onBindViewHolder: "+contact.toString());
         if(contact.getProviderIsEnable()){
             holder.bindPositive(listListener,position,contact);
         }else {
@@ -147,7 +153,31 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
 
     }
 
+    public void findAndModify(Contact contact){
+        int idx;
+        for(int i = 0 ; i<this.mContacts.size() ; i++){
+            if(this.mContacts.get(i).getId().equals(contact.getId())){
+                Log.e(TAG, "findAndModify: test");
+                this.mContacts.set(i,contact);
+                notifyItemChanged(i);
+                break;
+            }
+        }
 
+    }
+
+    public void findAndDelete(Contact contact){
+        int idx;
+        for(int i = 0 ; i<this.mContacts.size() ; i++){
+            if(this.mContacts.get(i).getId().equals(contact.getId())){
+                Log.e(TAG, "findAndDelete: remove");
+                this.mContacts.remove(i);
+                notifyItemRemoved(i);
+                break;
+            }
+        }
+
+    }
     @Override
     public int getItemCount() {
         return mContacts.size();

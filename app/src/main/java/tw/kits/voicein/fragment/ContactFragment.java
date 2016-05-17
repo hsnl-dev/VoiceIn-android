@@ -35,7 +35,9 @@ import tw.kits.voicein.adapter.ContactAdapter;
 import tw.kits.voicein.model.CallForm;
 import tw.kits.voicein.model.Contact;
 import tw.kits.voicein.util.ColoredSnackBarUtil;
+import tw.kits.voicein.util.ContactRetriever;
 import tw.kits.voicein.util.DividerItemDecoration;
+import tw.kits.voicein.util.SnackBarUtil;
 import tw.kits.voicein.util.VoiceInService;
 
 
@@ -56,9 +58,10 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
     ContactAdapter mContactAdapter;
     VoiceInService mApiService;
     ProgressFragment mProgressDialog;
+    ContactRetriever mRetriever;
 
     public ContactFragment() {
-        // Required empty public constructor
+
 
     }
 
@@ -69,6 +72,7 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
 
         mContext = getContext();
         mApiService = ((G8penApplication) getActivity().getApplication()).getAPIService();
+        mRetriever = new ContactRetriever(mApiService);
         mToken = ((G8penApplication) getActivity().getApplication()).getToken();
         mUserUuid = ((G8penApplication) getActivity().getApplication()).getUserUuid();
 
@@ -152,37 +156,37 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
     }
 
     private void refreshContact() {
+        mRefreshContainer.setRefreshing(true);
         if(mContactAdapter!=null){
             mContactAdapter.invalidateAllImg();
         }
-        mApiService
-                .getContacts(mUserUuid)
-                .enqueue(new Callback<List<Contact>>() {
+        final SnackBarUtil snackBarUtil = new SnackBarUtil(mMainLayout,ContactFragment.this.getContext());
+        mRetriever
+                .getContactList(mUserUuid, new ContactRetriever.Callback() {
                     @Override
-                    public void onResponse(Call<List<Contact>> call, Response<List<Contact>> response) {
+                    public void onSuccess(List<Contact> contacts) {
                         mRefreshContainer.setRefreshing(false);
-                        if (response.isSuccess()) {
+                        mContactAdapter.clear();
+                        mContactAdapter.addAll(contacts);
+                        mContactAdapter.notifyDataSetChanged();
+                    }
 
-                            mContactAdapter.clear();
-                            mContactAdapter.addAll(response.body());
-                            mContactAdapter.notifyDataSetChanged();
+                    @Override
+                    public void onError(Response<List<Contact>> response) {
+                        mRefreshContainer.setRefreshing(false);
+                        snackBarUtil.showSnackBar(response.code());
+                        Log.e(TAG, "Fial");
 
-
-                        } else {
-                            Log.e(TAG, "Fial");
-                            Snackbar snack = Snackbar.make(mMainLayout, getResources().getString(R.string.user_auth_err), Snackbar.LENGTH_LONG);
-                            snack.show();
-                        }
                     }
 
                     @Override
                     public void onFailure(Call<List<Contact>> call, Throwable t) {
                         mRefreshContainer.setRefreshing(false);
                         Log.e(TAG, t.toString());
-                        Snackbar.make(mMainLayout, getResources().getString(R.string.network_err), Snackbar.LENGTH_LONG).show();
-
+                        snackBarUtil.showSnackBar(SnackBarUtil.NETWORK_ERR);
                     }
                 });
+
     }
 
     @Override
@@ -206,8 +210,15 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
                     case INTENT_EDIT_CONTACT:
                         Log.i(TAG, "Success");
                         ColoredSnackBarUtil.primary(Snackbar.make(mMainLayout, getString(R.string.success), Snackbar.LENGTH_LONG)).show();
-                        mRefreshContainer.setRefreshing(true);
-                        refreshContact();
+//                        mRefreshContainer.setRefreshing(true);
+//                        refreshContact();
+                        if(ContactEditActivity.DELETE_ACTION ==data.getIntExtra(ContactEditActivity.EXTRA_ACTION,-1)){
+                            mContactAdapter.findAndDelete((Contact)data.getSerializableExtra(ContactEditActivity.EXTRA_CONTACT));
+                        }else if(ContactEditActivity.UPDATE_ACTION ==data.getIntExtra(ContactEditActivity.EXTRA_ACTION,-1)){
+                            Log.e(TAG, "onActivityResult: ");
+                            mContactAdapter.findAndModify((Contact)data.getSerializableExtra(ContactEditActivity.EXTRA_CONTACT));
+
+                        }
                         break;
                 }
 

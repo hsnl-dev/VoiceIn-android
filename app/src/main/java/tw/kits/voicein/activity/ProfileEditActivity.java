@@ -2,13 +2,16 @@ package tw.kits.voicein.activity;
 
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,6 +32,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import tw.kits.voicein.G8penApplication;
 import tw.kits.voicein.R;
+import tw.kits.voicein.fragment.PickerDialogFragment;
 import tw.kits.voicein.fragment.TimePickerDialogFragment;
 import tw.kits.voicein.model.UserInfo;
 import tw.kits.voicein.model.UserUpdateForm;
@@ -113,7 +117,25 @@ public class ProfileEditActivity extends AppCompatActivity {
         avatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                helper.startEdit();
+                PickerDialogFragment.OnSelectListener listener = new PickerDialogFragment.OnSelectListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+                        switch (i){
+                            case 0:
+                                helper.goChoosePic();
+                                break;
+                            case 1:
+                                helper.doTakePhoto();
+                                break;
+                            case 2:
+                                dialog.dismiss();
+                                break;
+                        }
+                    }
+                };
+                String[] actions={"從相簿中選取","拍照","取消"};
+                PickerDialogFragment fragment = PickerDialogFragment.newInstance(listener,actions);
+                fragment.show(getSupportFragmentManager(),"chooser");
             }
         });
         availableStime.setOnClickListener(new View.OnClickListener() {
@@ -282,5 +304,10 @@ public class ProfileEditActivity extends AppCompatActivity {
                 break;
         }
         return true;
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        helper.parsePermissonResult(requestCode,permissions,grantResults);
     }
 }

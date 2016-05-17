@@ -3,6 +3,7 @@
     package="tw.kits.voicein">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
@@ -56,7 +57,9 @@
         <!-- gcm -->
         <activity
             android:name=".activity.WelcomeActivity"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -66,13 +69,16 @@
         <activity
             android:name=".activity.LoginActivity"
             android:theme="@style/AppTheme"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activity.MainActivity"
             android:launchMode="singleTop"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".activity.VerifyActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DarkActionBar"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
