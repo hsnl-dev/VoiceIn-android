@@ -59,6 +59,9 @@ public interface VoiceInService {
     @GET("api/v2/accounts/{userUuid}/contacts")
     Call<List<Contact>> getContacts(@Path("userUuid") String userUuid);
 
+    @GET("api/v2/accounts/{userUuid}/contacts?conditional=true")
+    Call<List<Contact>> getContactsConditional(@Path("userUuid") String userUuid);
+
     @GET("api/v2/accounts/{userUuid}/contacts?filter=like")
     Call<List<Contact>> getFavoriteContacts(@Path("userUuid") String userUuid);
 
