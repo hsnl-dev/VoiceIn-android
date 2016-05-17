@@ -1,7 +1,10 @@
 package tw.kits.voicein.util;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
@@ -9,6 +12,9 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import java.io.File;
@@ -23,6 +29,9 @@ public class AvatarEditUtil {
     private final int INTENT_PICK = 7000;
     private final int INTENT_TAKE = 9000;
     private final int INTENT_CROP = 8000;
+    private final int RES_PERMISSON = 10000;
+    private final int RES_FILE_PERMISSON = 10001;
+    String TAG = AvatarEditUtil.class.getSimpleName();
     Activity activity;
     File file;
 
@@ -44,20 +53,39 @@ public class AvatarEditUtil {
         activity.startActivityForResult(intent, INTENT_CROP);
 
     }
-
     public void goChoosePic() {
+        int readPermission = ContextCompat.checkSelfPermission(activity,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if(readPermission == PackageManager.PERMISSION_GRANTED){
+            goRealChoosePic();
+        }else{
+            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},RES_FILE_PERMISSON);
+        }
 
-
+    }
+    public void goRealChoosePic(){
         Intent intent;
-
-
         intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/*");
 
         activity.startActivityForResult(intent, INTENT_PICK);
     }
-
     public void doTakePhoto(){
+
+        int permissionRes = ContextCompat.checkSelfPermission(activity,
+                Manifest.permission.CAMERA);
+        int readPermission = ContextCompat.checkSelfPermission(activity,
+                Manifest.permission.READ_EXTERNAL_STORAGE);
+        if(permissionRes== PackageManager.PERMISSION_GRANTED && readPermission == PackageManager.PERMISSION_GRANTED){
+            realTakePhoto();
+        }else{
+            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.CAMERA},RES_PERMISSON);
+
+        }
+
+    }
+    private void realTakePhoto(){
+
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
         File mFolder = new File(activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
@@ -68,6 +96,40 @@ public class AvatarEditUtil {
         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,Uri.fromFile(file));
         Log.e("GGGG", "doTakePhoto: ");
         activity.startActivityForResult(takePictureIntent,INTENT_TAKE);
+    }
+    public void parsePermissonResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults){
+        if(requestCode==RES_PERMISSON){
+
+            boolean isSuccess = true;
+            if(grantResults.length==2){
+                for(int result :grantResults){
+                    if(result!=PackageManager.PERMISSION_GRANTED){
+                        isSuccess = false;
+                        break;
+                    }
+                }
+            }else{
+                isSuccess=false;
+            }
+            if(isSuccess){
+                Log.i(TAG, "parsePermissonResult: OK");
+                realTakePhoto();
+            }else{
+                Log.w(TAG, "parsePermissonResult: Failed to granted" );
+
+            }
+        }else if(requestCode==RES_FILE_PERMISSON){
+            if(grantResults.length==1){
+                if(grantResults[0]==PackageManager.PERMISSION_GRANTED)
+                    goRealChoosePic();
+                else
+                    Log.w(TAG, "parsePermissonResult: Failed to granted" );
+            }else{
+                Log.w(TAG, "parsePermissonResult: Failed to granted" );
+            }
+
+        }
+
     }
     /***
      * This is helper that help you to parse result from crop intent

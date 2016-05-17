@@ -231,6 +231,12 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        Log.e(TAG, "onRequestPermissionsResult: " );
+        helper.parsePermissonResult(requestCode,permissions,grantResults);
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Bitmap bitmap = helper.parseResult(requestCode, resultCode, data);
         if (bitmap != null) {

@@ -27,10 +27,12 @@ public class WelcomeActivity extends AppCompatActivity {
             if (apiAvailability.isUserResolvableError(resultCode)) {
                 apiAvailability.getErrorDialog(this, resultCode, 60000)
                         .show();
+
             } else {
-                Log.i(TAG, "This device is not supported.");
+
                 finish();
             }
+            Log.i(TAG, "This device is not supported.");
             return false;
         }
         return true;
@@ -41,7 +43,7 @@ public class WelcomeActivity extends AppCompatActivity {
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_welcome);
 
-        new TimerAsync().execute(1000);
+        new TimerAsync().execute(100);
     }
     private class TimerAsync extends AsyncTask<Integer, Void, Void>{
         String userUuid;

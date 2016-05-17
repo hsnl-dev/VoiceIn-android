@@ -152,6 +152,7 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
     }
 
     private void refreshContact() {
+        mRefreshContainer.setRefreshing(true);
         if(mContactAdapter!=null){
             mContactAdapter.invalidateAllImg();
         }
