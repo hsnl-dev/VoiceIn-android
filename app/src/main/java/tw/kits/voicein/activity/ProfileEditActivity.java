@@ -281,6 +281,8 @@ public class ProfileEditActivity extends AppCompatActivity {
         mUser.setAvailableEndTime(availableEtime.getText().toString());
         mUser.setCompany(company.getText().toString());
         mUser.setLocation(location.getText().toString());
+        mUser.setJobTitle(jobTitle.getText().toString());
+        mUser.setEmail(email.getText().toString());
         mUser.setProfile(introduction.getText().toString());
         mUser.setUserName(name.getText().toString());
         mUser.setPhoneNumber(PhoneNumberUtil.getStandardNumber(mUser.getPhoneNumber()));
