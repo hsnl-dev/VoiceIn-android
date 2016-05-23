@@ -111,9 +111,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:drawableLeft="@drawable/ic_business_center_grey_600_24dp"
+                android:drawableLeft="@drawable/ic_mail_grey_600_24dp"
                 android:drawablePadding="6dp"
-                android:drawableStart="@drawable/ic_business_center_grey_600_24dp"
+                android:drawableStart="@drawable/ic_mail_grey_600_24dp"
                 android:hint="請輸入電子郵件"
                 android:inputType="text"
                 android:maxLines="1" />
@@ -130,7 +130,8 @@
                 android:inputType="textMultiLine"
                 android:lines="3"
                 android:minLines="3"
-                android:scrollbars="vertical" />
+                android:scrollbars="vertical"
+                android:maxLines="3" />
 
             <Button
                 android:id="@+id/profile_btn_confirm"

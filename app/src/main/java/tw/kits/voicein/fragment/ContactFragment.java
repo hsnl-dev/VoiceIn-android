@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -59,6 +60,7 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
     VoiceInService mApiService;
     ProgressFragment mProgressDialog;
     ContactRetriever mRetriever;
+    TextView mState;
 
     public ContactFragment() {
 
@@ -83,6 +85,7 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
         mMainLayout = (CoordinatorLayout) view.findViewById(R.id.contact_frag_cl_main);
         mActionBtn = (FloatingActionButton) view.findViewById(R.id.contact_fab_plus);
         mRefreshContainer = (SwipeRefreshLayout) view.findViewById(R.id.contact_frag_sp_container);
+        mState = (TextView) view.findViewById(R.id.contact_frag_tv_state);
 
         //setting list view
         RecyclerView.ItemDecoration itemDecoration = new
@@ -169,6 +172,11 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
                         mContactAdapter.clear();
                         mContactAdapter.addAll(contacts);
                         mContactAdapter.notifyDataSetChanged();
+                        if(contacts.size()==0){
+                            mState.setVisibility(View.VISIBLE);
+                        }else{
+                            mState.setVisibility(View.GONE);
+                        }
                     }
 
                     @Override

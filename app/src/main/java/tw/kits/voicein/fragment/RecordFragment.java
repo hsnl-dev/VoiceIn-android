@@ -6,13 +6,16 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.test.suitebuilder.TestMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -36,6 +39,8 @@ public class RecordFragment extends Fragment {
     RecordAdapter mRecordAdapter;
     SwipeRefreshLayout mSwipeContainer;
     SnackBarUtil mSnackBarHelper;
+    TextView mState;
+
     public RecordFragment() {
         // Required empty public constructor
     }
@@ -53,7 +58,7 @@ public class RecordFragment extends Fragment {
         mMainView = view.findViewById(R.id.record_frag_cl_main);
         mUserUuid = ((G8penApplication) getActivity().getApplication()).getUserUuid();
         mRview = (RecyclerView) view.findViewById(R.id.record_frag_rv_main);
-
+        mState = (TextView) view.findViewById(R.id.record_frag_tv_state);
         mRview.setLayoutManager(new LinearLayoutManager(getContext()));
 //        mFab = (FloatingActionButton)view.findViewById(R.id.group_frag_fab_add);
         mSwipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.record_frag_sp_container);
@@ -94,9 +99,18 @@ public class RecordFragment extends Fragment {
             public void onResponse(Call<RecordList> call, Response<RecordList> response) {
                 mSwipeContainer.setRefreshing(false);
                 if (response.isSuccess()) {
+                    List<Record> recordList = response.body().getRecords();
                     mRecordAdapter.clear();
                     mRecordAdapter.addList(response.body().getRecords());
+
                     mRecordAdapter.notifyDataSetChanged();
+
+                    if(recordList.size()==0){
+                        mState.setVisibility(View.VISIBLE);
+                    }else{
+                        mState.setVisibility(View.GONE);
+                    }
+
 
                 } else {
                     mSnackBarHelper.showSnackBar(response.code());
