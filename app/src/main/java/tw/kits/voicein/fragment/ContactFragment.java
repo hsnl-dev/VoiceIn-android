@@ -38,6 +38,7 @@ import tw.kits.voicein.model.Contact;
 import tw.kits.voicein.util.ColoredSnackBarUtil;
 import tw.kits.voicein.util.ContactRetriever;
 import tw.kits.voicein.util.DividerItemDecoration;
+import tw.kits.voicein.util.ScrollAwareFABBehavior;
 import tw.kits.voicein.util.SnackBarUtil;
 import tw.kits.voicein.util.VoiceInService;
 
@@ -80,6 +81,7 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
 
         View view = inflater.inflate(R.layout.fragment_contact, container, false);
 
+
         mProgressDialog = new ProgressFragment();
         mRvContact = (RecyclerView) view.findViewById(R.id.contact_rv_items);
         mMainLayout = (CoordinatorLayout) view.findViewById(R.id.contact_frag_cl_main);
@@ -87,6 +89,10 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
         mRefreshContainer = (SwipeRefreshLayout) view.findViewById(R.id.contact_frag_sp_container);
         mState = (TextView) view.findViewById(R.id.contact_frag_tv_state);
 
+        CoordinatorLayout.LayoutParams params =
+                (CoordinatorLayout.LayoutParams) mActionBtn.getLayoutParams();
+        params.setBehavior(new ScrollAwareFABBehavior());
+        mActionBtn.requestLayout();
         //setting list view
         RecyclerView.ItemDecoration itemDecoration = new
                 DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST);
