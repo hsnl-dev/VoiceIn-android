@@ -37,6 +37,7 @@ import tw.kits.voicein.model.CallForm;
 import tw.kits.voicein.model.Contact;
 import tw.kits.voicein.util.ColoredSnackBarUtil;
 import tw.kits.voicein.util.DividerItemDecoration;
+import tw.kits.voicein.util.InitCallCallBackImpl;
 import tw.kits.voicein.util.VoiceInService;
 
 
@@ -57,6 +58,7 @@ public class FavoriteFragment extends Fragment {
     FavoriteAdapter mContactAdapter;
     VoiceInService mApiService;
     ProgressFragment mProgressDialog;
+    ProgressCallFragment mProgressDialogCall;
     TextView mState;
 
     public FavoriteFragment() {
@@ -77,6 +79,7 @@ public class FavoriteFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_contact, container, false);
 
         mProgressDialog = new ProgressFragment();
+        mProgressDialogCall = new ProgressCallFragment();
         mRvContact = (RecyclerView) view.findViewById(R.id.contact_rv_items);
         mMainLayout = (CoordinatorLayout) view.findViewById(R.id.contact_frag_cl_main);
         mActionBtn = (FloatingActionButton) view.findViewById(R.id.contact_fab_plus);
@@ -109,9 +112,9 @@ public class FavoriteFragment extends Fragment {
             public void onPhoneClick(int pos, Contact item) {
                 CallForm form = new CallForm();
                 form.setContactId(item.getId());
-                mProgressDialog.show(getFragmentManager(),"wait");
+                mProgressDialogCall.show(getFragmentManager(),"wait");
                 mApiService.createCall(mUserUuid, form)
-                        .enqueue(new CallCallBack());
+                        .enqueue(new InitCallCallBackImpl(mProgressDialogCall,getContext(),mMainLayout));
             }
         };
         mContactAdapter.setContatctListListener(listListener);
@@ -210,39 +213,4 @@ public class FavoriteFragment extends Fragment {
 //        }
 //    }
 
-    private class CallCallBack implements Callback<ResponseBody>{
-        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
-            if(response.isSuccess()){
-                mProgressDialog.dismiss();
-            }else{
-                mProgressDialog.dismiss();
-                switch (response.code()){
-                    case 403:
-                        ColoredSnackBarUtil.primary(
-                                Snackbar.make(mMainLayout, getString(R.string.forbidden_call_hint), Snackbar.LENGTH_SHORT)
-                        ).show();
-                        break;
-                    case 401:
-                        ColoredSnackBarUtil.primary(
-                                Snackbar.make(mMainLayout, getString(R.string.user_not_auth), Snackbar.LENGTH_SHORT)
-                        ).show();
-                        break;
-                    default:
-                        ColoredSnackBarUtil.primary(
-                                Snackbar.make(mMainLayout, getString(R.string.server_err), Snackbar.LENGTH_SHORT)
-                        ).show();
-
-                }
-            }
-        }
-
-        @Override
-        public void onFailure(Call<ResponseBody> call, Throwable t) {
-            mProgressDialog.dismiss();
-            ColoredSnackBarUtil.primary(
-                    Snackbar.make(mMainLayout, getString(R.string.network_err), Snackbar.LENGTH_SHORT)
-            ).show();
-        }
-    }
 }

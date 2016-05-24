@@ -38,6 +38,7 @@ import tw.kits.voicein.model.Contact;
 import tw.kits.voicein.util.ColoredSnackBarUtil;
 import tw.kits.voicein.util.ContactRetriever;
 import tw.kits.voicein.util.DividerItemDecoration;
+import tw.kits.voicein.util.InitCallCallBackImpl;
 import tw.kits.voicein.util.ScrollAwareFABBehavior;
 import tw.kits.voicein.util.SnackBarUtil;
 import tw.kits.voicein.util.VoiceInService;
@@ -60,6 +61,7 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
     ContactAdapter mContactAdapter;
     VoiceInService mApiService;
     ProgressFragment mProgressDialog;
+    ProgressCallFragment mProgressDialogCall;
     ContactRetriever mRetriever;
     TextView mState;
 
@@ -81,7 +83,7 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
 
         View view = inflater.inflate(R.layout.fragment_contact, container, false);
 
-
+        mProgressDialogCall = new ProgressCallFragment();
         mProgressDialog = new ProgressFragment();
         mRvContact = (RecyclerView) view.findViewById(R.id.contact_rv_items);
         mMainLayout = (CoordinatorLayout) view.findViewById(R.id.contact_frag_cl_main);
@@ -120,9 +122,9 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
             public void onPhoneClick(int pos, Contact item) {
                 CallForm form = new CallForm();
                 form.setContactId(item.getId());
-                mProgressDialog.show(getFragmentManager(),"wait");
+                mProgressDialogCall.show(getFragmentManager(),"wait");
                 mApiService.createCall(mUserUuid, form)
-                        .enqueue(new CallCallBack());
+                        .enqueue(new InitCallCallBackImpl(mProgressDialogCall,getContext(),mMainLayout));
             }
             @Override
             public void onFavoriteClick(int pos, Contact item){
@@ -285,38 +287,5 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
             ).show();
         }
     }
-    private class CallCallBack implements Callback<ResponseBody>{
-        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-            mProgressDialog.dismiss();
-            if(response.isSuccess()){
 
-            }else{
-                switch (response.code()){
-                    case 403:
-                        ColoredSnackBarUtil.primary(
-                                Snackbar.make(mMainLayout, getString(R.string.forbidden_call_hint), Snackbar.LENGTH_SHORT)
-                        ).show();
-                        break;
-                    case 401:
-                        ColoredSnackBarUtil.primary(
-                                Snackbar.make(mMainLayout, getString(R.string.user_not_auth), Snackbar.LENGTH_SHORT)
-                        ).show();
-                        break;
-                    default:
-                        ColoredSnackBarUtil.primary(
-                                Snackbar.make(mMainLayout, getString(R.string.server_err), Snackbar.LENGTH_SHORT)
-                        ).show();
-
-                }
-            }
-        }
-
-        @Override
-        public void onFailure(Call<ResponseBody> call, Throwable t) {
-            mProgressDialog.dismiss();
-            ColoredSnackBarUtil.primary(
-                    Snackbar.make(mMainLayout, getString(R.string.network_err), Snackbar.LENGTH_SHORT)
-            ).show();
-        }
-    }
 }

@@ -32,10 +32,10 @@ public class WelcomeActivity extends AppCompatActivity {
 
             } else {
 
-                finish();
+
             }
             Log.i(TAG, "This device is not supported.");
-            return false;
+            return true;
         }
         return true;
     }
@@ -64,12 +64,14 @@ public class WelcomeActivity extends AppCompatActivity {
             if(userUuid==null || token == null) {
                 Intent i = new Intent(WelcomeActivity.this, IntroActivity.class);
                 startActivity(i);
+                finish();
 
             }else{
                 if(!isNetworkAvaliable()){
                     Intent cardIntent = new Intent(WelcomeActivity.this, MyCardActivity.class);
                     cardIntent.putExtra(MyCardActivity.ARG_OFFLINE,true);
                     startActivity(cardIntent);
+                    finish();
 
                 }else if (checkPlayServices()) {
                     // Start IntentService to register this application with GCM.
@@ -77,10 +79,11 @@ public class WelcomeActivity extends AppCompatActivity {
                     startService(intent);
                     Intent i = new Intent(WelcomeActivity.this, MainActivity.class);
                     startActivity(i);
+                    finish();
                 }
 
             }
-            finish();
+
         }
 
         @Override

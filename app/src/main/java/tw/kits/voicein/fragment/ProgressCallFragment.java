@@ -34,6 +34,7 @@ public class ProgressCallFragment extends DialogFragment {
         return dialog;
     }
     public void setupTimer(){
+
         ((ProgressDialog)getDialog()).setMessage(getString(R.string.wait_call_notice));
         new TimerAsync().execute(WAIT_MILLS);
     }

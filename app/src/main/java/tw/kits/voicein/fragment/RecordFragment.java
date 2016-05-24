@@ -30,6 +30,7 @@ import tw.kits.voicein.model.Record;
 import tw.kits.voicein.model.RecordList;
 import tw.kits.voicein.util.ColoredSnackBarUtil;
 import tw.kits.voicein.util.DividerItemDecoration;
+import tw.kits.voicein.util.InitCallCallBackImpl;
 import tw.kits.voicein.util.SnackBarUtil;
 import tw.kits.voicein.util.VoiceInService;
 
@@ -45,6 +46,7 @@ public class RecordFragment extends Fragment {
     SnackBarUtil mSnackBarHelper;
     TextView mState;
     ProgressFragment mProgressDialog;
+    ProgressCallFragment mProgressDialogCall;
     public RecordFragment() {
         // Required empty public constructor
     }
@@ -91,14 +93,15 @@ public class RecordFragment extends Fragment {
         mRview.addItemDecoration(itemDecoration);
         mRecordAdapter = new RecordAdapter(new ArrayList<Record>(), mImgLoader, RecordFragment.this.getContext());
         mProgressDialog = new ProgressFragment();
+        mProgressDialogCall = new ProgressCallFragment();
         mRecordAdapter.setOnAdaterListener(new RecordAdapter.AdapterListener() {
             @Override
             public void onPhoneClick(int pos, Record item) {
                 CallForm form = new CallForm();
                 form.setContactId(item.getContactId());
-                mProgressDialog.show(getFragmentManager(),"wait");
+                mProgressDialogCall.show(getFragmentManager(),"wait");
                 mApiService.createCall(mUserUuid, form)
-                        .enqueue(new CallCallBack());
+                        .enqueue(new InitCallCallBackImpl(mProgressDialogCall,getContext(),mMainView));
             }
 
             @Override
@@ -110,40 +113,7 @@ public class RecordFragment extends Fragment {
         mSnackBarHelper = new SnackBarUtil(mMainView, this.getContext());
         return view;
     }
-    private class CallCallBack implements Callback<ResponseBody>{
-        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-            mProgressDialog.dismiss();
-            if(response.isSuccess()){
 
-            }else{
-                switch (response.code()){
-                    case 403:
-                        ColoredSnackBarUtil.primary(
-                                Snackbar.make(mMainView, getString(R.string.forbidden_call_hint), Snackbar.LENGTH_SHORT)
-                        ).show();
-                        break;
-                    case 401:
-                        ColoredSnackBarUtil.primary(
-                                Snackbar.make(mMainView, getString(R.string.user_not_auth), Snackbar.LENGTH_SHORT)
-                        ).show();
-                        break;
-                    default:
-                        ColoredSnackBarUtil.primary(
-                                Snackbar.make(mMainView, getString(R.string.server_err), Snackbar.LENGTH_SHORT)
-                        ).show();
-
-                }
-            }
-        }
-
-        @Override
-        public void onFailure(Call<ResponseBody> call, Throwable t) {
-            mProgressDialog.dismiss();
-            ColoredSnackBarUtil.primary(
-                    Snackbar.make(mMainView, getString(R.string.network_err), Snackbar.LENGTH_SHORT)
-            ).show();
-        }
-    }
     public void refresh() {
 
 
