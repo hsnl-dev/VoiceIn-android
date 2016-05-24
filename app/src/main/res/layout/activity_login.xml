@@ -52,18 +52,12 @@
         android:padding="2dp"
         android:background="#b4ffffff">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="+886"
-            android:id="@+id/textView3" />
-
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="phone"
             android:id="@+id/login_et_phonenum"
+            android:gravity="center"
             android:hint="@string/enter_phonenumber_hint"
             android:maxLength="10" />
     </LinearLayout>

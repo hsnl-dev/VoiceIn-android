@@ -212,10 +212,11 @@ public class FavoriteFragment extends Fragment {
 
     private class CallCallBack implements Callback<ResponseBody>{
         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-            mProgressDialog.dismiss();
-            if(response.isSuccess()){
 
+            if(response.isSuccess()){
+                mProgressDialog.dismiss();
             }else{
+                mProgressDialog.dismiss();
                 switch (response.code()){
                     case 403:
                         ColoredSnackBarUtil.primary(

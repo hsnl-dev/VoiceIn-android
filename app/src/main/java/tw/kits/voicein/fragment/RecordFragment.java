@@ -2,6 +2,7 @@ package tw.kits.voicein.fragment;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,14 +18,17 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import tw.kits.voicein.G8penApplication;
 import tw.kits.voicein.R;
 import tw.kits.voicein.adapter.RecordAdapter;
+import tw.kits.voicein.model.CallForm;
 import tw.kits.voicein.model.Record;
 import tw.kits.voicein.model.RecordList;
+import tw.kits.voicein.util.ColoredSnackBarUtil;
 import tw.kits.voicein.util.DividerItemDecoration;
 import tw.kits.voicein.util.SnackBarUtil;
 import tw.kits.voicein.util.VoiceInService;
@@ -40,7 +44,7 @@ public class RecordFragment extends Fragment {
     SwipeRefreshLayout mSwipeContainer;
     SnackBarUtil mSnackBarHelper;
     TextView mState;
-
+    ProgressFragment mProgressDialog;
     public RecordFragment() {
         // Required empty public constructor
     }
@@ -86,11 +90,60 @@ public class RecordFragment extends Fragment {
                 DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST);
         mRview.addItemDecoration(itemDecoration);
         mRecordAdapter = new RecordAdapter(new ArrayList<Record>(), mImgLoader, RecordFragment.this.getContext());
+        mProgressDialog = new ProgressFragment();
+        mRecordAdapter.setOnAdaterListener(new RecordAdapter.AdapterListener() {
+            @Override
+            public void onPhoneClick(int pos, Record item) {
+                CallForm form = new CallForm();
+                form.setContactId(item.getContactId());
+                mProgressDialog.show(getFragmentManager(),"wait");
+                mApiService.createCall(mUserUuid, form)
+                        .enqueue(new CallCallBack());
+            }
+
+            @Override
+            public void onListClick(int pos, Record item) {
+
+            }
+        });
         mRview.setAdapter(mRecordAdapter);
         mSnackBarHelper = new SnackBarUtil(mMainView, this.getContext());
         return view;
     }
+    private class CallCallBack implements Callback<ResponseBody>{
+        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            mProgressDialog.dismiss();
+            if(response.isSuccess()){
 
+            }else{
+                switch (response.code()){
+                    case 403:
+                        ColoredSnackBarUtil.primary(
+                                Snackbar.make(mMainView, getString(R.string.forbidden_call_hint), Snackbar.LENGTH_SHORT)
+                        ).show();
+                        break;
+                    case 401:
+                        ColoredSnackBarUtil.primary(
+                                Snackbar.make(mMainView, getString(R.string.user_not_auth), Snackbar.LENGTH_SHORT)
+                        ).show();
+                        break;
+                    default:
+                        ColoredSnackBarUtil.primary(
+                                Snackbar.make(mMainView, getString(R.string.server_err), Snackbar.LENGTH_SHORT)
+                        ).show();
+
+                }
+            }
+        }
+
+        @Override
+        public void onFailure(Call<ResponseBody> call, Throwable t) {
+            mProgressDialog.dismiss();
+            ColoredSnackBarUtil.primary(
+                    Snackbar.make(mMainView, getString(R.string.network_err), Snackbar.LENGTH_SHORT)
+            ).show();
+        }
+    }
     public void refresh() {
 
 

@@ -6,8 +6,8 @@
     <string name="favorite_text">我的最愛</string>
     <string name="history_text">通話紀錄</string>
     <string name="group_text">群組</string>
-    <string name="login_notice">歡迎您使用VoiceIn\n 請輸入您的電話號碼，開始使用</string>
-    <string name="enter_phonenumber_hint">請輸入您的電話號碼(09xx開頭)</string>
+    <string name="login_notice">歡迎您使用VoiceIn\n 請輸入您的號碼，開始使用</string>
+    <string name="enter_phonenumber_hint">請輸入您的臺灣手機號碼(09開頭)</string>
     <string name="confirm">確認</string>
     <string name="verify_notice">驗證碼將在1分鐘內傳送到您的手機，請在下方輸入您的驗證碼</string>
     <string name="resend">重新傳送驗證碼</string>
@@ -94,5 +94,6 @@
     <string name="no_group_notice">您目前沒有設定群組\n請點選右下方+號，新增群組管理</string>
     <string name="no_record_notice">您目前沒有通話紀錄</string>
     <string name="no_contact_notice">您目前沒有聯絡人\n請點選右下方+號，新增聯絡人</string>
+    <string name="wait_call_notice">約10秒內，您將收到來電，請放心接聽，以等待另一方接通</string>
 
 </resources>

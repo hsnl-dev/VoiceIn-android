@@ -104,7 +104,7 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
         ContactAdapter.AdapterListener listListener = new ContactAdapter.AdapterListener() {
             @Override
             public void onListClick(int pos, Contact item) {
-                Intent intent = new Intent(getActivity(), ContactEditActivity.class);
+                Intent intent = new Intent(getContext(), ContactEditActivity.class);
                 intent.putExtra(ContactEditActivity.ARG_CONTACT, item);
                 startActivityForResult(intent, INTENT_EDIT_CONTACT);
             }
