@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -37,6 +38,8 @@ import tw.kits.voicein.model.Contact;
 import tw.kits.voicein.util.ColoredSnackBarUtil;
 import tw.kits.voicein.util.ContactRetriever;
 import tw.kits.voicein.util.DividerItemDecoration;
+import tw.kits.voicein.util.InitCallCallBackImpl;
+import tw.kits.voicein.util.ScrollAwareFABBehavior;
 import tw.kits.voicein.util.SnackBarUtil;
 import tw.kits.voicein.util.VoiceInService;
 
@@ -58,7 +61,9 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
     ContactAdapter mContactAdapter;
     VoiceInService mApiService;
     ProgressFragment mProgressDialog;
+    ProgressCallFragment mProgressDialogCall;
     ContactRetriever mRetriever;
+    TextView mState;
 
     public ContactFragment() {
 
@@ -78,12 +83,18 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
 
         View view = inflater.inflate(R.layout.fragment_contact, container, false);
 
+        mProgressDialogCall = new ProgressCallFragment();
         mProgressDialog = new ProgressFragment();
         mRvContact = (RecyclerView) view.findViewById(R.id.contact_rv_items);
         mMainLayout = (CoordinatorLayout) view.findViewById(R.id.contact_frag_cl_main);
         mActionBtn = (FloatingActionButton) view.findViewById(R.id.contact_fab_plus);
         mRefreshContainer = (SwipeRefreshLayout) view.findViewById(R.id.contact_frag_sp_container);
+        mState = (TextView) view.findViewById(R.id.contact_frag_tv_state);
 
+        CoordinatorLayout.LayoutParams params =
+                (CoordinatorLayout.LayoutParams) mActionBtn.getLayoutParams();
+        params.setBehavior(new ScrollAwareFABBehavior());
+        mActionBtn.requestLayout();
         //setting list view
         RecyclerView.ItemDecoration itemDecoration = new
                 DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST);
@@ -95,7 +106,7 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
         ContactAdapter.AdapterListener listListener = new ContactAdapter.AdapterListener() {
             @Override
             public void onListClick(int pos, Contact item) {
-                Intent intent = new Intent(getActivity(), ContactEditActivity.class);
+                Intent intent = new Intent(getContext(), ContactEditActivity.class);
                 intent.putExtra(ContactEditActivity.ARG_CONTACT, item);
                 startActivityForResult(intent, INTENT_EDIT_CONTACT);
             }
@@ -111,9 +122,9 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
             public void onPhoneClick(int pos, Contact item) {
                 CallForm form = new CallForm();
                 form.setContactId(item.getId());
-                mProgressDialog.show(getFragmentManager(),"wait");
+                mProgressDialogCall.show(getFragmentManager(),"wait");
                 mApiService.createCall(mUserUuid, form)
-                        .enqueue(new CallCallBack());
+                        .enqueue(new InitCallCallBackImpl(mProgressDialogCall,getContext(),mMainLayout));
             }
             @Override
             public void onFavoriteClick(int pos, Contact item){
@@ -169,6 +180,11 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
                         mContactAdapter.clear();
                         mContactAdapter.addAll(contacts);
                         mContactAdapter.notifyDataSetChanged();
+                        if(contacts.size()==0){
+                            mState.setVisibility(View.VISIBLE);
+                        }else{
+                            mState.setVisibility(View.GONE);
+                        }
                     }
 
                     @Override
@@ -271,38 +287,5 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
             ).show();
         }
     }
-    private class CallCallBack implements Callback<ResponseBody>{
-        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-            mProgressDialog.dismiss();
-            if(response.isSuccess()){
 
-            }else{
-                switch (response.code()){
-                    case 403:
-                        ColoredSnackBarUtil.primary(
-                                Snackbar.make(mMainLayout, getString(R.string.forbidden_call_hint), Snackbar.LENGTH_SHORT)
-                        ).show();
-                        break;
-                    case 401:
-                        ColoredSnackBarUtil.primary(
-                                Snackbar.make(mMainLayout, getString(R.string.user_not_auth), Snackbar.LENGTH_SHORT)
-                        ).show();
-                        break;
-                    default:
-                        ColoredSnackBarUtil.primary(
-                                Snackbar.make(mMainLayout, getString(R.string.server_err), Snackbar.LENGTH_SHORT)
-                        ).show();
-
-                }
-            }
-        }
-
-        @Override
-        public void onFailure(Call<ResponseBody> call, Throwable t) {
-            mProgressDialog.dismiss();
-            ColoredSnackBarUtil.primary(
-                    Snackbar.make(mMainLayout, getString(R.string.network_err), Snackbar.LENGTH_SHORT)
-            ).show();
-        }
-    }
 }

@@ -29,11 +29,13 @@ import retrofit2.Response;
 import tw.kits.voicein.G8penApplication;
 import tw.kits.voicein.R;
 import tw.kits.voicein.fragment.DeleteDialogFragment;
+import tw.kits.voicein.fragment.ProgressCallFragment;
 import tw.kits.voicein.fragment.ProgressFragment;
 import tw.kits.voicein.fragment.TimePickerDialogFragment;
 import tw.kits.voicein.model.CallForm;
 import tw.kits.voicein.model.Contact;
 import tw.kits.voicein.util.ColoredSnackBarUtil;
+import tw.kits.voicein.util.InitCallCallBackImpl;
 import tw.kits.voicein.util.ServiceConstant;
 import tw.kits.voicein.util.TimeHandler;
 import tw.kits.voicein.util.VoiceInService;
@@ -50,6 +52,7 @@ public class ContactEditActivity extends AppCompatActivity {
     LinearLayout mLayout;
     EditText mNickName;
     ProgressFragment progressDialog;
+    ProgressCallFragment mProgressDialogCall;
     TextView mCompany;
     TextView mLocation;
     TextView mName;
@@ -79,7 +82,7 @@ public class ContactEditActivity extends AppCompatActivity {
         mUserUuid = ((G8penApplication) getApplication()).getUserUuid();
 
         progressDialog = new ProgressFragment();
-
+        mProgressDialogCall = new ProgressCallFragment();
         mNickName = (EditText) findViewById(R.id.contact_edit_et_nickname);
         mCompany = (TextView) findViewById(R.id.contact_edit_tv_com);
         mLocation = (TextView) findViewById(R.id.contact_edit_tv_loc);
@@ -281,44 +284,10 @@ public class ContactEditActivity extends AppCompatActivity {
     }
 
     private void call() {
-        progressDialog.show(getSupportFragmentManager(), "call_wait");
+        mProgressDialogCall.show(getSupportFragmentManager(), "call_wait");
         CallForm callForm = new CallForm();
         callForm.setContactId(mContact.getId());
-        mApiService.createCall(mUserUuid, callForm).enqueue(new Callback<ResponseBody>() {
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                progressDialog.dismiss();
-                if (response.isSuccess()) {
-
-                } else {
-                    switch (response.code()) {
-                        case 403:
-                            ColoredSnackBarUtil.primary(
-                                    Snackbar.make(mLayout, getString(R.string.forbidden_call_hint), Snackbar.LENGTH_SHORT)
-                            ).show();
-                            break;
-                        case 401:
-                            ColoredSnackBarUtil.primary(
-                                    Snackbar.make(mLayout, getString(R.string.user_not_auth), Snackbar.LENGTH_SHORT)
-                            ).show();
-                            break;
-                        default:
-                            ColoredSnackBarUtil.primary(
-                                    Snackbar.make(mLayout, getString(R.string.server_err), Snackbar.LENGTH_SHORT)
-                            ).show();
-
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                progressDialog.dismiss();
-                ColoredSnackBarUtil.primary(
-                        Snackbar.make(mLayout, getString(R.string.network_err), Snackbar.LENGTH_SHORT)
-                ).show();
-            }
-
-        });
+        mApiService.createCall(mUserUuid, callForm).enqueue(new InitCallCallBackImpl(mProgressDialogCall,this,mLayout));
     }
 
     private void toggleLikePerson() {

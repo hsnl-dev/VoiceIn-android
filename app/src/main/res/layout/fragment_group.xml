@@ -7,6 +7,16 @@
     android:layout_height="match_parent"
     android:background="?android:attr/selectableItemBackground"
     >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:visibility="invisible"
+        android:textColor="@color/secondary_text"
+        android:text="@string/no_group_notice"
+        android:id="@+id/group_frag_tv_state"
+        style="@style/TextAppearance.AppCompat.Body1" />
 
     <android.support.v4.widget.SwipeRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -29,5 +39,6 @@
         android:src="@drawable/ic_add_white_24dp"
         app:fabSize="normal"
         app:layout_anchor="@id/group_frag_rv_items"
+        app:layout_behavior=".util.ScrollAwareFABBehavior"
         app:layout_anchorGravity="right|end|bottom" />
 </android.support.design.widget.CoordinatorLayout>

@@ -20,6 +20,8 @@ import java.util.Date;
 import java.util.List;
 
 import tw.kits.voicein.R;
+import tw.kits.voicein.model.Contact;
+import tw.kits.voicein.model.Group;
 import tw.kits.voicein.model.Record;
 import tw.kits.voicein.util.ServiceConstant;
 
@@ -35,6 +37,12 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
     Drawable made;
     Drawable madeMiss;
     Drawable receivedMiss;
+    AdapterListener adapterListener;
+    public interface AdapterListener {
+        public void onPhoneClick(int pos, Record item);
+
+        public void onListClick(int pos, Record item);
+    }
 
     public void clear() {
         mRecordList.clear();
@@ -53,6 +61,9 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
         made = ContextCompat.getDrawable(mContext, R.drawable.ic_call_made_blue_grey_700_18dp);
         madeMiss = ContextCompat.getDrawable(mContext, R.drawable.ic_call_missed_outgoing_red_500_18dp);
         receivedMiss = ContextCompat.getDrawable(mContext, R.drawable.ic_call_missed_red_500_18dp);
+    }
+    public void setOnAdaterListener(AdapterListener listener){
+        this.adapterListener = listener;
     }
 
     @Override
@@ -111,6 +122,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
         }
 
         holder.nameText.setText(displayName);
+        holder.bindListener(adapterListener,position,record);
     }
 
     @Override
@@ -119,6 +131,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
             return mRecordList.size();
         return 0;
     }
+
 
     //    public interface OnClickListener{
 //        public View.OnClickListener
@@ -129,7 +142,17 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
         ImageView statusImg;
         ImageView avatarImg;
         TextView timeText;
+        ImageView callImg;
 
+        public void bindListener(final AdapterListener listener, final int pos, final Record record){
+            callImg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onPhoneClick(pos,record);
+                }
+            });
+
+        }
         public ViewHolder(View itemView) {
             super(itemView);
             nameText = (TextView) itemView.findViewById(R.id.recordi_tv_name);
@@ -137,6 +160,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
             timeText = (TextView) itemView.findViewById(R.id.recordi_tv_time);
             statusImg = (ImageView) itemView.findViewById(R.id.recordi_img_status);
             avatarImg = (ImageView) itemView.findViewById(R.id.recordi_img_avatar);
+            callImg = (ImageView) itemView.findViewById(R.id.recordi_img_call);
         }
     }
 }

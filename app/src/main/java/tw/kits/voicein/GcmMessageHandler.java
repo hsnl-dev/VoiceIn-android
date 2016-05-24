@@ -37,11 +37,11 @@ public class GcmMessageHandler extends GcmListenerService {
             if(message.startsWith("#call#"))
                 createNotification(from, message.replace("#call#",""));
             else{
-                Intent intent = new Intent();
-                intent.setAction(NEW_CONTACT_NOTIFY);
-                intent.setPackage(GcmMessageHandler.class.getPackage().getName());
-                intent.putExtra("message",message);
-                LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+//                Intent intent = new Intent();
+//                intent.setAction(NEW_CONTACT_NOTIFY);
+//                intent.setPackage(GcmMessageHandler.class.getPackage().getName());
+//                intent.putExtra("message",message);
+//                LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
                 NotificationCompat.Builder builder =
                         new NotificationCompat.Builder(this);
                 final int flags = PendingIntent.FLAG_CANCEL_CURRENT;

@@ -21,12 +21,14 @@ import retrofit2.Response;
 import tw.kits.voicein.G8penApplication;
 import tw.kits.voicein.R;
 import tw.kits.voicein.adapter.ContactAdapter;
+import tw.kits.voicein.fragment.ProgressCallFragment;
 import tw.kits.voicein.fragment.ProgressFragment;
 import tw.kits.voicein.model.CallForm;
 import tw.kits.voicein.model.Contact;
 import tw.kits.voicein.model.ContactList;
 import tw.kits.voicein.model.Group;
 import tw.kits.voicein.util.DividerItemDecoration;
+import tw.kits.voicein.util.InitCallCallBackImpl;
 import tw.kits.voicein.util.SnackBarUtil;
 import tw.kits.voicein.util.VoiceInService;
 
@@ -47,6 +49,7 @@ public class GroupActivity extends AppCompatActivity {
     String mToken;
     ContactAdapter mAdapter;
     ProgressFragment mProgressDialog;
+    ProgressCallFragment mProgressDialogCall;
     SnackBarUtil helper;
     Group mGroup;
     ContactAdapter.AdapterListener mlistListener;
@@ -67,6 +70,7 @@ public class GroupActivity extends AppCompatActivity {
         mMainView = findViewById(R.id.group_cl_main);
         mListView.setLayoutManager(new LinearLayoutManager(this));
         mProgressDialog = new ProgressFragment();
+        mProgressDialogCall = new ProgressCallFragment();
         helper = new SnackBarUtil(mMainView, this);
         helper.setErrorMessage(403, getString(R.string.forbidden_call_hint));
         getSupportActionBar().setTitle(mGName);
@@ -90,9 +94,9 @@ public class GroupActivity extends AppCompatActivity {
             public void onPhoneClick(int pos, Contact item) {
                 CallForm form = new CallForm();
                 form.setContactId(item.getId());
-                mProgressDialog.show(getSupportFragmentManager(), "wait");
+                mProgressDialogCall.show(getSupportFragmentManager(), "wait");
                 mApiService.createCall(mUserUuid, form)
-                        .enqueue(new CallCallBack());
+                        .enqueue(new InitCallCallBackImpl(mProgressDialogCall,GroupActivity.this,mMainView));
             }
 
             @Override
@@ -186,22 +190,6 @@ public class GroupActivity extends AppCompatActivity {
         });
 
 
-    }
-    private class CallCallBack implements Callback<ResponseBody>{
-        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-            mProgressDialog.dismiss();
-            if(response.isSuccess()){
-
-            }else{
-                helper.showSnackBar(response.code());
-            }
-        }
-
-        @Override
-        public void onFailure(Call<ResponseBody> call, Throwable t) {
-            mProgressDialog.dismiss();
-            helper.showSnackBar(SnackBarUtil.NETWORK_ERR);
-        }
     }
 
     @Override

@@ -6,8 +6,8 @@
     <string name="favorite_text">我的最愛</string>
     <string name="history_text">通話紀錄</string>
     <string name="group_text">群組</string>
-    <string name="login_notice">歡迎您使用VoiceIn\n 請輸入您的電話號碼，開始使用</string>
-    <string name="enter_phonenumber_hint">請輸入您的電話號碼(09xx開頭)</string>
+    <string name="login_notice">歡迎您使用VoiceIn\n 請輸入您的號碼，開始使用</string>
+    <string name="enter_phonenumber_hint">請輸入您的臺灣手機號碼(09開頭)</string>
     <string name="confirm">確認</string>
     <string name="verify_notice">驗證碼將在1分鐘內傳送到您的手機，請在下方輸入您的驗證碼</string>
     <string name="resend">重新傳送驗證碼</string>
@@ -55,17 +55,17 @@
     <string name="forbidden_call">暫停通話</string>
     <string name="forbidden_call_hint">該聯絡人暫停與您的通話</string>
     <string name="action_share">分享</string>
-    <string name="customer_name_hint">請輸入您的服務對象姓名</string>
-    <string name="customer_location_hint">請輸入您的服務對象所在地</string>
-    <string name="customer_company_hint">請輸入您的服務對象的單位名稱</string>
-    <string name="customer_phone_hint">請輸入您的服務對象的電話號碼</string>
-    <string name="customer_qrcode_notice">請輸入以下資料，以完成QRcode 建立</string>
+    <string name="customer_name_hint">請輸入您的聯絡人姓名</string>
+    <string name="customer_location_hint">請輸入您的聯絡人所在地</string>
+    <string name="customer_company_hint">請輸入您的聯絡人的單位名稱</string>
+    <string name="customer_phone_hint">請輸入您的聯絡人的電話號碼</string>
+    <string name="customer_qrcode_notice">請輸入以下資料，以完成QRCode 建立</string>
     <string name="i_finish_notice">完成</string>
     <string name="search_title">尋找聯絡人</string>
-    <string name="customer_qrcode">客戶專屬QRcode</string>
+    <string name="customer_qrcode">客戶專屬QRCode</string>
     <string name="unknown_name">尚未設定姓名</string>
     <string name="unknown_com">尚未設定任職單位</string>
-    <string name="custom_qrcode_add_title">新增客戶專屬QRcode</string>
+    <string name="custom_qrcode_add_title">新增客戶專屬QRCode</string>
 
     <string name="choose_from_phone_book">從聯絡簿選擇</string>
     <string name="no_name">未設定用戶名稱</string>
@@ -91,5 +91,9 @@
     <string name="custom_qrcode_desc">為您的客戶產生一個QRCode，客戶不用再輸入資料，只需掃描QRCode，產生ICON即可享有免費電話服務</string>
     <string name="default_qrcode_desc_for_customer">您好：這是我的QRCode 名片，該QRCode 能為您提供免費電信電話，使用方式如下：\n1.使用Android、iOS手機掃描QRCode。\n2.利用QRCode reader 掃描QRCode。 \n3.在iOS 利用Safari、在Android 利用Chrome 開啟QRCode裡的連結。\n4.依照網頁指示在手機主畫面上建立捷徑，點擊捷徑即可開始使用免費電話。\n5.電話會先撥至您的手機，請先接起電話，等待對方接通。\n* 若您無法掃描QRCode請直接點選連結 &lt;a href=&quot;%1$s&quot;&gt;%1$s&lt;/a&gt;
     </string>
+    <string name="no_group_notice">您目前沒有設定群組\n請點選右下方+號，新增群組管理</string>
+    <string name="no_record_notice">您目前沒有通話紀錄</string>
+    <string name="no_contact_notice">您目前沒有聯絡人\n請點選右下方+號，新增聯絡人</string>
+    <string name="wait_call_notice">約10秒內，您將收到來電，請放心接聽，接起後請等待另一方接通</string>
 
 </resources>

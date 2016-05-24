@@ -2,12 +2,13 @@ package tw.kits.voicein.adapter;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.ColorUtils;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,14 +25,18 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import tw.kits.voicein.G8penApplication;
 import tw.kits.voicein.R;
+import tw.kits.voicein.activity.ContactEditActivity;
+import tw.kits.voicein.model.CallForm;
 import tw.kits.voicein.model.Contact;
 import tw.kits.voicein.util.ChargeTypeConstant;
+import tw.kits.voicein.util.ColoredSnackBarUtil;
 import tw.kits.voicein.util.ServiceConstant;
 
 /**
  * Created by Henry on 2016/3/2.
  */
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHolder> {
+    private static final String TAG = ContactAdapter.class.getName();
     List<Contact> mContacts;
     View mLayout;
     String mToken;
@@ -39,29 +44,19 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
     Context mContext;
     AdapterListener listListener;
     Picasso mImgLoader;
-    private static final String TAG = ContactAdapter.class.getName();
-    public interface AdapterListener {
-        public void onPhoneClick(int pos, Contact item);
-        public void onNoPhoneClick(int pos, Contact item);
-        public void onFavoriteClick(int pos, Contact item);
-        public void onListClick(int pos, Contact item);
-    }
-
-    public void setContatctListListener(AdapterListener listListener){
-        this.listListener = listListener;
-    }
 
     public ContactAdapter(List<Contact> contacts, Fragment fragment,
                           CoordinatorLayout layout) {
-        mToken =((G8penApplication)fragment.getActivity().getApplication()).getToken();
-        mUserUuid = ((G8penApplication)fragment.getActivity().getApplication()).getUserUuid();
-        mImgLoader = ((G8penApplication)fragment.getActivity().getApplication()).getImgLoader(fragment.getContext());
+        mToken = ((G8penApplication) fragment.getActivity().getApplication()).getToken();
+        mUserUuid = ((G8penApplication) fragment.getActivity().getApplication()).getUserUuid();
+        mImgLoader = ((G8penApplication) fragment.getActivity().getApplication()).getImgLoader(fragment.getContext());
         mContacts = contacts;
 
         mContext = fragment.getContext();
         mLayout = layout;
     }
-    public ContactAdapter(List<Contact> contacts, Context context,String token, String uuid, Picasso imgloader,
+
+    public ContactAdapter(List<Contact> contacts, Context context, String token, String uuid, Picasso imgloader,
                           View layout) {
         mToken = token;
         mUserUuid = uuid;
@@ -71,7 +66,12 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
 
         mLayout = layout;
     }
-    public List<Contact> getContacts(){
+
+    public void setContatctListListener(AdapterListener listListener) {
+        this.listListener = listListener;
+    }
+
+    public List<Contact> getContacts() {
         return this.mContacts;
     }
 
@@ -82,44 +82,45 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
         ViewHolder viewHolder = new ViewHolder(contactView);
         return viewHolder;
     }
-    public void invalidateAllImg(){
-        for(Contact contact:mContacts){
+
+    public void invalidateAllImg() {
+        for (Contact contact : mContacts) {
             mImgLoader.invalidate(ServiceConstant.getAvatarById(contact.getProfilePhotoId(), ServiceConstant.PIC_SIZE_MID));
         }
     }
+
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         final Contact contact = mContacts.get(position);
-        if(contact.getNickName()!=null && !"".equals(contact.getNickName())){
+        if (contact.getNickName() != null && !"".equals(contact.getNickName())) {
             holder.mName.setText(contact.getNickName());
 
-        }else if(contact.getUserName()!=null && !"".equals(contact.getUserName())){
+        } else if (contact.getUserName() != null && !"".equals(contact.getUserName())) {
 
             holder.mName.setText(contact.getUserName());
 
-        }else{
+        } else {
             holder.mName.setText(mContext.getString(R.string.no_name));
         }
-        if(contact.getCompany()!=null && !"".equals(contact.getCompany())){
+        if (contact.getCompany() != null && !"".equals(contact.getCompany())) {
             holder.mCompany.setText(contact.getCompany());
 
-        }else{
+        } else {
 
             holder.mCompany.setText(mContext.getString(R.string.no_company));
 
         }
 
 
-
         Context context = holder.mCircleImageView.getContext();
         Picasso picasso = mImgLoader;
-        if(contact.getProfilePhotoId()!=null) {
+        if (contact.getProfilePhotoId() != null) {
 
             picasso.load(ServiceConstant.getAvatarById(contact.getProfilePhotoId(), ServiceConstant.PIC_SIZE_MID))
                     .noFade()
                     .placeholder(R.drawable.ic_person_white_48dp)
                     .into(holder.mCircleImageView);
-        }else{
+        } else {
             picasso.load(R.drawable.ic_person_white_48dp)
                     .noFade()
                     .into(holder.mCircleImageView);
@@ -131,10 +132,10 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
             }
         });
 
-        if(contact.getLike()){
-            holder.mImgFavorite.setColorFilter(ContextCompat.getColor(mContext,R.color.colorAccent));
-        }else{
-            holder.mImgFavorite.setColorFilter(ContextCompat.getColor(mContext,R.color.divider));
+        if (contact.getLike()) {
+            holder.mImgFavorite.setColorFilter(ContextCompat.getColor(mContext, R.color.colorAccent));
+        } else {
+            holder.mImgFavorite.setColorFilter(ContextCompat.getColor(mContext, R.color.divider));
         }
         holder.mImgFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,23 +143,22 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
                 listListener.onFavoriteClick(position, contact);
             }
         });
-        Log.e(TAG, "onBindViewHolder: "+contact.toString());
-        if(contact.getProviderIsEnable()){
-            holder.bindPositive(listListener,position,contact);
-        }else {
-            holder.bindNegative(listListener,position,contact);
+        Log.e(TAG, "onBindViewHolder: " + contact.toString());
+        if (contact.getProviderIsEnable()) {
+            holder.bindPositive(listListener, position, contact);
+        } else {
+            holder.bindNegative(listListener, position, contact);
         }
-
 
 
     }
 
-    public void findAndModify(Contact contact){
+    public void findAndModify(Contact contact) {
         int idx;
-        for(int i = 0 ; i<this.mContacts.size() ; i++){
-            if(this.mContacts.get(i).getId().equals(contact.getId())){
+        for (int i = 0; i < this.mContacts.size(); i++) {
+            if (this.mContacts.get(i).getId().equals(contact.getId())) {
                 Log.e(TAG, "findAndModify: test");
-                this.mContacts.set(i,contact);
+                this.mContacts.set(i, contact);
                 notifyItemChanged(i);
                 break;
             }
@@ -166,10 +166,10 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
 
     }
 
-    public void findAndDelete(Contact contact){
+    public void findAndDelete(Contact contact) {
         int idx;
-        for(int i = 0 ; i<this.mContacts.size() ; i++){
-            if(this.mContacts.get(i).getId().equals(contact.getId())){
+        for (int i = 0; i < this.mContacts.size(); i++) {
+            if (this.mContacts.get(i).getId().equals(contact.getId())) {
                 Log.e(TAG, "findAndDelete: remove");
                 this.mContacts.remove(i);
                 notifyItemRemoved(i);
@@ -178,26 +178,35 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
         }
 
     }
+
     @Override
     public int getItemCount() {
         return mContacts.size();
     }
-    public void clear(){
+
+    public void clear() {
         mContacts.clear();
 
     }
-    public boolean addAll(List<Contact> list){
+
+    public boolean addAll(List<Contact> list) {
         boolean result = mContacts.addAll(list);
 
         return result;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        Drawable rejectIcon = ContextCompat.getDrawable(mContext
-                , R.drawable.ic_phone_locked_grey_600_36dp);
-        Drawable phoneIcon = ContextCompat.getDrawable(mContext
-                , R.drawable.ic_call_blue_grey_900_36dp);
+    public interface AdapterListener {
+        public void onPhoneClick(int pos, Contact item);
 
+        public void onNoPhoneClick(int pos, Contact item);
+
+        public void onFavoriteClick(int pos, Contact item);
+
+        public void onListClick(int pos, Contact item);
+    }
+
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView mName;
         public CircleImageView mCircleImageView;
         public TextView mCompany;
@@ -205,16 +214,32 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
         public TextView mStatus;
         public ImageView mImgCall;
         public ImageView mImgFavorite;
-        public void  bindPositive(final AdapterListener listListener, final int position, final Contact contact){
+        Drawable rejectIcon = ContextCompat.getDrawable(mContext
+                , R.drawable.ic_phone_locked_grey_600_36dp);
+        Drawable phoneIcon = ContextCompat.getDrawable(mContext
+                , R.drawable.ic_call_blue_grey_900_36dp);
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            mStatus = (TextView) itemView.findViewById(R.id.contacti_tv_status);
+            mName = (TextView) itemView.findViewById(R.id.contacti_tv_name);
+            mCircleImageView = (CircleImageView) itemView.findViewById(R.id.contacti_img_avatar);
+            mCompany = (TextView) itemView.findViewById(R.id.contacti_tv_company);
+            mItemLayout = (RelativeLayout) itemView.findViewById(R.id.contacti_lo_item);
+            mImgCall = (ImageView) itemView.findViewById(R.id.contacti_img_call);
+            mImgFavorite = (ImageView) itemView.findViewById(R.id.contacti_img_favorite);
+        }
+
+        public void bindPositive(final AdapterListener listListener, final int position, final Contact contact) {
             mImgCall.setImageDrawable(phoneIcon);
             mImgCall.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listListener.onPhoneClick(position,contact);
+                    listListener.onPhoneClick(position, contact);
 
                 }
             });
-            switch (contact.getChargeType()){
+            switch (contact.getChargeType()) {
                 case ChargeTypeConstant.FREE:
                     mStatus.setText(mContext.getString(R.string.free_charge));
                     break;
@@ -229,26 +254,17 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
                     break;
             }
         }
-        public void bindNegative(final AdapterListener listListener, final int position, final Contact contact){
+
+        public void bindNegative(final AdapterListener listListener, final int position, final Contact contact) {
             mImgCall.setImageDrawable(rejectIcon);
             mStatus.setText(mContext.getString(R.string.forbidden_call));
             mImgCall.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listListener.onNoPhoneClick(position,contact);
+                    listListener.onNoPhoneClick(position, contact);
                 }
             });
 
-        }
-        public ViewHolder(View itemView) {
-            super(itemView);
-            mStatus = (TextView) itemView.findViewById(R.id.contacti_tv_status);
-            mName = (TextView) itemView.findViewById(R.id.contacti_tv_name);
-            mCircleImageView = (CircleImageView) itemView.findViewById(R.id.contacti_img_avatar);
-            mCompany = (TextView) itemView.findViewById(R.id.contacti_tv_company);
-            mItemLayout = (RelativeLayout) itemView.findViewById(R.id.contacti_lo_item);
-            mImgCall = (ImageView) itemView.findViewById(R.id.contacti_img_call);
-            mImgFavorite = (ImageView) itemView.findViewById(R.id.contacti_img_favorite);
         }
 
     }

@@ -14,8 +14,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -36,6 +38,7 @@ public class GroupFragment extends Fragment implements GroupAdapter.OnClickListe
     VoiceInService mApiService;
     String mUserUuid;
     RecyclerView mRview;
+    TextView mState;
     View mMainView;
     FloatingActionButton mFab;
     GroupAdapter mGroupAdapter;
@@ -60,7 +63,7 @@ public class GroupFragment extends Fragment implements GroupAdapter.OnClickListe
         mRview.setLayoutManager(new LinearLayoutManager(getContext()));
         mFab = (FloatingActionButton)view.findViewById(R.id.group_frag_fab_plus);
         mSwipeContainer = (SwipeRefreshLayout)view.findViewById(R.id.group_frag_sp_container);
-
+        mState = (TextView)view.findViewById(R.id.group_frag_tv_state);
 
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,9 +102,15 @@ public class GroupFragment extends Fragment implements GroupAdapter.OnClickListe
             public void onResponse(Call<GroupList> call, Response<GroupList> response) {
                 mSwipeContainer.setRefreshing(false);
                 if(response.isSuccess()){
+                    List<Group> groupList = response.body().getGroups();
                     mGroupAdapter.clear();
-                    mGroupAdapter.addList(response.body().getGroups());
+                    mGroupAdapter.addList(groupList);
                     mGroupAdapter.notifyDataSetChanged();
+                    if(groupList.size()==0){
+                        mState.setVisibility(View.VISIBLE);
+                    }else{
+                        mState.setVisibility(View.GONE);
+                    }
 
                 }else{
                     mSnackBarHelper.showSnackBar(response.code());
