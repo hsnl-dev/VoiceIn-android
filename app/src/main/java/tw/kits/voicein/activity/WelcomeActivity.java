@@ -35,7 +35,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
             }
             Log.i(TAG, "This device is not supported.");
-            return true;
+            return false;
         }
         return true;
     }
