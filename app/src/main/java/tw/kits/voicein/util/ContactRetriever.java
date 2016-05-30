@@ -59,7 +59,14 @@ public class ContactRetriever {
 
                                 }
                             }else{
-                                contactList.add(contact);
+                                for(int idx = 0; idx< contactList.size();idx++){
+                                    if(contact.getId().equals(contactList.get(idx).getId())){
+                                        Log.e("123", "onResponse: error");
+                                        contactList.set(idx,contact);
+                                        break;
+                                    }
+
+                                }
                             }
                         }
                         callback.onSuccess(contactList);
