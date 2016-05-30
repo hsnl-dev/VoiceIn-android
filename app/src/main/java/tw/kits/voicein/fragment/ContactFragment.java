@@ -3,6 +3,7 @@ package tw.kits.voicein.fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.google.zxing.qrcode.QRCodeReader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +41,7 @@ import tw.kits.voicein.util.ColoredSnackBarUtil;
 import tw.kits.voicein.util.ContactRetriever;
 import tw.kits.voicein.util.DividerItemDecoration;
 import tw.kits.voicein.util.InitCallCallBackImpl;
+import tw.kits.voicein.util.QRCodeUtil;
 import tw.kits.voicein.util.ScrollAwareFABBehavior;
 import tw.kits.voicein.util.SnackBarUtil;
 import tw.kits.voicein.util.VoiceInService;
@@ -50,6 +53,7 @@ import tw.kits.voicein.util.VoiceInService;
 public class ContactFragment extends Fragment implements View.OnClickListener {
     public static final int INTENT_ADD_CONTACT = 900;
     public static final int INTENT_EDIT_CONTACT = 800;
+    public static final int INTENT_PICK = 7985;
     public static final String TAG = ContactFragment.class.getName();
     String mUserUuid;
     String mToken;
@@ -159,8 +163,30 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.contact_fab_plus:
-                IntentIntegrator scanIntegrator = IntentIntegrator.forSupportFragment(ContactFragment.this);
-                scanIntegrator.initiateScan();
+                PickerDialogFragment fragment = PickerDialogFragment.newInstance(
+                        new PickerDialogFragment.OnSelectListener(){
+                            @Override
+                            public void onClick(DialogInterface dialog, int i) {
+                                super.onClick(dialog, i);
+                                switch (i){
+                                    case 0:
+                                        IntentIntegrator scanIntegrator = IntentIntegrator.forSupportFragment(ContactFragment.this);
+                                        scanIntegrator.initiateScan();
+
+                                        break;
+                                    case 1:
+                                        Intent pickintent;
+                                        pickintent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                        pickintent.setType("image/*");
+                                        startActivityForResult(pickintent, INTENT_PICK);
+                                        break;
+                                    case 2:
+                                        dialog.dismiss();
+                                }
+                            }
+                        },new String [] {"從照相機掃描QRCode","從相簿中選擇含有QRCode的影像","取消新增聯絡人"});
+
+                fragment.show(getFragmentManager(),"show_picker");
                 break;
         }
 
@@ -217,6 +243,13 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
                 startActivityForResult(i, INTENT_ADD_CONTACT);
             } else {
                 switch (requestCode) {
+                    case INTENT_PICK:
+                        String parsedUrl = QRCodeUtil.readQRCode(getContext(),data.getData());
+                        Log.e(TAG, "onActivityResult: "+parsedUrl );
+                        Intent i = new Intent(this.getActivity(), ContactAddActivity.class);
+                        i.putExtra(ContactAddActivity.ARG_QRCODE, parsedUrl);
+                        startActivityForResult(i, INTENT_ADD_CONTACT);
+
                     case INTENT_ADD_CONTACT:
                         Log.i(TAG, "Success");
                         ColoredSnackBarUtil.primary(Snackbar.make(mMainLayout, getString(R.string.success), Snackbar.LENGTH_LONG)).show();

@@ -162,12 +162,15 @@ public class FavoriteFragment extends Fragment {
                                 mState.setText("您目前沒有常用聯絡人\n請在聯絡人分頁點擊❤新增");
                             }else{
                                 mState.setVisibility(View.GONE);
+                                mRvContact.setVisibility(View.VISIBLE);
                             }
 
                         } else {
-                            Log.e(TAG, "Fial");
-                            Snackbar snack = Snackbar.make(mRefreshContainer, getResources().getString(R.string.user_auth_err), Snackbar.LENGTH_LONG);
-                            snack.show();
+//                            Snackbar snack = Snackbar.make(mRefreshContainer, getString(R.string.user_auth_err), Snackbar.LENGTH_LONG);
+//                            snack.show();
+                            mState.setVisibility(View.VISIBLE);
+                            mState.setText(getString(R.string.user_auth_err));
+                            mRvContact.setVisibility(View.GONE);
                         }
                     }
 
@@ -175,8 +178,13 @@ public class FavoriteFragment extends Fragment {
                     public void onFailure(Call<List<Contact>> call, Throwable t) {
                         mRefreshContainer.setRefreshing(false);
                         Log.e(TAG, t.toString());
-                        Snackbar snack = Snackbar.make(mRefreshContainer, getResources().getString(R.string.network_err), Snackbar.LENGTH_LONG);
-                        ColoredSnackBarUtil.primary(snack).show();
+//                        Snackbar snack = Snackbar.make(mRefreshContainer, getString(R.string.network_err), Snackbar.LENGTH_LONG);
+//                        ColoredSnackBarUtil.primary(snack).show();
+
+                        mState.setVisibility(View.VISIBLE);
+                        mState.setText(getString(R.string.network_err));
+                        mRvContact.setVisibility(View.GONE);
+
                     }
                 });
     }
