@@ -245,6 +245,10 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
                 switch (requestCode) {
                     case INTENT_PICK:
                         String parsedUrl = QRCodeUtil.readQRCode(getContext(),data.getData());
+                        if(parsedUrl==null){
+                            ColoredSnackBarUtil.primary(Snackbar.make(mMainLayout, "無效的圖片", Snackbar.LENGTH_LONG)).show();
+                            return;
+                        }
                         Log.e(TAG, "onActivityResult: "+parsedUrl );
                         Intent i = new Intent(this.getActivity(), ContactAddActivity.class);
                         i.putExtra(ContactAddActivity.ARG_QRCODE, parsedUrl);
