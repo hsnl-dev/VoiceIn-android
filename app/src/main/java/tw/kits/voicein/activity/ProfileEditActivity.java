@@ -48,6 +48,7 @@ public class ProfileEditActivity extends AppCompatActivity {
     public static final int PROFILE_RETURN_SUCCESS = 0x1;
     AvatarEditUtil helper;
     private String token;
+    private TextView mCredit;
     private String userUuid;
     private VoiceInService service;
     private EditText name;
@@ -82,6 +83,8 @@ public class ProfileEditActivity extends AppCompatActivity {
         phone = (TextView) findViewById(R.id.profile_edit_tv_phone);
         availableStime = (TextView) findViewById(R.id.profile_edit_tv_as);
         availableEtime = (TextView) findViewById(R.id.profile_edit_tv_ae);
+        mCredit = (TextView) findViewById(R.id.profile_edit_tv_credit);
+
         layout = (LinearLayout) findViewById(R.id.profile_edit_layout);
         avatar = (CircleImageView) findViewById(R.id.profile_edit_img_avatar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -182,6 +185,7 @@ public class ProfileEditActivity extends AppCompatActivity {
         phone.setText(user.getPhoneNumber());
         availableStime.setText(user.getAvailableStartTime());
         availableEtime.setText(user.getAvailableEndTime());
+        mCredit.setText(Float.toString(user.getCredit()));
     }
 
     private void startUpdateInfo() {

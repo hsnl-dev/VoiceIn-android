@@ -43,7 +43,7 @@ public class ProgressCallFragment extends DialogFragment {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            dismiss();
+            dismissAllowingStateLoss();
             super.onPostExecute(aVoid);
         }
 

@@ -28,7 +28,7 @@ public class InitCallCallBackImpl implements Callback<ResponseBody> {
         if(response.isSuccess()){
             mDialog.setupTimer();
         }else{
-            mDialog.dismiss();
+            mDialog.dismissAllowingStateLoss();
             switch (response.code()){
                 case 403:
                     ColoredSnackBarUtil.primary(
@@ -51,7 +51,7 @@ public class InitCallCallBackImpl implements Callback<ResponseBody> {
 
     @Override
     public void onFailure(Call<ResponseBody> call, Throwable t) {
-        mDialog.dismiss();
+        mDialog.dismissAllowingStateLoss();
         ColoredSnackBarUtil.primary(
                 Snackbar.make(mLayout, mContext.getString(R.string.network_err), Snackbar.LENGTH_SHORT)
         ).show();
