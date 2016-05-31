@@ -191,7 +191,6 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onRefresh() {
                 refreshContact();
-
             }
         });
         mRefreshContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
@@ -228,7 +227,7 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
                                         dialog.dismiss();
                                 }
                             }
-                        },new String [] {"從照相機掃描QRCode","從相簿中選擇含有QRCode的影像","取消新增聯絡人"});
+                        },new String [] {"從照相機掃描","從相簿選取","取消新增聯絡人"});
 
                 fragment.show(getFragmentManager(),"show_picker");
                 break;

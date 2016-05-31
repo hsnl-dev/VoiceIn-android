@@ -59,13 +59,18 @@ public class ContactRetriever {
 
                                 }
                             }else{
+                                boolean flag = false;
                                 for(int idx = 0; idx< contactList.size();idx++){
                                     if(contact.getId().equals(contactList.get(idx).getId())){
                                         Log.e("123", "onResponse: error");
                                         contactList.set(idx,contact);
+                                        flag = true;
                                         break;
                                     }
 
+                                }
+                                if(!flag){
+                                    contactList.add(contact);
                                 }
                             }
                         }
