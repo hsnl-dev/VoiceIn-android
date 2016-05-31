@@ -158,7 +158,7 @@ public class MyCardActivity extends AppCompatActivity implements UserInfoView {
         mName.setText(mUsr.getUserName());
         mProfile.setText(mUsr.getProfile());
         mMainLayout.setVisibility(View.VISIBLE);
-        mProgressFragment.dismiss();
+        mProgressFragment.dismissAllowingStateLoss();
     }
 
     @Override

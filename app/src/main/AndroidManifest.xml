@@ -16,8 +16,6 @@
         android:name="tw.kits.voicein.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
 
-    <uses-permission android:name="tw.kits.voicein.permission.C2D_MESSAGE" />
-
     <application
         android:name=".G8penApplication"
         android:allowBackup="true"
