@@ -116,6 +116,50 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
             }
 
             @Override
+            public void onListLongClick(final int pos, final Contact item) {
+                final PickerDialogFragment.OnSelectListener listener = new PickerDialogFragment.OnSelectListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+                        switch (i){
+                            case 0:
+                                onListClick(pos, item);
+                                break;
+                            case 1:
+                                DeleteDialogFragment.newInstance(new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                        mApiService.delContact(item.getId()).enqueue(new Callback<ResponseBody>() {
+                                            SnackBarUtil util = new SnackBarUtil(mMainLayout,getContext());
+                                            @Override
+                                            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                                mContactAdapter.getContacts().remove(pos);
+                                                mContactAdapter.notifyItemRemoved(pos);
+                                                util.showSnackBar(response.code());
+
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                                util.showSnackBar(SnackBarUtil.NETWORK_ERR);
+                                            }
+                                        });
+
+                                    }
+                                }).show(getFragmentManager(),"ask");
+                                break;
+                            case 2:
+                                dialog.dismiss();
+                                break;
+                        }
+                    }
+
+                };
+                PickerDialogFragment pickerDialogFragment = PickerDialogFragment.newInstance(listener,new String[]{"檢視聯絡人","刪除聯絡人","取消"});
+                pickerDialogFragment.show(getFragmentManager(),"options");
+            }
+
+            @Override
             public void onNoPhoneClick(int pos, Contact item) {
                     ColoredSnackBarUtil.primary(
                             Snackbar.make(mMainLayout, getString(R.string.forbidden_call_hint), Snackbar.LENGTH_SHORT)

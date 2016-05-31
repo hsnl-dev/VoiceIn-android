@@ -79,6 +79,11 @@ public class GroupActivity extends AppCompatActivity {
         mListView.addItemDecoration(itemDecoration);
         mlistListener = new ContactAdapter.AdapterListener() {
             @Override
+            public void onListLongClick(int pos, Contact item) {
+
+            }
+
+            @Override
             public void onListClick(int pos, Contact item) {
                 Intent intent = new Intent(GroupActivity.this, ContactEditActivity.class);
                 intent.putExtra(ContactEditActivity.ARG_CONTACT, item);

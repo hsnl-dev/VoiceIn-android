@@ -131,6 +131,13 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
                 listListener.onListClick(position, contact);
             }
         });
+        holder.mItemLayout.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                listListener.onListLongClick(position,contact);
+                return true;
+            }
+        });
 
         if (contact.getLike()) {
             holder.mImgFavorite.setColorFilter(ContextCompat.getColor(mContext, R.color.colorAccent));
@@ -203,6 +210,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
         public void onFavoriteClick(int pos, Contact item);
 
         public void onListClick(int pos, Contact item);
+        public void onListLongClick(int pos, Contact item);
     }
 
 
@@ -239,6 +247,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
 
                 }
             });
+
             switch (contact.getChargeType()) {
                 case ChargeTypeConstant.FREE:
                     mStatus.setText(mContext.getString(R.string.free_charge));

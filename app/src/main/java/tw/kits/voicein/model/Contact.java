@@ -16,13 +16,13 @@ public class Contact implements Serializable, Comparable<Contact>{
     private Integer chargeType;
     private String availableStartTime;
     private String availableEndTime;
-    private Boolean isEnable;
+    private boolean isEnable;
     private String providerAvailableStartTime;
     private String providerAvailableEndTime;
-    private Boolean providerIsEnable;
+    private boolean providerIsEnable;
     private String qrCodeUuid;
     private Object customerIcon;
-    private Boolean isHigherPriorityThanGlobal;
+    private boolean isHigherPriorityThanGlobal;
     private boolean isLike;
 
     /**
@@ -210,7 +210,7 @@ public class Contact implements Serializable, Comparable<Contact>{
      * @return
      * The isEnable
      */
-    public Boolean getIsEnable() {
+    public boolean getIsEnable() {
         return isEnable;
     }
 
@@ -219,7 +219,7 @@ public class Contact implements Serializable, Comparable<Contact>{
      * @param isEnable
      * The isEnable
      */
-    public void setIsEnable(Boolean isEnable) {
+    public void setIsEnable(boolean isEnable) {
         this.isEnable = isEnable;
     }
 
@@ -264,7 +264,7 @@ public class Contact implements Serializable, Comparable<Contact>{
      * @return
      * The providerIsEnable
      */
-    public Boolean getProviderIsEnable() {
+    public boolean getProviderIsEnable() {
         return providerIsEnable;
     }
 
@@ -273,7 +273,7 @@ public class Contact implements Serializable, Comparable<Contact>{
      * @param providerIsEnable
      * The providerIsEnable
      */
-    public void setProviderIsEnable(Boolean providerIsEnable) {
+    public void setProviderIsEnable(boolean providerIsEnable) {
         this.providerIsEnable = providerIsEnable;
     }
 
@@ -313,11 +313,11 @@ public class Contact implements Serializable, Comparable<Contact>{
         this.customerIcon = customerIcon;
     }
 
-    public Boolean getIsHigherPriorityThanGlobal() {
+    public boolean getIsHigherPriorityThanGlobal() {
         return isHigherPriorityThanGlobal;
     }
 
-    public void setIsHigherPriorityThanGlobal(Boolean isHigherPriorityThanGlobal) {
+    public void setIsHigherPriorityThanGlobal(boolean isHigherPriorityThanGlobal) {
         this.isHigherPriorityThanGlobal = isHigherPriorityThanGlobal;
     }
 
@@ -329,11 +329,11 @@ public class Contact implements Serializable, Comparable<Contact>{
         this.id = id;
     }
 
-    public Boolean getLike() {
+    public boolean getLike() {
         return isLike;
     }
 
-    public void setLike(Boolean like) {
+    public void setLike(boolean like) {
         this.isLike = like;
     }
 
