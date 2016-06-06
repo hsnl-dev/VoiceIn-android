@@ -6,10 +6,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -37,10 +39,12 @@ import tw.kits.voicein.activity.ContactEditActivity;
 import tw.kits.voicein.adapter.ContactAdapter;
 import tw.kits.voicein.model.CallForm;
 import tw.kits.voicein.model.Contact;
+import tw.kits.voicein.util.CameraPermission;
 import tw.kits.voicein.util.ColoredSnackBarUtil;
 import tw.kits.voicein.util.ContactRetriever;
 import tw.kits.voicein.util.DividerItemDecoration;
 import tw.kits.voicein.util.InitCallCallBackImpl;
+import tw.kits.voicein.util.PermissionHandler;
 import tw.kits.voicein.util.QRCodeUtil;
 import tw.kits.voicein.util.ScrollAwareFABBehavior;
 import tw.kits.voicein.util.SnackBarUtil;
@@ -68,6 +72,7 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
     ProgressCallFragment mProgressDialogCall;
     ContactRetriever mRetriever;
     TextView mState;
+    CameraPermission mCameraPermission;
 
     public ContactFragment() {
 
@@ -107,6 +112,8 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
         mContactAdapter = new ContactAdapter(new ArrayList<Contact>(), ContactFragment.this, mMainLayout);
         mRvContact.setAdapter(mContactAdapter);
         mRvContact.setLayoutManager(new LinearLayoutManager(this.getContext()));
+
+
         ContactAdapter.AdapterListener listListener = new ContactAdapter.AdapterListener() {
             @Override
             public void onListClick(int pos, Contact item) {
@@ -203,6 +210,15 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        Log.e(TAG, "onRequestPermissionsResult: parse" );
+        if(mCameraPermission!=null){
+            Log.e(TAG, "onRequestPermissionsResult: parse" );
+            mCameraPermission.parseResult(requestCode,permissions,grantResults);
+        }
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.contact_fab_plus:
@@ -213,8 +229,29 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
                                 super.onClick(dialog, i);
                                 switch (i){
                                     case 0:
-                                        IntentIntegrator scanIntegrator = IntentIntegrator.forSupportFragment(ContactFragment.this);
-                                        scanIntegrator.initiateScan();
+                                        mCameraPermission = new CameraPermission(new PermissionHandler.ViewHandler() {
+                                            @Override
+                                            public void onSuccessAsk() {
+                                                IntentIntegrator scanIntegrator = IntentIntegrator.forSupportFragment(ContactFragment.this);
+                                                scanIntegrator.initiateScan();
+                                            }
+
+                                            @Override
+                                            public void onFailureAsk() {
+                                                Log.e(TAG, "onFailureAsk: " );
+
+                                                PermisionFailureFragment failureFragment = new PermisionFailureFragment();
+                                                Log.e(TAG, "onFailureAsk:" +getFragmentManager());
+                                                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                                                transaction.add(failureFragment,"warin");
+                                                transaction.commitAllowingStateLoss();
+
+
+                                            }
+                                        });
+                                        Log.e(TAG, "onClick: Test point 1");
+                                        mCameraPermission.askPermissionForFrag(ContactFragment.this,getContext());
+
 
                                         break;
                                     case 1:

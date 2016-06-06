@@ -55,10 +55,10 @@
     <string name="forbidden_call">暫停通話</string>
     <string name="forbidden_call_hint">該聯絡人暫停與您的通話</string>
     <string name="action_share">分享</string>
-    <string name="customer_name_hint">請輸入您的聯絡人姓名</string>
-    <string name="customer_location_hint">請輸入您的聯絡人所在地</string>
-    <string name="customer_company_hint">請輸入您的聯絡人的單位名稱</string>
-    <string name="customer_phone_hint">請輸入您的聯絡人的電話號碼</string>
+    <string name="customer_name_hint">請輸入聯絡人姓名</string>
+    <string name="customer_location_hint">請輸入聯絡人所在地</string>
+    <string name="customer_company_hint">請輸入聯絡人的單位名稱</string>
+    <string name="customer_phone_hint">請輸入聯絡人台灣手機號碼(09開頭)</string>
     <string name="customer_qrcode_notice">請輸入以下資料，以完成QRCode 建立</string>
     <string name="i_finish_notice">完成</string>
     <string name="search_title">尋找聯絡人</string>
