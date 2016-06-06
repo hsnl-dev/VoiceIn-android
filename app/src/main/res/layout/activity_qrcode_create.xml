@@ -96,6 +96,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:inputType="text"
             android:hint="@string/customer_company_hint"
             android:id="@+id/qrcode_create_et_com"
             android:layout_weight="1" />

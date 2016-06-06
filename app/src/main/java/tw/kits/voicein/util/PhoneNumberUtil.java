@@ -16,4 +16,15 @@ public class PhoneNumberUtil {
     public static String getStandardNumber(String phoneNumber){
        return TAIWAN_NATION_CODE + phoneNumber.replaceFirst("0", "");
     }
+    public static boolean isTaiwan(String standPhonenumber){
+        if(standPhonenumber==null)
+            return false;
+        else
+            return standPhonenumber.startsWith("+8869");
+
+    }
+    public static String getTwFormat(String standPhonenumber){
+        return standPhonenumber.replace("+8869","09");
+
+    }
 }

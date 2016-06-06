@@ -27,6 +27,7 @@ import tw.kits.voicein.R;
 import tw.kits.voicein.fragment.ProgressFragment;
 import tw.kits.voicein.model.CustomerQRcodeForm;
 import tw.kits.voicein.util.ColoredSnackBarUtil;
+import tw.kits.voicein.util.PhoneNumberUtil;
 import tw.kits.voicein.util.VoiceInService;
 
 public class QrcodeCreateActivity extends AppCompatActivity implements View.OnClickListener {
@@ -80,7 +81,13 @@ public class QrcodeCreateActivity extends AppCompatActivity implements View.OnCl
             case R.id.customer_qrcode_confirm:
                 CustomerQRcodeForm form = new CustomerQRcodeForm();
                 form.setName(mName.getText().toString());
-                form.setPhoneNumber(mPhone.getText().toString().replace(" ", "").replace("-",""));
+                String number = mPhone.getText().toString().replace(" ", "").replace("-","");
+                if(!PhoneNumberUtil.isValid(number)){
+                    mPhone.setError("非正確電話格式，必須是09開頭");
+                    mPhone.requestFocus();
+                    return;
+                }
+                form.setPhoneNumber(PhoneNumberUtil.getStandardNumber(number));
                 form.setLocation(mLoc.getText().toString());
                 form.setCompany(mCom.getText().toString());
                 mFragment = new ProgressFragment();
@@ -142,9 +149,13 @@ public class QrcodeCreateActivity extends AppCompatActivity implements View.OnCl
                     return;
                 }
                 cursor.moveToFirst();
-
-
-                mPhone.setText( cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NORMALIZED_NUMBER)));
+                String number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NORMALIZED_NUMBER));
+                if(!PhoneNumberUtil.isTaiwan(number)){
+                    ColoredSnackBarUtil.primary(Snackbar.make(mMainLayout, "非台灣號碼", Snackbar.LENGTH_LONG)).show();
+                    cursor.close();
+                    return;
+                }
+                mPhone.setText(PhoneNumberUtil.getTwFormat(number));
                 cursor.close();
                 cursor = getContentResolver().query(ContactsContract.Data.CONTENT_URI,
                         null, ContactsContract.Data.CONTACT_ID + "=?", new String[] { id },
