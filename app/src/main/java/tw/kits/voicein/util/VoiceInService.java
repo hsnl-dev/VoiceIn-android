@@ -31,6 +31,7 @@ import tw.kits.voicein.model.QRcode;
 import tw.kits.voicein.model.QRcodeContainer;
 import tw.kits.voicein.model.Record;
 import tw.kits.voicein.model.RecordList;
+import tw.kits.voicein.model.SmallMsgForm;
 import tw.kits.voicein.model.Token;
 import tw.kits.voicein.model.UserInfo;
 import tw.kits.voicein.model.UserLoginRes;
@@ -41,6 +42,8 @@ import tw.kits.voicein.model.VerifyForm;
  * Created by Henry on 2016/3/3.
  */
 public interface VoiceInService {
+    @POST("api/v2/accounts/{uuid}/ping/{contactId}")
+    Call<ResponseBody> sendSmallMsg(@Path("uuid") String uuid, @Path("contactId") String contactId, @Body SmallMsgForm form);
     @POST("api/v2/accounts/validations/")
     Call<UserLoginRes> getvalidationCode(@Body HashMap<String, String> user);
 

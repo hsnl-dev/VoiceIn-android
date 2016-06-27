@@ -23,7 +23,6 @@ import android.widget.TextView;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import com.google.zxing.qrcode.QRCodeReader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -124,10 +123,10 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onListLongClick(final int pos, final Contact item) {
-                final PickerDialogFragment.OnSelectListener listener = new PickerDialogFragment.OnSelectListener(){
+                final PickerDialogFragment.OnSelectListener listener = new PickerDialogFragment.OnSelectListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int i) {
-                        switch (i){
+                        switch (i) {
                             case 0:
                                 onListClick(pos, item);
                                 break;
@@ -137,7 +136,8 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
                                     public void onClick(DialogInterface dialog, int which) {
 
                                         mApiService.delContact(item.getId()).enqueue(new Callback<ResponseBody>() {
-                                            SnackBarUtil util = new SnackBarUtil(mMainLayout,getContext());
+                                            SnackBarUtil util = new SnackBarUtil(mMainLayout, getContext());
+
                                             @Override
                                             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                                                 mContactAdapter.getContacts().remove(pos);
@@ -153,40 +153,44 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
                                         });
 
                                     }
-                                }).show(getFragmentManager(),"ask");
+                                }).show(getFragmentManager(), "ask");
                                 break;
                             case 2:
+                                SmallChatFragment fragment = SmallChatFragment.newInstance(item,mUserUuid);
+                                fragment.show(getFragmentManager(),"msg");
+                            case 3:
                                 dialog.dismiss();
                                 break;
                         }
                     }
 
                 };
-                PickerDialogFragment pickerDialogFragment = PickerDialogFragment.newInstance(listener,new String[]{"檢視聯絡人","刪除聯絡人","取消"});
-                pickerDialogFragment.show(getFragmentManager(),"options");
+                PickerDialogFragment pickerDialogFragment = PickerDialogFragment.newInstance(listener, new String[]{"檢視聯絡人", "刪除聯絡人","傳傳", "取消"});
+                pickerDialogFragment.show(getFragmentManager(), "options");
             }
 
             @Override
             public void onNoPhoneClick(int pos, Contact item) {
-                    ColoredSnackBarUtil.primary(
-                            Snackbar.make(mMainLayout, getString(R.string.forbidden_call_hint), Snackbar.LENGTH_SHORT)
-                    ).show();
+                ColoredSnackBarUtil.primary(
+                        Snackbar.make(mMainLayout, getString(R.string.forbidden_call_hint), Snackbar.LENGTH_SHORT)
+                ).show();
             }
 
             @Override
             public void onPhoneClick(int pos, Contact item) {
                 CallForm form = new CallForm();
                 form.setContactId(item.getId());
-                mProgressDialogCall.show(getFragmentManager(),"wait");
+                mProgressDialogCall.show(getFragmentManager(), "wait");
                 mApiService.createCall(mUserUuid, form)
-                        .enqueue(new InitCallCallBackImpl(mProgressDialogCall,getContext(),mMainLayout));
+                        .enqueue(new InitCallCallBackImpl(mProgressDialogCall, getContext(), mMainLayout));
             }
+
             @Override
-            public void onFavoriteClick(int pos, Contact item){
-                Log.e(TAG,item.toString());
-                mProgressDialog.show(getFragmentManager(),"wait");
-                mApiService.updateQRcodeILike(item.getId(),!item.getLike())
-                        .enqueue(new FavoriteCallBack(item,mContactAdapter,pos));
+            public void onFavoriteClick(int pos, Contact item) {
+                Log.e(TAG, item.toString());
+                mProgressDialog.show(getFragmentManager(), "wait");
+                mApiService.updateQRcodeILike(item.getId(), !item.getLike())
+                        .enqueue(new FavoriteCallBack(item, mContactAdapter, pos));
             }
         };
         mContactAdapter.setContatctListListener(listListener);
@@ -211,10 +215,10 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        Log.e(TAG, "onRequestPermissionsResult: parse" );
-        if(mCameraPermission!=null){
-            Log.e(TAG, "onRequestPermissionsResult: parse" );
-            mCameraPermission.parseResult(requestCode,permissions,grantResults);
+        Log.e(TAG, "onRequestPermissionsResult: parse");
+        if (mCameraPermission != null) {
+            Log.e(TAG, "onRequestPermissionsResult: parse");
+            mCameraPermission.parseResult(requestCode, permissions, grantResults);
         }
     }
 
@@ -223,11 +227,11 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.contact_fab_plus:
                 PickerDialogFragment fragment = PickerDialogFragment.newInstance(
-                        new PickerDialogFragment.OnSelectListener(){
+                        new PickerDialogFragment.OnSelectListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int i) {
                                 super.onClick(dialog, i);
-                                switch (i){
+                                switch (i) {
                                     case 0:
                                         mCameraPermission = new CameraPermission(new PermissionHandler.ViewHandler() {
                                             @Override
@@ -238,19 +242,19 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
 
                                             @Override
                                             public void onFailureAsk() {
-                                                Log.e(TAG, "onFailureAsk: " );
+                                                Log.e(TAG, "onFailureAsk: ");
 
                                                 PermisionFailureFragment failureFragment = new PermisionFailureFragment();
-                                                Log.e(TAG, "onFailureAsk:" +getFragmentManager());
+                                                Log.e(TAG, "onFailureAsk:" + getFragmentManager());
                                                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                                                transaction.add(failureFragment,"warin");
+                                                transaction.add(failureFragment, "warin");
                                                 transaction.commitAllowingStateLoss();
 
 
                                             }
                                         });
                                         Log.e(TAG, "onClick: Test point 1");
-                                        mCameraPermission.askPermissionForFrag(ContactFragment.this,getContext());
+                                        mCameraPermission.askPermissionForFrag(ContactFragment.this, getContext());
 
 
                                         break;
@@ -264,9 +268,9 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
                                         dialog.dismiss();
                                 }
                             }
-                        },new String [] {"從照相機掃描","從相簿選取","取消新增聯絡人"});
+                        }, new String[]{"從照相機掃描", "從相簿選取", "取消新增聯絡人"});
 
-                fragment.show(getFragmentManager(),"show_picker");
+                fragment.show(getFragmentManager(), "show_picker");
                 break;
         }
 
@@ -274,10 +278,10 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
 
     private void refreshContact() {
         mRefreshContainer.setRefreshing(true);
-        if(mContactAdapter!=null){
+        if (mContactAdapter != null) {
             mContactAdapter.invalidateAllImg();
         }
-        final SnackBarUtil snackBarUtil = new SnackBarUtil(mMainLayout,ContactFragment.this.getContext());
+        final SnackBarUtil snackBarUtil = new SnackBarUtil(mMainLayout, ContactFragment.this.getContext());
         mRetriever
                 .getContactList(mUserUuid, new ContactRetriever.Callback() {
                     @Override
@@ -286,9 +290,9 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
                         mContactAdapter.clear();
                         mContactAdapter.addAll(contacts);
                         mContactAdapter.notifyDataSetChanged();
-                        if(contacts.size()==0){
+                        if (contacts.size() == 0) {
                             mState.setVisibility(View.VISIBLE);
-                        }else{
+                        } else {
                             mState.setVisibility(View.GONE);
                         }
                     }
@@ -324,12 +328,12 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
             } else {
                 switch (requestCode) {
                     case INTENT_PICK:
-                        String parsedUrl = QRCodeUtil.readQRCode(getContext(),data.getData());
-                        if(parsedUrl==null){
+                        String parsedUrl = QRCodeUtil.readQRCode(getContext(), data.getData());
+                        if (parsedUrl == null) {
                             ColoredSnackBarUtil.primary(Snackbar.make(mMainLayout, "無效的圖片", Snackbar.LENGTH_LONG)).show();
                             return;
                         }
-                        Log.e(TAG, "onActivityResult: "+parsedUrl );
+                        Log.e(TAG, "onActivityResult: " + parsedUrl);
                         Intent i = new Intent(this.getActivity(), ContactAddActivity.class);
                         i.putExtra(ContactAddActivity.ARG_QRCODE, parsedUrl);
                         startActivityForResult(i, INTENT_ADD_CONTACT);
@@ -345,11 +349,11 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
                         ColoredSnackBarUtil.primary(Snackbar.make(mMainLayout, getString(R.string.success), Snackbar.LENGTH_LONG)).show();
 //                        mRefreshContainer.setRefreshing(true);
 //                        refreshContact();
-                        if(ContactEditActivity.DELETE_ACTION ==data.getIntExtra(ContactEditActivity.EXTRA_ACTION,-1)){
-                            mContactAdapter.findAndDelete((Contact)data.getSerializableExtra(ContactEditActivity.EXTRA_CONTACT));
-                        }else if(ContactEditActivity.UPDATE_ACTION ==data.getIntExtra(ContactEditActivity.EXTRA_ACTION,-1)){
+                        if (ContactEditActivity.DELETE_ACTION == data.getIntExtra(ContactEditActivity.EXTRA_ACTION, -1)) {
+                            mContactAdapter.findAndDelete((Contact) data.getSerializableExtra(ContactEditActivity.EXTRA_CONTACT));
+                        } else if (ContactEditActivity.UPDATE_ACTION == data.getIntExtra(ContactEditActivity.EXTRA_ACTION, -1)) {
                             Log.e(TAG, "onActivityResult: ");
-                            mContactAdapter.findAndModify((Contact)data.getSerializableExtra(ContactEditActivity.EXTRA_CONTACT));
+                            mContactAdapter.findAndModify((Contact) data.getSerializableExtra(ContactEditActivity.EXTRA_CONTACT));
 
                         }
                         break;
@@ -360,23 +364,26 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
 
         }
     }
-    private class FavoriteCallBack implements Callback<ResponseBody>{
+
+    private class FavoriteCallBack implements Callback<ResponseBody> {
         Contact contact;
         ContactAdapter adapter;
         int pos;
-        public FavoriteCallBack(Contact contact, ContactAdapter adapter, int pos){
+
+        public FavoriteCallBack(Contact contact, ContactAdapter adapter, int pos) {
 
             this.contact = contact;
             this.adapter = adapter;
             this.pos = pos;
         }
+
         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
             mProgressDialog.dismiss();
-            if(response.isSuccess()){
+            if (response.isSuccess()) {
                 contact.setLike(!contact.getLike());
                 adapter.notifyItemChanged(pos);
-            }else{
-                switch (response.code()){
+            } else {
+                switch (response.code()) {
                     case 403:
                         ColoredSnackBarUtil.primary(
                                 Snackbar.make(mMainLayout, getString(R.string.forbidden_call_hint), Snackbar.LENGTH_SHORT)
