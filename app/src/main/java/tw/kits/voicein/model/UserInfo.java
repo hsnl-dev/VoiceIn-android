@@ -21,6 +21,7 @@ public class UserInfo implements Serializable {
     private String password;
     private String deviceOS;
     private String deviceKey;
+    private boolean enableMVPNChecker;
     private float credit;
 
 
@@ -150,5 +151,13 @@ public class UserInfo implements Serializable {
 
     public void setCredit(float credit) {
         this.credit = credit;
+    }
+
+    public boolean isEnableMVPNChecker() {
+        return enableMVPNChecker;
+    }
+
+    public void setEnableMVPNChecker(boolean enableMVPNChecker) {
+        this.enableMVPNChecker = enableMVPNChecker;
     }
 }
