@@ -1,69 +1,75 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:id="@+id/contact_add_view"
-    android:paddingBottom="16dp"
-    android:weightSum="1"
-    android:orientation="vertical">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+>
+
+    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/contact_add_view"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:paddingBottom="16dp"
+        android:weightSum="1">
 
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="230dp"
+            android:background="@drawable/contact_profile_background"
             android:gravity="center_horizontal|center_vertical"
-            android:weightSum="1"
-            android:background="@drawable/contact_profile_background">
+            android:orientation="vertical"
+            android:weightSum="1">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/contact_edit_img_avatar"
                 android:layout_width="96dp"
                 android:layout_height="96dp"
+                android:layout_gravity="center_horizontal"
                 android:src="@drawable/ic_face_white_24dp"
-                app:civ_fill_color="@color/accent"
-                app:civ_border_width="2dp"
                 app:civ_border_color="@android:color/white"
-                android:layout_gravity="center_horizontal" />
+                app:civ_border_width="2dp"
+                app:civ_fill_color="@color/accent" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:id="@+id/contact_edit_tv_name"
-                android:layout_margin="6dp"
                 style="@style/TextAppearance.AppCompat.Title.Inverse"
-                android:text="@string/wait" />
-
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:id="@+id/contact_edit_tv_com"
+                android:layout_margin="6dp"
                 android:text="@string/wait"
-                style="@style/Base.TextAppearance.AppCompat.Subhead.Inverse" />
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/contact_edit_tv_com"
+                style="@style/Base.TextAppearance.AppCompat.Subhead.Inverse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/wait"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
+                android:gravity="center_horizontal"
                 android:orientation="horizontal"
                 android:padding="6dp"
-                android:weightSum="2"
-                android:gravity="center_horizontal">
+                android:weightSum="2">
+
                 <Button
-                    android:layout_width="match_parent"
-                    android:layout_weight="1"
-                    android:layout_height="48dp"
-                    android:drawableLeft="@drawable/ic_favorite_white_24dp"
                     android:id="@+id/contact_edit_btn_like"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/ic_favorite_white_24dp"
                     android:drawablePadding="6dp"
                     android:drawableTint="@color/secondary_text"
                     android:text="加入常用聯絡人" />
+
                 <Button
-                    android:layout_width="match_parent"
-                    android:layout_weight="1"
-                    android:layout_height="48dp"
                     android:id="@+id/contact_edit_btn_call"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
 
                     android:drawableLeft="@drawable/ic_add_white_24dp"
                     android:drawablePadding="6dp"
@@ -73,258 +79,254 @@
 
         </LinearLayout>
 
-        <ScrollView
-            android:layout_height="0dp"
-            android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:padding="@dimen/activity_horizontal_margin">
+
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:orientation="vertical">
+
             <LinearLayout
-                android:orientation="vertical"
+                android:id="@+id/linearLayout3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/linearLayout3"
-                android:layout_marginBottom="8dp" >
+                android:layout_marginBottom="8dp"
+                android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/textView4"
                     style="@style/TextAppearance.AppCompat.Caption"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:allowUndo="true"
                     android:text="@string/nickname"
-                    android:id="@+id/textView4"
-                    android:allowUndo="true" />
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
 
                 <EditText
+                    android:id="@+id/contact_edit_et_nickname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:hint="@string/nickname_edit_hint"
 
-                    android:id="@+id/contact_edit_et_nickname" />
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:id="@+id/linearLayout7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp">
+                android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/contact_edit_tv_loccap"
                     style="@style/TextAppearance.AppCompat.Caption"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:allowUndo="true"
                     android:text="@string/location"
-                    android:id="@+id/contact_edit_tv_loccap"
-                    android:allowUndo="true" />
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
 
                 <TextView
+                    android:id="@+id/contact_edit_tv_loc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:id="@+id/contact_edit_tv_loc" />
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="vertical"
+                android:id="@+id/linearLayout8"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-                android:id="@+id/linearLayout8"
-                android:layout_marginTop="8dp" >
+                android:layout_marginTop="8dp"
+                android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/contact_edit_tv_profilecap"
                     style="@style/TextAppearance.AppCompat.Caption"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:allowUndo="true"
                     android:text="@string/profile"
-                    android:id="@+id/contact_edit_tv_profilecap"
-                    android:allowUndo="true" />
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
 
                 <TextView
+                    android:id="@+id/contact_edit_tv_profile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:id="@+id/contact_edit_tv_profile"
-                    android:layout_marginBottom="6dp" />
+                    android:layout_marginBottom="6dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
             </LinearLayout>
+
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
-                android:background="@color/divider"
-                android:layout_margin="6dp" >
+                android:layout_margin="6dp"
+                android:background="@color/divider">
 
             </View>
 
             <TextView
+                android:id="@+id/textView7"
+                style="@style/Base.TextAppearance.AppCompat.Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/setting_title"
-                android:id="@+id/textView7"
-                style="@style/Base.TextAppearance.AppCompat.Title" />
+                android:text="@string/setting_title" />
 
             <RelativeLayout
-                android:orientation="vertical"
+                android:id="@+id/contact_edit_lo_disturb"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:id="@+id/contact_edit_lo_disturb"
+                android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp">
+                android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/contact_edit_tv_disturbcap"
                     style="@style/TextAppearance.AppCompat.Subhead"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/disturb_switch"
-                    android:id="@+id/contact_edit_tv_disturbcap"
-                    android:allowUndo="true" />
+                    android:allowUndo="true"
+                    android:text="@string/disturb_switch" />
 
                 <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/contact_edit_sw_disturb"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/contact_edit_sw_disturb"
-                    android:checked="false"
-                    android:layout_below="@+id/contact_edit_tv_disturbcap"
-                    android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/contact_edit_tv_disturbcap"
+                    android:layout_marginEnd="16dp"
                     android:layout_marginRight="16dp"
-                    android:layout_marginEnd="16dp" />
+                    android:checked="false" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/wait"
                     android:id="@+id/contact_edit_tv_disturb"
                     style="@style/Base.TextAppearance.AppCompat.Caption"
-                    android:layout_below="@+id/contact_edit_tv_disturbcap"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
-                    android:layout_marginTop="6dp" />
+                    android:layout_below="@+id/contact_edit_tv_disturbcap"
+                    android:layout_marginTop="6dp"
+                    android:text="@string/wait" />
 
             </RelativeLayout>
 
             <RelativeLayout
-                android:orientation="vertical"
+                android:id="@+id/contact_edit_lo_enhance"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:id="@+id/contact_edit_lo_enhance"
+                android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp">
+                android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/contact_edit_tv_enhancecap"
                     style="@style/TextAppearance.AppCompat.Subhead"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:allowUndo="true"
                     android:text="@string/contact_available_switch"
-                    android:id="@+id/contact_edit_tv_enhancecap"
-                    android:allowUndo="true" />
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
 
                 <android.support.v7.widget.SwitchCompat
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:id="@+id/contact_edit_sw_enhance"
-                    android:checked="false"
-                    android:layout_below="@+id/contact_edit_tv_enhancecap"
-                    android:layout_alignParentRight="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginEnd="16dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/wait"
-                    android:layout_marginTop="6dp"
-                    android:id="@+id/contact_edit_tv_enhance"
+                    android:layout_alignParentRight="true"
                     android:layout_below="@+id/contact_edit_tv_enhancecap"
-                    style="@style/Base.TextAppearance.AppCompat.Caption" />
-
-            </RelativeLayout>
-
-
-
-            <RelativeLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:id="@+id/contact_edit_lo_start_time"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp">
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginRight="16dp"
+                    android:checked="false" />
 
                 <TextView
-                    style="@style/TextAppearance.AppCompat.Subhead"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/available_start"
-                    android:id="@+id/contact_edit_tv_start_timecap"
-                    android:allowUndo="true" />
-
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/wait"
-                    android:id="@+id/contact_edit_tv_start_time"
-                    android:layout_below="@+id/contact_edit_tv_start_timecap"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
+                    android:id="@+id/contact_edit_tv_enhance"
                     style="@style/Base.TextAppearance.AppCompat.Caption"
-                    android:layout_marginTop="6dp" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/contact_edit_tv_enhancecap"
+                    android:layout_marginTop="6dp"
+                    android:text="@string/wait" />
 
             </RelativeLayout>
+
+
             <RelativeLayout
-                android:orientation="vertical"
+                android:id="@+id/contact_edit_lo_start_time"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:id="@+id/contact_edit_lo_end_time"
+                android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp">
+                android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/contact_edit_tv_start_timecap"
                     style="@style/TextAppearance.AppCompat.Subhead"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/available_stop"
-                    android:id="@+id/contact_edit_tv_end_timecap"
-                    android:allowUndo="true" />
-
+                    android:allowUndo="true"
+                    android:text="@string/available_start"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
 
 
                 <TextView
+                    android:id="@+id/contact_edit_tv_start_time"
+                    style="@style/Base.TextAppearance.AppCompat.Caption"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/wait"
-                    android:id="@+id/contact_edit_tv_end_time"
-                    android:layout_below="@+id/contact_edit_tv_end_timecap"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
-                    style="@style/Base.TextAppearance.AppCompat.Caption" />
+                    android:layout_below="@+id/contact_edit_tv_start_timecap"
+                    android:layout_marginTop="6dp"
+                    android:text="@string/wait" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/contact_edit_lo_end_time"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/contact_edit_tv_end_timecap"
+                    style="@style/TextAppearance.AppCompat.Subhead"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:allowUndo="true"
+                    android:text="@string/available_stop"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+
+                <TextView
+                    android:id="@+id/contact_edit_tv_end_time"
+                    style="@style/Base.TextAppearance.AppCompat.Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/contact_edit_tv_end_timecap"
+                    android:text="@string/wait" />
 
             </RelativeLayout>
 
 
             <Button
+                android:id="@+id/contact_edit_btn_del"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/del_contact"
-                android:id="@+id/contact_edit_btn_del"
                 android:layout_gravity="center_horizontal"
-                />
+                android:text="@string/del_contact" />
 
 
         </LinearLayout>
-    </ScrollView>
 
 
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>
