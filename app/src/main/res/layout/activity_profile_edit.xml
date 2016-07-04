@@ -13,7 +13,12 @@
         android:orientation="vertical"
         tools:context="tw.kits.voicein.activity.ProfileEditActivity">
 
-        <RelativeLayout
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/profile_edit_ll_sub">
+            <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="128dp"
 
@@ -106,7 +111,7 @@
 
         </RelativeLayout>
 
-        <LinearLayout
+            <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -220,11 +225,14 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="56dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
-                android:orientation="vertical">
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp"
+                android:orientation="vertical"
+                android:clickable="true"
+                android:background="?attr/selectableItemBackground"
+                android:id="@+id/profile_edit_layout_as">
 
                 <TextView
                     android:id="@+id/profile_edit_tv_ascap"
@@ -243,14 +251,26 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true" />
 
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_keyboard_arrow_right_grey_600_24dp"
+                    android:id="@+id/profile_edit_img_hint_as"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
-                android:orientation="vertical">
+                android:layout_height="56dp"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp"
+                android:clickable="true"
+                android:orientation="vertical"
+                android:id="@+id/profile_edit_layout_ae"
+                android:background="?attr/selectableItemBackground">
 
                 <TextView
                     android:id="@+id/textView6"
@@ -268,11 +288,19 @@
                     android:layout_below="@+id/textView6"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true" />
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_keyboard_arrow_right_grey_600_24dp"
+                    android:id="@+id/profile_edit_img_hint_ae"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
             </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
                 android:orientation="vertical"
@@ -345,7 +373,7 @@
 
         </LinearLayout>
 
-
+        </LinearLayout>
 
 
     </LinearLayout>

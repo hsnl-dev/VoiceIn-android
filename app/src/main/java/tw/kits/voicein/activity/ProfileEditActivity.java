@@ -13,12 +13,19 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import android.view.ViewGroup;
+
 import android.widget.CompoundButton;
+
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -42,11 +49,12 @@ import tw.kits.voicein.util.AvatarEditUtil;
 import tw.kits.voicein.util.ColoredSnackBarUtil;
 import tw.kits.voicein.util.PhoneNumberUtil;
 import tw.kits.voicein.util.ServiceConstant;
+import tw.kits.voicein.util.SnackBarUtil;
 import tw.kits.voicein.util.TimeHandler;
 import tw.kits.voicein.util.TimeParser;
 import tw.kits.voicein.util.VoiceInService;
 
-public class ProfileEditActivity extends AppCompatActivity {
+public class ProfileEditActivity extends BaseActivity {
     public static final int PROFILE_RETURN_SUCCESS = 0x1;
     AvatarEditUtil helper;
     private String token;
@@ -65,11 +73,24 @@ public class ProfileEditActivity extends AppCompatActivity {
     private TextView stateLabel;
     private SwitchCompat mvpnCheckerSw;
     private LinearLayout layout;
+    private ViewGroup mainContent;
     private CircleImageView avatar;
     private Bitmap uploadAvatar;
+    private View availableStimeLayout;
+    private View availableEtimeLayout;
     ProgressDialog progressDialog;
     private Picasso mImgLoader;
     private UserInfo mUser;
+    ProgressBar progressBar;
+
+    public void startReloading(){
+        progressBar.setVisibility(View.VISIBLE);
+        mainContent.setVisibility(View.INVISIBLE);
+    }
+    public void stopLoading(){
+        progressBar.setVisibility(View.GONE);
+        mainContent.setVisibility(View.VISIBLE);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,26 +106,26 @@ public class ProfileEditActivity extends AppCompatActivity {
         location = (EditText) findViewById(R.id.profile_edit_et_loc);
         introduction = (EditText) findViewById(R.id.profile_edit_et_intro);
         phone = (TextView) findViewById(R.id.profile_edit_tv_phone);
+        availableStimeLayout = findViewById(R.id.profile_edit_layout_as);
+        availableEtimeLayout = findViewById(R.id.profile_edit_layout_ae);
         availableStime = (TextView) findViewById(R.id.profile_edit_tv_as);
         availableEtime = (TextView) findViewById(R.id.profile_edit_tv_ae);
         mCredit = (TextView) findViewById(R.id.profile_edit_tv_credit);
-
+        mainContent = (ViewGroup) findViewById(R.id.profile_edit_ll_sub);
         layout = (LinearLayout) findViewById(R.id.profile_edit_layout);
         avatar = (CircleImageView) findViewById(R.id.profile_edit_img_avatar);
         mvpnCheckerSw = (SwitchCompat)findViewById(R.id.profile_edit_sw_mvpn);
         stateLabel = (TextView)findViewById(R.id.profile_edit_tv_state);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         helper = new AvatarEditUtil(this);
-        progressDialog = ProgressDialog.show(
-                this,
-                getString(R.string.wait),
-                getString(R.string.wait_notice),
-                true);
+        progressBar = new ProgressBar(this, null, android.R.attr.progressBarStyle);
+        setMainProgressBar(layout);
+        showProgressBar(mainContent);
         service.getUser(userUuid).enqueue(new Callback<UserInfo>() {
             @Override
             public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
                 if (response.isSuccess()) {
-                    progressDialog.dismiss();
+                    hideProgressBar(mainContent);
                     mImgLoader.load(ServiceConstant.getAvatarUri(userUuid, ServiceConstant.PIC_SIZE_MID))
                             .placeholder(R.drawable.ic_user_placeholder)
                             .error(R.drawable.ic_user_placeholder)
@@ -112,12 +133,15 @@ public class ProfileEditActivity extends AppCompatActivity {
                     mUser = response.body();
                     renderUser(mUser);
 
+                }else{
+                    SnackBarUtil util = new SnackBarUtil(mainContent,ProfileEditActivity.this);
+                    util.showSnackBar(response.code());
                 }
             }
 
             @Override
             public void onFailure(Call<UserInfo> call, Throwable t) {
-                progressDialog.dismiss();
+                hideProgressBar(mainContent);
                 ColoredSnackBarUtil.primary(
                         Snackbar.make(layout, R.string.network_err, Snackbar.LENGTH_INDEFINITE)
                 ).show();
@@ -147,7 +171,7 @@ public class ProfileEditActivity extends AppCompatActivity {
                 fragment.show(getSupportFragmentManager(),"chooser");
             }
         });
-        availableStime.setOnClickListener(new View.OnClickListener() {
+        availableStimeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 TimeHandler handler = new TimeHandler(availableStime);
@@ -158,7 +182,7 @@ public class ProfileEditActivity extends AppCompatActivity {
 
             }
         });
-        availableEtime.setOnClickListener(new View.OnClickListener() {
+        availableEtimeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 TimeHandler handler = new TimeHandler(availableEtime);
@@ -199,6 +223,7 @@ public class ProfileEditActivity extends AppCompatActivity {
         availableStime.setText(user.getAvailableStartTime());
         availableEtime.setText(user.getAvailableEndTime());
         mCredit.setText(Float.toString(user.getCredit()));
+        stopLoading();
     }
 
     private void startUpdateInfo() {

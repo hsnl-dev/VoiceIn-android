@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -49,7 +52,7 @@ public class MyCardActivity extends AppCompatActivity implements UserInfoView {
     String mToken;
     TextView mEmail;
     TextView mJobTitle;
-    Button mShareBtn;
+//    Button mShareBtn;
     UserInfo mUsr;
     UserInfoReader mUserReader;
     ProgressFragment mProgressFragment;
@@ -71,7 +74,7 @@ public class MyCardActivity extends AppCompatActivity implements UserInfoView {
         mqrCode = (ImageView) findViewById(R.id.my_card_img_qrcode);
         mAvatar = (CircleImageView) findViewById(R.id.my_card_img_avatar);
         mCustomQrcode = findViewById(R.id.my_card_cv_custom_sec);
-        mShareBtn = (Button) findViewById(R.id.my_card_btn_share);
+        //mShareBtn = (Button) findViewById(R.id.my_card_btn_share);
         mMainLayout.setVisibility(View.INVISIBLE);
         mCustomQrcode.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,12 +83,12 @@ public class MyCardActivity extends AppCompatActivity implements UserInfoView {
                 startActivity(qrcode);
             }
         });
-        mShareBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handleShare();
-            }
-        });
+        //mShareBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                handleShare();
+//            }
+//        });
         mProfileLayout = findViewById(R.id.my_card_cv_profile_sec);
         mProfileLayout.setDrawingCacheEnabled(true);
         mApiService = ((G8penApplication) getApplication()).getAPIService();
@@ -145,6 +148,25 @@ public class MyCardActivity extends AppCompatActivity implements UserInfoView {
         mProfileLayout.destroyDrawingCache();
         startActivity(i);
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.profile_menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.profile_menu_share:
+                handleShare();
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

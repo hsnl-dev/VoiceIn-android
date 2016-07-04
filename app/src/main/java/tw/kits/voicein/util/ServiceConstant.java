@@ -1,29 +1,14 @@
 package tw.kits.voicein.util;
 
-import android.content.Context;
-
-import com.jakewharton.picasso.OkHttp3Downloader;
-import com.squareup.picasso.Picasso;
-
-import java.io.File;
-import java.io.IOException;
-
-import okhttp3.Cache;
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import tw.kits.voicein.BuildConfig;
 
 /**
  * Created by Henry on 2016/3/3.
  */
 public class ServiceConstant {
-    public static final String WEB_BASE_URL = "https://voicein.kits.tw/";
-    public final static String API_BASE = "https://voicein-api.kits.tw/";
-//    public final static String API_BASE = "https://voicein.herokuapp.com/";
+
+    public static final String WEB_BASE_URL = BuildConfig.WEB_BASE_URL;
+    public final static String API_BASE = BuildConfig.API_BASE;
     public final static String API_KEY = "784a48e7-a15f-4623-916a-1bd304dc9f56";
     public final static String PIC_SIZE_MID = "mid";
     public final static String PIC_SIZE_LARGE = "large";
