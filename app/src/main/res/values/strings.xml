@@ -96,5 +96,7 @@
     <string name="no_contact_notice">您目前沒有聯絡人\n請點選右下方+號，新增聯絡人</string>
     <string name="wait_call_notice">約10秒內，您將收到來電，請放心接聽，接起後請等待另一方接通</string>
     <string name="credit">點數</string>
+    <string name="mvpn_setting_title">撥號時，檢查是否為清華大學MVPN會員</string>
+    <string name="mvpn_setting_desc">開啟此選項後，撥號時會檢查撥號方與受話方是否為清大MVPN會員，若是則使用清大MVPN總機回撥，節省您的費用</string>
 
 </resources>

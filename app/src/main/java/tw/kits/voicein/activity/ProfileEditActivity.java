@@ -11,12 +11,17 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
 import android.view.ViewGroup;
+
+import android.widget.CompoundButton;
+
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -65,6 +70,8 @@ public class ProfileEditActivity extends BaseActivity {
     private TextView phone;
     private TextView availableStime;
     private TextView availableEtime;
+    private TextView stateLabel;
+    private SwitchCompat mvpnCheckerSw;
     private LinearLayout layout;
     private ViewGroup mainContent;
     private CircleImageView avatar;
@@ -107,6 +114,8 @@ public class ProfileEditActivity extends BaseActivity {
         mainContent = (ViewGroup) findViewById(R.id.profile_edit_ll_sub);
         layout = (LinearLayout) findViewById(R.id.profile_edit_layout);
         avatar = (CircleImageView) findViewById(R.id.profile_edit_img_avatar);
+        mvpnCheckerSw = (SwitchCompat)findViewById(R.id.profile_edit_sw_mvpn);
+        stateLabel = (TextView)findViewById(R.id.profile_edit_tv_state);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         helper = new AvatarEditUtil(this);
         progressBar = new ProgressBar(this, null, android.R.attr.progressBarStyle);
@@ -184,7 +193,12 @@ public class ProfileEditActivity extends BaseActivity {
 
             }
         });
-
+        mvpnCheckerSw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                setStateText(isChecked);
+            }
+        });
     }
 
     @Override
@@ -197,6 +211,8 @@ public class ProfileEditActivity extends BaseActivity {
     }
 
     private void renderUser(UserInfo user) {
+        mvpnCheckerSw.setChecked(user.isEnableMVPNChecker());
+        setStateText(user.isEnableMVPNChecker());
         name.setText(user.getUserName());
         location.setText(user.getLocation());
         company.setText(user.getCompany());
@@ -312,9 +328,13 @@ public class ProfileEditActivity extends BaseActivity {
         mUser.setProfile(introduction.getText().toString());
         mUser.setUserName(name.getText().toString());
         mUser.setPhoneNumber(PhoneNumberUtil.getStandardNumber(mUser.getPhoneNumber()));
+        mUser.setEnableMVPNChecker(mvpnCheckerSw.isChecked());
        return true;
     }
-
+    public void setStateText(boolean state){
+        String text = state ? getString(R.string.enabled) : getString(R.string.disabled);
+        stateLabel.setText(text);
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.contact_edit_menu, menu);

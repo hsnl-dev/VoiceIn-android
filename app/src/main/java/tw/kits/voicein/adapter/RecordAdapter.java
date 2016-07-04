@@ -88,9 +88,11 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
             if ("incoming".equals(record.getType())) {
                 status = "撥入";
                 holder.statusImg.setImageDrawable(received);
+                holder.statusText.setTextColor(ContextCompat.getColor(mContext,R.color.secondary_text));
             } else {
                 status = "撥出";
                 holder.statusImg.setImageDrawable(made);
+                holder.statusText.setTextColor(ContextCompat.getColor(mContext,R.color.secondary_text));
             }
         } else {
             if ("incoming".equals(record.getType())) {

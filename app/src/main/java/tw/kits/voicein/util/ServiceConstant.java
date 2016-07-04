@@ -6,6 +6,7 @@ import tw.kits.voicein.BuildConfig;
  * Created by Henry on 2016/3/3.
  */
 public class ServiceConstant {
+
     public static final String WEB_BASE_URL = BuildConfig.WEB_BASE_URL;
     public final static String API_BASE = BuildConfig.API_BASE;
     public final static String API_KEY = "784a48e7-a15f-4623-916a-1bd304dc9f56";
