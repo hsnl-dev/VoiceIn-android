@@ -27,9 +27,15 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+//            minifyEnabled false
             zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "API_BASE", "\"https://voicein-api.kits.tw/\""
+            buildConfigField "String", "WEB_BASE_URL", "\"https://voicein.kits.tw/\""
+        }
+        debug{
+            buildConfigField "String", "API_BASE", "\"https://voicein.herokuapp.com/\""
+            buildConfigField "String", "WEB_BASE_URL", "\"https://get-voicein.kits.tw/\""
         }
     }
 }

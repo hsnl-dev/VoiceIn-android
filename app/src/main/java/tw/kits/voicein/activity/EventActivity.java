@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.squareup.picasso.Picasso;
 
@@ -23,14 +24,14 @@ import tw.kits.voicein.util.DividerItemDecoration;
 import tw.kits.voicein.util.SnackBarUtil;
 import tw.kits.voicein.util.VoiceInService;
 
-public class EventActivity extends AppCompatActivity {
+public class EventActivity extends BaseActivity {
     RecyclerView mMainList;
     VoiceInService mApiService;
     String mToken;
     String mUserUuid;
     EventAdapter mEventAdapter;
     Picasso mPicasso;
-    View mMainLayout;
+    ViewGroup mMainLayout;
     SnackBarUtil mSnackBarUtil;
     SwipeRefreshLayout mRefresh;
     @Override
@@ -43,7 +44,7 @@ public class EventActivity extends AppCompatActivity {
         mUserUuid = ((G8penApplication) getApplication()).getUserUuid();
         mPicasso = ((G8penApplication) getApplication()).getImgLoader(this);
         mEventAdapter = new EventAdapter(new ArrayList<EventEntity>(),mPicasso,this);
-        mMainLayout = findViewById(R.id.event_rl_main);
+        mMainLayout = (ViewGroup) findViewById(R.id.event_rl_main);
         mSnackBarUtil = new SnackBarUtil(mMainLayout,this);
         mMainList.setAdapter(mEventAdapter);
         mMainList.setLayoutManager(new LinearLayoutManager(this));
@@ -56,7 +57,10 @@ public class EventActivity extends AppCompatActivity {
             }
         });
         mRefresh.setRefreshing(true);
+        setMainProgressBar(mMainLayout);
+        showProgressBar(mMainList);
         refresh();
+
     }
     public void refresh(){
 
@@ -64,6 +68,7 @@ public class EventActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<EventEntityList> call, Response<EventEntityList> response) {
                 mRefresh.setRefreshing(false);
+                hideProgressBar(mMainList);
                 if(response.isSuccess()){
                     mEventAdapter.clear();
                     mEventAdapter.addList(response.body().getNotifications());
@@ -78,6 +83,7 @@ public class EventActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<EventEntityList> call, Throwable t) {
                 mRefresh.setRefreshing(false);
+                hideProgressBar(mMainList);
                 mSnackBarUtil.showSnackBar(SnackBarUtil.NETWORK_ERR);
             }
         });
