@@ -23,6 +23,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ServiceConstant {
     public static final String WEB_BASE_URL = "https://voicein.kits.tw/";
     public final static String API_BASE = "https://voicein-api.kits.tw/";
+//    public final static String API_BASE = "https://voicein.herokuapp.com/";
     public final static String API_KEY = "784a48e7-a15f-4623-916a-1bd304dc9f56";
     public final static String PIC_SIZE_MID = "mid";
     public final static String PIC_SIZE_LARGE = "large";
