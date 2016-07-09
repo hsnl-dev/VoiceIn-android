@@ -1,12 +1,12 @@
 {
   "project_info": {
-    "project_number": "84816759988",
-    "project_id": "voicein-1323"
+    "project_number": "874218678113",
+    "project_id": "getvoicein"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:84816759988:android:d03bc58c873d0383",
+        "mobilesdk_app_id": "1:874218678113:android:d03bc58c873d0383",
         "android_client_info": {
           "package_name": "tw.kits.voicein"
         }
@@ -14,7 +14,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyC13I3nJvlXZfI8IvdmuLmvYN5BwRQXOco"
+          "current_key": "AIzaSyBltHtKqncvOv911YAx22sKX2RDeOZa1Mw"
         }
       ],
       "services": {
