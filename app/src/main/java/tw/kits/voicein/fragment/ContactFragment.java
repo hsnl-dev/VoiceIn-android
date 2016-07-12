@@ -141,7 +141,7 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
                                             @Override
                                             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                                                 mContactAdapter.getContacts().remove(pos);
-                                                mContactAdapter.notifyItemRemoved(pos);
+                                                mContactAdapter.notifyItemRemovedSafely(pos);
                                                 util.showSnackBar(response.code());
 
                                             }
