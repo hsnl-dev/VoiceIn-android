@@ -13,6 +13,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 
@@ -32,6 +33,7 @@ import tw.kits.voicein.fragment.ProgressFragment;
 import tw.kits.voicein.model.QRcode;
 import tw.kits.voicein.model.QRcodeContainer;
 import tw.kits.voicein.util.ColoredSnackBarUtil;
+import tw.kits.voicein.util.ServiceConstant;
 import tw.kits.voicein.util.VoiceInService;
 
 public class QRCodeActivity extends AppCompatActivity implements View.OnClickListener {
@@ -94,7 +96,7 @@ public class QRCodeActivity extends AppCompatActivity implements View.OnClickLis
 
             @Override
             public void onShareClick(int pos, QRcode item, Bitmap bitmap) {
-                ShareTask task = new ShareTask();
+                ShareTask task = new ShareTask(item);
                 Bitmap[] bitmaps = {bitmap};
                 task.execute(bitmaps);
             }
@@ -155,6 +157,10 @@ public class QRCodeActivity extends AppCompatActivity implements View.OnClickLis
 
 
     private class ShareTask extends AsyncTask<Bitmap, Void, Void> {
+        QRcode item;
+        public ShareTask(QRcode uitem){
+            item = uitem;
+        }
         @Override
         protected Void doInBackground(Bitmap... params) {
             Intent i = null;
@@ -170,9 +176,10 @@ public class QRCodeActivity extends AppCompatActivity implements View.OnClickLis
                     params[0].compress(Bitmap.CompressFormat.JPEG, 80, out);
                     i = new Intent();
                     i.setAction(Intent.ACTION_SEND);
-                    i.setType("image/jpeg");
+                    i.setType("image/*");
                     i.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
-
+                    String qrcodeUrl = ServiceConstant.WEB_BASE_URL+"qrcode?id=" + item.getId();
+                    i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(String.format(getString(R.string.default_qrcode_desc_for_customer), qrcodeUrl)));
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 } finally {

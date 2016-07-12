@@ -4,6 +4,7 @@ package tw.kits.voicein.adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.List;
 
@@ -77,8 +79,24 @@ public class QrcodeAdapter extends RecyclerView.Adapter<QrcodeAdapter.ViewHolder
         holder.mItemLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bitmap bitmap = ((BitmapDrawable) holder.mImageView.getDrawable()).getBitmap();
-                mAdapterListener.onShareClick(position, code, bitmap);
+                mImgLoader
+                        .load(ServiceConstant.getQRcodeById(code.getId()))
+                        .into(new Target() {
+                            @Override
+                            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                                mAdapterListener.onShareClick(position, code, bitmap);
+                            }
+
+                            @Override
+                            public void onBitmapFailed(Drawable errorDrawable) {
+
+                            }
+
+                            @Override
+                            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                            }
+                        });
             }
         });
         holder.mItemLayout.setOnLongClickListener(new View.OnLongClickListener() {

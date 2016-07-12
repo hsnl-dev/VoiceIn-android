@@ -48,7 +48,7 @@ public class GcmMessageHandler extends GcmListenerService {
                 Intent intent1 = new Intent(this, MainActivity.class);
                 final PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0x1, intent1, flags); // 取得PendingIntent
 
-                builder.setSmallIcon(R.mipmap.ic_launcher)
+                builder.setSmallIcon(R.drawable.ic_stat_voice)
                         .setWhen(System.currentTimeMillis())
                         .setContentTitle(getString(R.string.app_name))
                         .setContentText(message)
