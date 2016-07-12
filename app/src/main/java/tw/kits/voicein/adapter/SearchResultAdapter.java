@@ -119,7 +119,11 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
             holder.mCompany.setText(mActivity.getString(R.string.no_company));
 
         }
-
+        if (contact.getLike()) {
+            holder.mImgFavorite.setColorFilter(ContextCompat.getColor(mActivity, R.color.colorAccent));
+        } else {
+            holder.mImgFavorite.setColorFilter(ContextCompat.getColor(mActivity, R.color.divider));
+        }
 
         Context context = holder.mCircleImageView.getContext();
         mImgLoader.load(ServiceConstant.getAvatarById(contact.getProfilePhotoId(), ServiceConstant.PIC_SIZE_MID))
@@ -164,6 +168,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         public RelativeLayout mItemLayout;
         public TextView mStatus;
         public ImageView mImgCall;
+        public ImageView mImgFavorite;
         Drawable rejectIcon = ContextCompat.getDrawable(mActivity
                 , R.drawable.ic_phone_locked_grey_600_36dp);
         Drawable phoneIcon = ContextCompat.getDrawable(mActivity
@@ -177,6 +182,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
             mCompany = (TextView) itemView.findViewById(R.id.contacti_tv_company);
             mItemLayout = (RelativeLayout) itemView.findViewById(R.id.contacti_lo_item);
             mImgCall = (ImageView) itemView.findViewById(R.id.contacti_img_call);
+            mImgFavorite = (ImageView) itemView.findViewById(R.id.contacti_img_favorite);
         }
 
         public void bindPositive(final AdapterListener listListener, final int position, final Contact contact) {

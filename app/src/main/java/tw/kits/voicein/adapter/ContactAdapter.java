@@ -180,6 +180,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
                 Log.e(TAG, "findAndDelete: remove");
                 this.mContacts.remove(i);
                 notifyItemRemoved(i);
+                notifyItemRangeChanged(i, getItemCount());
                 break;
             }
         }

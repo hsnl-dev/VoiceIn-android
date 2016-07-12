@@ -53,8 +53,9 @@ public class QrcodeAdapter extends RecyclerView.Adapter<QrcodeAdapter.ViewHolder
     public void removeItem(int pos) {
         mQrcodes.remove(pos);
         notifyItemRemoved(pos);
-    }
 
+        notifyItemRangeChanged(pos, getItemCount());
+    }
     public void setAdapterListener(AdapterListener listener) {
         this.mAdapterListener = listener;
     }
