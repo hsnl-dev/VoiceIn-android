@@ -133,7 +133,7 @@ public class MyCardActivity extends AppCompatActivity implements UserInfoView {
             out = new FileOutputStream(file);
             mProfileLayout.getDrawingCache().compress(Bitmap.CompressFormat.JPEG, 80, out);
             i.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
-            String qrcodeUrl = ServiceConstant.WEB_BASE_URL+"qrcode?id=" + mUsr.getProfilePhotoId();
+            String qrcodeUrl = ServiceConstant.WEB_BASE_URL+"qrcode?id=" + mUsr.getQrCodeUuid();
             i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(String.format(getString(R.string.default_qrcode_desc_for_customer), qrcodeUrl)));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
