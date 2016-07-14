@@ -1,4 +1,6 @@
-# Voice-in-android
+# Voice-in-android (Depreciated)
+** This project is maintained until Aug 31st, 2016. **
+
 聚寶盆 - (version: voiceIn)
 
 [Join the alpha test](https://play.google.com/apps/testing/tw.kits.voicein).
